@@ -111,8 +111,8 @@ public class ClienteDao implements CrudUtilities<Cliente> {
             if (dbc.executeQuery("SELECT * FROM Cliente;")) // Si se pudo ejecutar la consulta
                 studentList = fetchData(dbc.getResultSet()); // recupera los datos del ResultSet
             if (studentList != null) { // Si hay registros en el ResultSet, los imprime
-                studentList.forEach(alumnosJB -> {
-                    System.out.println(alumnosJB + "\n");
+                studentList.forEach(clienteJB -> {
+                    System.out.println(clienteJB + "\n");
                 });
             }
         } catch (SQLException ex) {
