@@ -12,10 +12,6 @@ import java.util.logging.Logger;
 public class ClienteDao implements CrudUtilities<Cliente> {
 
     private final ConnectionDB dbc;
-
-    /**
-     * Lista de alumnos recuperados del ResultSet al ejecutar queries.
-     */
     private LinkedList<Cliente> studentList; // Lista de alumnos.
 
     public ClienteDao() {
