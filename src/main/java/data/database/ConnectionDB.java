@@ -1,16 +1,14 @@
 package data.database;
 
-import java.sql.DriverManager;
+import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.sql.Connection;
-import java.sql.Statement;
-import java.sql.SQLException;
 
 public class ConnectionDB extends Credentials {
 
     private Statement stmt;
     private Connection con;
+    private ResultSet rs;
 
     public ConnectionDB(String db, String owner, String pwd) {
         super(db, owner, pwd);
@@ -24,6 +22,10 @@ public class ConnectionDB extends Credentials {
         return this.con;
     }
 
+    public ResultSet getResultSet() {
+        return  this.rs;
+    }
+
     public void createStmt() {
         try {
             stmt = con.createStatement();
@@ -32,11 +34,17 @@ public class ConnectionDB extends Credentials {
         }
     }
 
-    public boolean executeQuery(String query) {
-        this.setConnection();
-        this.createStmt();
+    public void closeStmt() {
         try {
-            this.getStatement().execute(query);
+            stmt.close();
+        } catch (SQLException e) {
+            Logger.getLogger(ConnectionDB.class.getName()).log(Level.SEVERE, "Error al cerrar el Statement.", e);
+        }
+    }
+
+    public boolean executeQuery(String query) throws SQLException {
+        try {
+            stmt.execute(query);
         } catch (SQLException ex) {
             Logger.getLogger(ConnectionDB.class.getName()).log(Level.SEVERE, "Error al realizar la inserción", ex);
             return false;
