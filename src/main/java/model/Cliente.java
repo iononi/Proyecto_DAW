@@ -107,13 +107,15 @@ public class Cliente implements Serializable {
             this.correo = "";
     }
 
-    public int getContraseña() {
+    public int getContrasenia() {
         return contrasenia;
     }
 
     public void setContrasenia(String contrasenia) {
         if (contrasenia != null) {
             this.contrasenia = contrasenia.hashCode();
+        } else {
+            this.contrasenia = 0;
         }
     }
 
