@@ -124,7 +124,8 @@ public class ClienteDao implements CrudUtilities<Cliente> {
         }
     }
 
-    private LinkedList<Cliente> fetchData(ResultSet rs) {
+    @Override
+    public LinkedList<Cliente> fetchData(ResultSet rs) {
         LinkedList<Cliente> tempList = new LinkedList<>();
         try {
             while (rs.next()) { // Mientras haya un registro en el ResultSet, obtén los datos del alumno
