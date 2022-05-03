@@ -20,8 +20,9 @@ public class Cliente implements Serializable {
 
     }
 
+    // Main constructor
     public Cliente(int clienteId, String curp, String rfc, String nombre, String apellidop, String apellidom,
-                   String correo, String contrasenia, Direccion dir) {
+                   String correo, String contrasenia, String extension, String tel, Direccion dir) {
         setClienteId(clienteId);
         setCurp(curp);
         setRfc(rfc);
@@ -30,6 +31,8 @@ public class Cliente implements Serializable {
         setApellidom(apellidom);
         setCorreo(correo);
         setContrasenia(contrasenia);
+        setExtension(extension);
+        setTelefono(tel);
         setDir(dir);
     }
 
