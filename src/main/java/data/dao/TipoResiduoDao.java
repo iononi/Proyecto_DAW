@@ -100,7 +100,7 @@ public class TipoResiduoDao implements CrudUtilities<TipoResiduo> {
         DBC.createStmt();   // Creamos el statement
         System.out.println("Recuperando los tipos de residuo registrados...\n");
         try {
-            if (DBC.executeQuery("SELECT * FROM Cliente;")) // Si se pudo ejecutar la consulta
+            if (DBC.executeQuery("SELECT * FROM TipoResiduo;")) // Si se pudo ejecutar la consulta
                 trashList = fetchData(DBC.getResultSet()); // recupera los datos del ResultSet
             if (trashList != null) { // Si hay registros en el ResultSet, los imprime
                 trashList.forEach(trashJB -> {
