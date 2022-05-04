@@ -77,11 +77,11 @@ public class ReporteAnonimoDao implements CrudUtilities<ReporteAnonimo> {
             String delete_query = String.format("DELETE FROM ReporteAnonimo WHERE folio = %d;", id);
 
             if (DBC.getStatement().execute(delete_query)) // si el método execute() regresa true, se pudo eliminar.
-                System.out.println("Se ha eliminado el método de pago! :D");
+                System.out.println("Se ha eliminado el reporte :D");
             else
-                System.out.println("Ocurrió un error al eliminar al método de pago :/");
+                System.out.println("Ocurrió un error al eliminar el reporte :/");
         } catch (SQLException ex) {
-            Logger.getLogger(ConnectionDB.class.getName()).log(Level.SEVERE, "Ocurrió un error al eliminar el método de pago.", ex);
+            Logger.getLogger(ConnectionDB.class.getName()).log(Level.SEVERE, "Ocurrió un error al eliminar el reporte.", ex);
         } finally {
             DBC.closeStmt(); // Cerramos el statement
             DBC.disconnect(); // Nos desconectamos de la BD
