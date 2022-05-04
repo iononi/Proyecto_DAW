@@ -27,7 +27,7 @@ public interface CrudUtilities<T> {
      * Update the row specified by id parameter.
      * @param id ID of row to update.
      * */
-    void update(int id); // metodo para actualizar un registro de la base de datos
+    void update(int id);
     /**
      * Retrieve the specified by id parameter.
      * @param id The ID of the row to retrieve.
