@@ -56,7 +56,7 @@ public class ReporteAnonimoDao implements CrudUtilities<ReporteAnonimo> {
             }
 
             else
-                System.out.println("No se ha podido insertar al método de pago :/");
+                System.out.println("No se ha podido registrar el reporte :/");
         } catch (SQLException ex) {
             Logger.getLogger(ConnectionDB.class.getName()).log(Level.SEVERE, "Error al insertar.", ex);
         } finally {
