@@ -139,7 +139,7 @@ public class ClienteDao implements CrudUtilities<Cliente> {
                 String contrasenia = rs.getString("contraseña");
                 String telefono = rs.getString("telefono");
                 String extension = rs.getString("extension");
-                Direccion direccion = (Direccion) rs.getObject("dir");
+                Direccion direccion = (Direccion) rs.getObject("direction");
 
 
                 Cliente alumno = new Cliente(clienteID, curp, rfc, nombre, apellidop, apellidom, correo, contrasenia,
