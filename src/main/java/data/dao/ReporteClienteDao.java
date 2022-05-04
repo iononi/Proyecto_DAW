@@ -1,8 +1,6 @@
 package data.dao;
 
 import data.database.ConnectionDB;
-import model.Direccion;
-import model.ReporteAnonimo;
 import model.ReporteCliente;
 import java.sql.ResultSet;
 import java.sql.SQLException;
