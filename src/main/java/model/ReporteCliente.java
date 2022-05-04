@@ -62,4 +62,10 @@ public class ReporteCliente implements Serializable {
     public void setPagado(boolean pagado) {
         this.pagado = pagado;
     }
+
+    @Override
+    public String toString() {
+        return String.format("Folio: %d\nCliente: %d\nTipo Residuo: %d\nMetodo de pago: %d\nPagado: %b",
+                folio, fkCliente, fkTipoResiduo, fkMetodoPago, pagado);
+    }
 }

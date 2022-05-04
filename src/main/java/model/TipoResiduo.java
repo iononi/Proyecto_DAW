@@ -31,4 +31,9 @@ public class TipoResiduo implements Serializable {
     public void setTipoResiduo(String tipoResiduo) {
         this.tipoResiduo = (tipoResiduo != null) ? tipoResiduo : "";
     }
+
+    @Override
+    public String toString() {
+        return String.format("ID: %d\nTipo Residuo: %s", residuoId, tipoResiduo);
+    }
 }
