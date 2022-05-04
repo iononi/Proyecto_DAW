@@ -52,7 +52,7 @@ public class MetodoPagoDao implements CrudUtilities<MetodoPago> {
 
         try {
 
-            String delete_query = String.format("DELETE FROM Cliente WHERE metodoid = %d;", id);
+            String delete_query = String.format("DELETE FROM MetodoPago WHERE metodoid = %d;", id);
 
             if (DBC.getStatement().execute(delete_query)) // si el método execute() regresa true, se pudo eliminar.
                 System.out.println("Se ha eliminado el método de pago! :D");
@@ -101,7 +101,7 @@ public class MetodoPagoDao implements CrudUtilities<MetodoPago> {
         DBC.createStmt();   // Creamos el statement
         System.out.println("Recuperando los métodos de pago disponibles...\n");
         try {
-            if (DBC.executeQuery("SELECT * FROM Cliente;")) // Si se pudo ejecutar la consulta
+            if (DBC.executeQuery("SELECT * FROM MetodoPago;")) // Si se pudo ejecutar la consulta
                 paymentList = fetchData(DBC.getResultSet()); // recupera los datos del ResultSet
             if (paymentList != null) { // Si hay registros en el ResultSet, los imprime
                 paymentList.forEach(paymentJB -> {
