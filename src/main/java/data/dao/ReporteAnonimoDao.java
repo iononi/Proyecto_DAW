@@ -121,9 +121,9 @@ public class ReporteAnonimoDao implements CrudUtilities<ReporteAnonimo> {
     public void selectAll() {
         DBC.setConnection(); // Establecemos conexión con la BD
         DBC.createStmt();   // Creamos el statement
-        System.out.println("Recuperando registros anónimos registrados...\n");
+        System.out.println("Recuperando reportes anónimos registrados...\n");
         try {
-            if (DBC.executeQuery("SELECT * FROM RegistroAnonimo;")) // Si se pudo ejecutar la consulta
+            if (DBC.executeQuery("SELECT * FROM ReporteAnonimo;")) // Si se pudo ejecutar la consulta
                 reportList = fetchData(DBC.getResultSet()); // recupera los datos del ResultSet
             if (reportList != null) { // Si hay registros en el ResultSet, los imprime
                 reportList.forEach(reportJB -> {
@@ -131,7 +131,7 @@ public class ReporteAnonimoDao implements CrudUtilities<ReporteAnonimo> {
                 });
             }
         } catch (SQLException ex) {
-            System.out.println("Error al recuperar los registros anónimos.");
+            System.out.println("Error al recuperar los reportes anónimos.");
             Logger.getLogger(ConnectionDB.class.getName()).log(Level.SEVERE, "No se pudo recuperar los datos.", ex);
         } finally {
             DBC.closeStmt(); // Cerramos el statement
