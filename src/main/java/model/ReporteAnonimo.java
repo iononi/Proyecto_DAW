@@ -124,4 +124,11 @@ public class ReporteAnonimo implements Serializable {
     public void setPagado(boolean pagado) {
         this.pagado = pagado;
     }
+
+    @Override
+    public String toString() {
+        return String.format("Folio: %d\n\nDatos Cliente:\n\n\tNombre: %s\n\tApellidos: %s, %s\n\tTelefono: (%s) %s\n\t" +
+                "Tipo Residuo: %d\n\tMetodo Pago: %d\n\tPagado: %b", folio, nombre, apellidop, apellidom, extension, telefono,
+                fkTipoResiduo, fkMetodoPago, pagado);
+    }
 }
