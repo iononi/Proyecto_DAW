@@ -41,7 +41,16 @@ public interface CrudUtilities<T> {
      * Helper method used in select and selectAll methods
      * to retrieve data from Result Sets.
      * @param rs ResultSet from data will be retrieve.
-     * @return {@see LinkedList} Return a LinkedList with the rows from query.
+     * @return Return a {@code LinkedList} with the rows from query.
      * */
     LinkedList<T> fetchData(ResultSet rs);
+    /**
+     * Prints the content of {@code list}. {@code list} is a list of {@code T} objects
+     * contained in the resulting {@code ResultSet} after invoking {@code select()}
+     * or {@code selectAll()} methods.
+     * @param list List of {@code T} objects to print. The class of type {@code T} may
+     *             override {@code toString()} declared in {@code Object} class.
+     * @see Object
+     * */
+    void printQueryResult(LinkedList<T> list);
 }
