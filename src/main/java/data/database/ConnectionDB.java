@@ -60,10 +60,16 @@ public class ConnectionDB extends Credentials {
         } catch (SQLException ex) {
             Logger.getLogger(ConnectionDB.class.getName()).log(Level.SEVERE, "Error al realizar la consulta", ex);
             return false;
-        } finally {
-            this.disconnect();
         }
         return true;
+    }
+
+    public void closeResultSet() {
+        try {
+            rs.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
     }
 
     @Override
