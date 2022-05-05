@@ -95,18 +95,17 @@ public class ReporteClienteDao implements CrudUtilities<ReporteCliente> {
         String select_query = String.format("SELECT * FROM ReporteCliente WHERE folio = %d;", id);
 
         try {
-            if (DBC.executeQuery(select_query)) // Si el método executeQuery() regresa true, se encontró al alumno
+            if (DBC.runQuery(select_query)) // Si el método executeQuery() regresa true, se encontró al alumno
                 reportList = fetchData(DBC.getResultSet()); // Obtiene los datos del ResultSet y lo guarda en reportList
-            assert reportList != null;
-            if (reportList.size() > 0) // Si hay registros, los imprime
-                reportList.forEach(reportJB -> {
-                    System.out.println(reportJB + "\n");
-                });
-            else
+            if (reportList.size() == 0)
                 System.out.println("No se encontró el reporte con folio: " + id);
         } catch (SQLException ex) {
             System.out.println("Error al recuperar los datos del reporte especificado");
             Logger.getLogger(ConnectionDB.class.getName()).log(Level.SEVERE, "No se pudo recuperar los datos.", ex);
+        } finally {
+            DBC.closeStmt();
+            DBC.closeResultSet();
+            DBC.disconnect();
         }
     }
 
@@ -116,18 +115,16 @@ public class ReporteClienteDao implements CrudUtilities<ReporteCliente> {
         DBC.createStmt();   // Creamos el statement
         System.out.println("Recuperando reportes registrados...\n");
         try {
-            if (DBC.executeQuery("SELECT * FROM ReporteCliente;")) // Si se pudo ejecutar la consulta
+            if (DBC.runQuery("SELECT * FROM ReporteCliente;")) // Si se pudo ejecutar la consulta
                 reportList = fetchData(DBC.getResultSet()); // recupera los datos del ResultSet
-            if (reportList != null) { // Si hay registros en el ResultSet, los imprime
-                reportList.forEach(reportJB -> {
-                    System.out.println(reportJB + "\n");
-                });
-            }
+            if (reportList.size() == 0)
+                System.out.println("No existen reportes registrados.");
         } catch (SQLException ex) {
             System.out.println("Error al recuperar los reportes.");
             Logger.getLogger(ConnectionDB.class.getName()).log(Level.SEVERE, "No se pudo recuperar los datos.", ex);
         } finally {
             DBC.closeStmt(); // Cerramos el statement
+            DBC.closeResultSet();
             DBC.disconnect(); // Cerramos conexión con la BD
         }
     }
