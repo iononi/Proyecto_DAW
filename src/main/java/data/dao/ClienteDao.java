@@ -76,6 +76,9 @@ public class ClienteDao implements CrudUtilities<Cliente> {
 
     @Override
     public void update(int id) {
+        DBC.setConnection();
+        DBC.createStmt();
+
 
     }
 
@@ -155,5 +158,10 @@ public class ClienteDao implements CrudUtilities<Cliente> {
                     " del ResultSet.", ex);
             return null;
         }
+    }
+
+    @Override
+    public void printQueryResult(LinkedList<Cliente> list) {
+        list.forEach( element -> System.out.println(element + "\n"));
     }
 }
