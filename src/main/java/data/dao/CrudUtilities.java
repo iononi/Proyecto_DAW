@@ -41,6 +41,7 @@ public interface CrudUtilities<T> {
      * Helper method used in select and selectAll methods
      * to retrieve data from Result Sets.
      * @param rs ResultSet from data will be retrieve.
+     * @return {@see LinkedList} Return a LinkedList with the rows from query.
      * */
     LinkedList<T> fetchData(ResultSet rs);
 }
