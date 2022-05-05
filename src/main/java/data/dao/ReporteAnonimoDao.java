@@ -37,10 +37,10 @@ public class ReporteAnonimoDao implements CrudUtilities<ReporteAnonimo> {
 
             // Se ejecuta la instrucción 'insertion_query' y, en caso de ser posible la inserción, devuelve un true.
             // Devuelve false en caso contrario y por lo tanto no se pudo insertar en la BD.
-            if (DBC.getStatement().execute(insertion_query)) {
+            if (DBC.executeQuery(insertion_query)) {
 
                 try {
-                    DBC.getStatement().executeQuery(paymentMethod);
+                    DBC.executeQuery(paymentMethod);
                     if (DBC.getResultSet() != null) {
                         String payment = DBC.getResultSet().getString(1);
                         if (payment.equals("Tarjeta credito/debito")) {
