@@ -48,8 +48,6 @@ public class ConnectionDB extends Credentials {
         } catch (SQLException ex) {
             Logger.getLogger(ConnectionDB.class.getName()).log(Level.SEVERE, "Error al realizar la inserción", ex);
             return false;
-        } finally {
-            this.disconnect();
         }
         return true;
     }
