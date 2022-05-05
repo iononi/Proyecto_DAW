@@ -80,18 +80,17 @@ public class MetodoPagoDao implements CrudUtilities<MetodoPago> {
         String select_query = String.format("SELECT * FROM MetodoPago WHERE metodoid = %d;", id);
 
         try {
-            if (DBC.executeQuery(select_query)) // Si el método executeQuery() regresa true, se encontró al alumno
+            if (DBC.runQuery(select_query)) // Si el método runQuery() regresa true, se encontró al alumno
                 paymentList = fetchData(DBC.getResultSet()); // Obtiene los datos del ResultSet y lo guarda en paymentList
-            assert paymentList != null;
-            if (paymentList.size() > 0) // Si hay registros, los imprime
-                paymentList.forEach(paymentJB -> {
-                    System.out.println(paymentJB + "\n");
-                });
-            else
+            if (paymentList.size() == 0)
                 System.out.println("No se encontró el método de pago con ID: " + id);
         } catch (SQLException ex) {
             System.out.println("Error al recuperar los métodos de pago.");
             Logger.getLogger(ConnectionDB.class.getName()).log(Level.SEVERE, "No se pudo recuperar los datos.", ex);
+        } finally {
+            DBC.closeStmt(); // Cerramos el statement
+            DBC.closeResultSet(); // Cerramos el resultset
+            DBC.disconnect(); // Cerramos conexión con la BD
         }
     }
 
@@ -101,18 +100,16 @@ public class MetodoPagoDao implements CrudUtilities<MetodoPago> {
         DBC.createStmt();   // Creamos el statement
         System.out.println("Recuperando los métodos de pago disponibles...\n");
         try {
-            if (DBC.executeQuery("SELECT * FROM MetodoPago;")) // Si se pudo ejecutar la consulta
+            if (DBC.runQuery("SELECT * FROM MetodoPago;")) // Si se pudo ejecutar la consulta
                 paymentList = fetchData(DBC.getResultSet()); // recupera los datos del ResultSet
-            if (paymentList != null) { // Si hay registros en el ResultSet, los imprime
-                paymentList.forEach(paymentJB -> {
-                    System.out.println(paymentJB + "\n");
-                });
-            }
+            if (paymentList.size() == 0)
+                System.out.println("No existen métodos de pago disponibles.");
         } catch (SQLException ex) {
             System.out.println("Error al recuperar los métodos de pago disponibles.");
             Logger.getLogger(ConnectionDB.class.getName()).log(Level.SEVERE, "No se pudo recuperar los datos.", ex);
         } finally {
             DBC.closeStmt(); // Cerramos el statement
+            DBC.closeResultSet(); // Cerramos el resultset
             DBC.disconnect(); // Cerramos conexión con la BD
         }
     }
