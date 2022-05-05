@@ -93,10 +93,7 @@ public class ClienteDao implements CrudUtilities<Cliente> {
         try {
             if (DBC.executeQuery(select_query)) // Si el método executeQuery() regresa true, se encontró al alumno
                 studentList = fetchData(DBC.getResultSet()); // Obtiene los datos del ResultSet y lo guarda en studentList
-            assert studentList != null;
-            if (studentList.size() > 0) // Si hay registros, los imprime
-                studentList.forEach(System.out::println);
-            else
+            if (studentList.size() == 0)
                 System.out.println("No se encontró al cliente con ID: " + id);
         } catch (SQLException ex) {
             System.out.println("Error al recuperar los datos de la tabla cliente.");
@@ -113,11 +110,8 @@ public class ClienteDao implements CrudUtilities<Cliente> {
         try {
             if (DBC.executeQuery("SELECT * FROM Cliente;")) // Si se pudo ejecutar la consulta
                 studentList = fetchData(DBC.getResultSet()); // recupera los datos del ResultSet
-            if (studentList != null) { // Si hay registros en el ResultSet, los imprime
-                studentList.forEach(clienteJB -> {
-                    System.out.println(clienteJB + "\n");
-                });
-            }
+            if (studentList.size() == 0)
+                System.out.println("No se ha registrado ningún cliente.");
         } catch (SQLException ex) {
             System.out.println("Error al recuperar los datos de la tabla cliente.");
             Logger.getLogger(ConnectionDB.class.getName()).log(Level.SEVERE, "No se pudo recuperar los datos.", ex);
