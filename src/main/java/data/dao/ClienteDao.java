@@ -143,9 +143,9 @@ public class ClienteDao implements CrudUtilities<Cliente> {
 
 
                 Cliente alumno = new Cliente(clienteID, curp, rfc, nombre, apellidop, apellidom, correo, contrasenia,
-                        extension, telefono, direccion); // se crea al alumno
+                        extension, telefono, direccion);
 
-                tempList.add(alumno); // se agrega el alumno a la lista de alumnos
+                tempList.add(alumno);
             }
 
             return tempList;
