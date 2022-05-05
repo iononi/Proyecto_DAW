@@ -3,6 +3,8 @@ package data.dao;
 import model.Cliente;
 
 import java.sql.ResultSet;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedList;
 
 /**
@@ -48,9 +50,12 @@ public interface CrudUtilities<T> {
      * Prints the content of {@code list}. {@code list} is a list of {@code T} objects
      * contained in the resulting {@code ResultSet} after invoking {@code select()}
      * or {@code selectAll()} methods.
-     * @param list List of {@code T} objects to print. The class of type {@code T} may
+     * @param list Collection of {@code T} objects to print. The class of type {@code T} may
      *             override {@code toString()} declared in {@code Object} class.
      * @see Object
      * */
-    void printQueryResult(LinkedList<T> list);
+    default void printQueryResult(Collection<T> list) {
+        if (list != null)
+            list.forEach( element -> System.out.println(element + "\n"));
+    }
 }
