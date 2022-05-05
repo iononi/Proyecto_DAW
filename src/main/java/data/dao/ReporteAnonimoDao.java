@@ -102,13 +102,17 @@ public class ReporteAnonimoDao implements CrudUtilities<ReporteAnonimo> {
         String select_query = String.format("SELECT * FROM ReporteAnonimo WHERE folio = %d;", id);
 
         try {
-            if (DBC.executeQuery(select_query)) // Si el método executeQuery() regresa true, se encontró al alumno
+            if (DBC.runQuery(select_query)) // Si el método executeQuery() regresa true, se encontró al alumno
                 reportList = fetchData(DBC.getResultSet()); // Obtiene los datos del ResultSet y lo guarda en reportList
-            if (reportList == null)
+            if (reportList.size() == 0)
                 System.out.println("No se encontró el reporte con folio: " + id);
         } catch (SQLException ex) {
             System.out.println("Error al recuperar los datos del reporte especificado");
             Logger.getLogger(ConnectionDB.class.getName()).log(Level.SEVERE, "No se pudo recuperar los datos.", ex);
+        } finally {
+            DBC.closeResultSet();
+            DBC.closeStmt();
+            DBC.disconnect();
         }
     }
 
@@ -118,15 +122,16 @@ public class ReporteAnonimoDao implements CrudUtilities<ReporteAnonimo> {
         DBC.createStmt();   // Creamos el statement
         System.out.println("Recuperando reportes anónimos registrados...\n");
         try {
-            if (DBC.executeQuery("SELECT * FROM ReporteAnonimo;")) // Si se pudo ejecutar la consulta
+            if (DBC.runQuery("SELECT * FROM ReporteAnonimo;")) // Si se pudo ejecutar la consulta
                 reportList = fetchData(DBC.getResultSet()); // recupera los datos del ResultSet
-            if (reportList == null)
+            if (reportList.size() == 0)
                 System.out.println("No existen reportes registrados.");
         } catch (SQLException ex) {
             System.out.println("Error al recuperar los reportes anónimos.");
             Logger.getLogger(ConnectionDB.class.getName()).log(Level.SEVERE, "No se pudo recuperar los datos.", ex);
         } finally {
             DBC.closeStmt(); // Cerramos el statement
+            DBC.closeResultSet();
             DBC.disconnect(); // Cerramos conexión con la BD
         }
     }
