@@ -11,18 +11,18 @@ import java.util.logging.Logger;
 
 public class ClienteDao implements CrudUtilities<Cliente> {
 
-    private final ConnectionDB dbc;
+    private final ConnectionDB DBC;
     private LinkedList<Cliente> studentList; // Lista de alumnos.
 
     public ClienteDao() {
-        dbc = new ConnectionDB("basura", "postgres", "lalo123");
+        DBC = new ConnectionDB("basura", "postgres", "lalo123");
         studentList = null;
     }
 
     public void insert(Cliente entity) {
         System.out.println("Insertando cliente...");
-        dbc.setConnection(); // establecemos conexión con la base de datos
-        dbc.createStmt();   // creamos el statement necesario para ejecutar queries
+        DBC.setConnection(); // establecemos conexión con la base de datos
+        DBC.createStmt();   // creamos el statement necesario para ejecutar queries
         try {
 
             Direccion clientDir = entity.getDir();
@@ -38,22 +38,22 @@ public class ClienteDao implements CrudUtilities<Cliente> {
 
             // Se ejecuta la instrucción 'insertion_query' y, en caso de ser posible la inserción, devuelve un true.
             // Devuelve false en caso contrario y por lo tanto no se pudo insertar en la BD.
-            if (dbc.getStatement().execute(insertion_query))
+            if (DBC.getStatement().execute(insertion_query))
                 System.out.println("La base de datos ha sido actualizada! :D");
             else
                 System.out.println("No se ha podido insertar al cliente :/");
         } catch (SQLException ex) {
             Logger.getLogger(ConnectionDB.class.getName()).log(Level.SEVERE, "Error al insertar.", ex);
         } finally {
-            dbc.closeStmt(); // Independientemente de si se pudo realizar la operación de inserción o no, con este bloque
-            dbc.disconnect(); // cerramos el statement y nos desconectamos de la BD.
+            DBC.closeStmt(); // Independientemente de si se pudo realizar la operación de inserción o no, con este bloque
+            DBC.disconnect(); // cerramos el statement y nos desconectamos de la BD.
         }
     }
 
     @Override
     public void delete(int id) {
-        dbc.setConnection(); // establecemos conexión con la BD
-        dbc.createStmt();   // creamos el statement para ejecutar queries
+        DBC.setConnection(); // establecemos conexión con la BD
+        DBC.createStmt();   // creamos el statement para ejecutar queries
 
         System.out.println("Eliminando cliente...");
 
@@ -61,15 +61,15 @@ public class ClienteDao implements CrudUtilities<Cliente> {
 
             String delete_query = String.format("DELETE FROM Cliente WHERE clienteid = %d;", id);
 
-            if (dbc.getStatement().execute(delete_query)) // si el método execute() regresa true, se pudo eliminar.
+            if (DBC.getStatement().execute(delete_query)) // si el método execute() regresa true, se pudo eliminar.
                 System.out.println("Se ha eliminado el cliente! :D");
             else
                 System.out.println("Ocurrió un error al eliminar al cliente :/");
         } catch (SQLException ex) {
             Logger.getLogger(ConnectionDB.class.getName()).log(Level.SEVERE, "Ocurrió un error al eliminar al cliente.", ex);
         } finally {
-            dbc.closeStmt(); // Cerramos el statement
-            dbc.disconnect(); // Nos desconectamos de la BD
+            DBC.closeStmt(); // Cerramos el statement
+            DBC.disconnect(); // Nos desconectamos de la BD
         }
     }
 
@@ -81,15 +81,15 @@ public class ClienteDao implements CrudUtilities<Cliente> {
 
     @Override
     public void select(int id) {
-        dbc.setConnection(); // Establecemos conexión con la BD
-        dbc.createStmt();   // Creamos el Statement
+        DBC.setConnection(); // Establecemos conexión con la BD
+        DBC.createStmt();   // Creamos el Statement
 
         System.out.printf("Consultando datos del cliente con ID: %d...\n", id);
         String select_query = String.format("SELECT * FROM Cliente WHERE clienteid = %d;", id);
 
         try {
-            if (dbc.executeQuery(select_query)) // Si el método executeQuery() regresa true, se encontró al alumno
-                studentList = fetchData(dbc.getResultSet()); // Obtiene los datos del ResultSet y lo guarda en studentList
+            if (DBC.executeQuery(select_query)) // Si el método executeQuery() regresa true, se encontró al alumno
+                studentList = fetchData(DBC.getResultSet()); // Obtiene los datos del ResultSet y lo guarda en studentList
             assert studentList != null;
             if (studentList.size() > 0) // Si hay registros, los imprime
                 studentList.forEach(System.out::println);
@@ -104,12 +104,12 @@ public class ClienteDao implements CrudUtilities<Cliente> {
 
     @Override
     public void selectAll() {
-        dbc.setConnection(); // Establecemos conexión con la BD
-        dbc.createStmt();   // Creamos el statement
+        DBC.setConnection(); // Establecemos conexión con la BD
+        DBC.createStmt();   // Creamos el statement
         System.out.println("Recuperando los datos de los 'Clientes'...\n");
         try {
-            if (dbc.executeQuery("SELECT * FROM Cliente;")) // Si se pudo ejecutar la consulta
-                studentList = fetchData(dbc.getResultSet()); // recupera los datos del ResultSet
+            if (DBC.executeQuery("SELECT * FROM Cliente;")) // Si se pudo ejecutar la consulta
+                studentList = fetchData(DBC.getResultSet()); // recupera los datos del ResultSet
             if (studentList != null) { // Si hay registros en el ResultSet, los imprime
                 studentList.forEach(clienteJB -> {
                     System.out.println(clienteJB + "\n");
@@ -119,8 +119,8 @@ public class ClienteDao implements CrudUtilities<Cliente> {
             System.out.println("Error al recuperar los datos de la tabla cliente.");
             Logger.getLogger(ConnectionDB.class.getName()).log(Level.SEVERE, "No se pudo recuperar los datos.", ex);
         } finally {
-            dbc.closeStmt(); // Cerramos el statement
-            dbc.disconnect(); // Cerramos conexión con la BD
+            DBC.closeStmt(); // Cerramos el statement
+            DBC.disconnect(); // Cerramos conexión con la BD
         }
     }
 
