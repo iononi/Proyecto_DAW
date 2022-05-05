@@ -102,11 +102,8 @@ public class TipoResiduoDao implements CrudUtilities<TipoResiduo> {
         try {
             if (DBC.executeQuery("SELECT * FROM TipoResiduo;")) // Si se pudo ejecutar la consulta
                 trashList = fetchData(DBC.getResultSet()); // recupera los datos del ResultSet
-            if (trashList != null) { // Si hay registros en el ResultSet, los imprime
-                trashList.forEach(trashJB -> {
-                    System.out.println(trashJB + "\n");
-                });
-            }
+            if (trashList == null)
+                System.out.println("No hay información disponible.");
         } catch (SQLException ex) {
             System.out.println("Error al recuperar las categorías de residuos registrados.");
             Logger.getLogger(ConnectionDB.class.getName()).log(Level.SEVERE, "No se pudo recuperar los datos.", ex);
