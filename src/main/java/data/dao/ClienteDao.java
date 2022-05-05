@@ -91,13 +91,17 @@ public class ClienteDao implements CrudUtilities<Cliente> {
         String select_query = String.format("SELECT * FROM Cliente WHERE clienteid = %d;", id);
 
         try {
-            if (DBC.executeQuery(select_query)) // Si el método executeQuery() regresa true, se encontró al alumno
+            if (DBC.runQuery(select_query)) // Si el método executeQuery() regresa true, se encontró al alumno
                 studentList = fetchData(DBC.getResultSet()); // Obtiene los datos del ResultSet y lo guarda en studentList
             if (studentList.size() == 0)
                 System.out.println("No se encontró al cliente con ID: " + id);
         } catch (SQLException ex) {
             System.out.println("Error al recuperar los datos de la tabla cliente.");
             Logger.getLogger(ConnectionDB.class.getName()).log(Level.SEVERE, "No se pudo recuperar los datos.", ex);
+        } finally {
+            DBC.disconnect();
+            DBC.closeResultSet();
+            DBC.closeStmt();
         }
     }
 
@@ -108,7 +112,7 @@ public class ClienteDao implements CrudUtilities<Cliente> {
         DBC.createStmt();   // Creamos el statement
         System.out.println("Recuperando los datos de los 'Clientes'...\n");
         try {
-            if (DBC.executeQuery("SELECT * FROM Cliente;")) // Si se pudo ejecutar la consulta
+            if (DBC.runQuery("SELECT * FROM Cliente;")) // Si se pudo ejecutar la consulta
                 studentList = fetchData(DBC.getResultSet()); // recupera los datos del ResultSet
             if (studentList.size() == 0)
                 System.out.println("No se ha registrado ningún cliente.");
@@ -117,6 +121,7 @@ public class ClienteDao implements CrudUtilities<Cliente> {
             Logger.getLogger(ConnectionDB.class.getName()).log(Level.SEVERE, "No se pudo recuperar los datos.", ex);
         } finally {
             DBC.closeStmt(); // Cerramos el statement
+            DBC.closeResultSet();
             DBC.disconnect(); // Cerramos conexión con la BD
         }
     }
@@ -152,11 +157,5 @@ public class ClienteDao implements CrudUtilities<Cliente> {
                     " del ResultSet.", ex);
             return null;
         }
-    }
-
-    @Override
-    public void printQueryResult(LinkedList<Cliente> list) {
-        if (list != null)
-            list.forEach( element -> System.out.println(element + "\n"));
     }
 }
