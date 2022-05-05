@@ -162,6 +162,7 @@ public class ClienteDao implements CrudUtilities<Cliente> {
 
     @Override
     public void printQueryResult(LinkedList<Cliente> list) {
-        list.forEach( element -> System.out.println(element + "\n"));
+        if (list != null)
+            list.forEach( element -> System.out.println(element + "\n"));
     }
 }
