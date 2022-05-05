@@ -54,6 +54,18 @@ public class ConnectionDB extends Credentials {
         return true;
     }
 
+    public boolean runQuery(String query) throws SQLException {
+        try {
+            rs = stmt.executeQuery(query);
+        } catch (SQLException ex) {
+            Logger.getLogger(ConnectionDB.class.getName()).log(Level.SEVERE, "Error al realizar la consulta", ex);
+            return false;
+        } finally {
+            this.disconnect();
+        }
+        return true;
+    }
+
     @Override
     public void setConnection() {
         try {
