@@ -68,7 +68,21 @@ public class MetodoPagoDao implements CrudUtilities<MetodoPago> {
 
     @Override
     public void update(MetodoPago entity) {
+        String updateQuery = String.format("UPDATE MetodoPago SET metodopago = '%s' WHERE metodoid = %d",
+                entity.getMetodoPago(), entity.getMetodoId());
+        DBC.setConnection();
+        DBC.createStmt();
 
+        try {
+            if ( DBC.executeQuery(updateQuery) )
+                Logger.getLogger(ConnectionDB.class.getName()).log(Level.INFO, "Metodo de pago actualizado.");
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            Logger.getLogger(ConnectionDB.class.getName()).log(Level.SEVERE, "Error al actualizar método de pago.", ex);
+        } finally {
+            DBC.closeStmt();
+            DBC.disconnect();
+        }
     }
 
     @Override
