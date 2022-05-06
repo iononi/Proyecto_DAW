@@ -3,7 +3,10 @@ package data.dao;
 import data.database.ConnectionDB;
 import model.Cliente;
 import model.Direccion;
+
+import java.sql.Array;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.logging.Level;
@@ -32,7 +35,7 @@ public class ClienteDao implements CrudUtilities<Cliente> {
             Direccion clientDir = entity.getDir();
 
             String insertion_query = String.format("INSERT INTO Cliente (curp, rfc, nombre, apellidop, apellidom, correo, " +
-                            "contraseña, telefono, extension, dir) VALUES " +
+                            "contraseña, telefono, \"Extension\", direction) VALUES " +
                     "('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', ROW('%s', '%s', '%s', '%s', %d, %d, '%s', '%s', '%s')) " +
                             "RETURNING clienteid", entity.getCurp(), entity.getRfc(), entity.getNombre(),
                     entity.getApellidop(), entity.getApellidom(), entity.getCorreo(), entity.getContrasenia(),
@@ -85,11 +88,15 @@ public class ClienteDao implements CrudUtilities<Cliente> {
         DBC.createStmt();
 
         try {
-            if (DBC.executeQuery("")) {
-
+            if (DBC.executeQuery(updateQuery)) {
+                System.out.println();
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            DBC.closeResultSet();
+            DBC.closeStmt();
+            DBC.disconnect();
         }
 
     }
@@ -105,7 +112,7 @@ public class ClienteDao implements CrudUtilities<Cliente> {
         try {
             if (DBC.runQuery(select_query)) // Si el método executeQuery() regresa true, se encontró al alumno
                 studentList = fetchData(DBC.getResultSet()); // Obtiene los datos del ResultSet y lo guarda en studentList
-            if (studentList.size() == 0)
+            if (studentList == null || studentList.size() == 0)
                 System.out.println("No se encontró al cliente con ID: " + id);
         } catch (SQLException ex) {
             System.out.println("Error al recuperar los datos de la tabla cliente.");
@@ -126,7 +133,7 @@ public class ClienteDao implements CrudUtilities<Cliente> {
         try {
             if (DBC.runQuery("SELECT * FROM Cliente;")) // Si se pudo ejecutar la consulta
                 studentList = fetchData(DBC.getResultSet()); // recupera los datos del ResultSet
-            if (studentList.size() == 0)
+            if (studentList == null || studentList.size() == 0)
                 System.out.println("No se ha registrado ningún cliente.");
         } catch (SQLException ex) {
             System.out.println("Error al recuperar los datos de la tabla cliente.");
