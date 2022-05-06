@@ -26,10 +26,10 @@ public interface CrudUtilities<T> {
      * */
     void delete(int id);
     /**
-     * Update the row specified by id parameter.
-     * @param id ID of row to update.
+     * Update the specified row.
+     * @param entity The entity to be updated.
      * */
-    void update(int id);
+    void update(T entity);
     /**
      * Retrieve the specified by id parameter.
      * @param id The ID of the row to retrieve.
