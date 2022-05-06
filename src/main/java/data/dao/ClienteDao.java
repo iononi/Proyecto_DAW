@@ -3,10 +3,7 @@ package data.dao;
 import data.database.ConnectionDB;
 import model.Cliente;
 import model.Direccion;
-
-import java.sql.Array;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.logging.Level;
@@ -83,18 +80,25 @@ public class ClienteDao implements CrudUtilities<Cliente> {
 
     @Override
     public void update(Cliente entity) {
-        String updateQuery = String.format("");
+        String updateQuery = String.format("UPDATE Cliente SET curp = '%s', rfc = '%s', nombre = '%s', apellidop = '%s', " +
+                "apellidom = '%s', correo = '%s', telefono = '%s', \"Extension\" = '%s', direction = ('%s', '%s', '%s', '%s', %d, %d, '%s', '%s', '%s') " +
+                        "WHERE clienteid = %d",
+                entity.getCurp(), entity.getRfc(), entity.getNombre(), entity.getApellidop(), entity.getApellidom(),
+                entity.getCorreo(), entity.getTelefono(), entity.getExtension(), entity.getDir().getCodigoPostal(),
+                entity.getDir().getColonia(), entity.getDir().getCalle(), entity.getDir().getReferencias(),
+                entity.getDir().getNumeroExterior(), entity.getDir().getNumeroInterior(), entity.getDir().getCiudad(),
+                entity.getDir().getMunicipio(), entity.getDir().getEstado(), entity.getClienteId());
         DBC.setConnection();
         DBC.createStmt();
 
         try {
             if (DBC.executeQuery(updateQuery)) {
-                System.out.println();
+                System.out.println("Los datos del cliente " + entity.getNombre() + " han sido actualizados");
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            Logger.getLogger(ConnectionDB.class.getName()).log(Level.SEVERE, "Error al actualizar.", e);
         } finally {
-            DBC.closeResultSet();
             DBC.closeStmt();
             DBC.disconnect();
         }
