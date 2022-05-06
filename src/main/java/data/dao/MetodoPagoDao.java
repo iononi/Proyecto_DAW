@@ -31,7 +31,7 @@ public class MetodoPagoDao implements CrudUtilities<MetodoPago> {
 
             // Se ejecuta la instrucción 'insertion_query' y, en caso de ser posible la inserción, devuelve un true.
             // Devuelve false en caso contrario y por lo tanto no se pudo insertar en la BD.
-            if (DBC.getStatement().execute(insertion_query))
+            if (DBC.executeQuery(insertion_query))
                 System.out.println("La base de datos ha sido actualizada! :D");
             else
                 System.out.println("No se ha podido insertar al método de pago :/");
@@ -54,7 +54,7 @@ public class MetodoPagoDao implements CrudUtilities<MetodoPago> {
 
             String delete_query = String.format("DELETE FROM MetodoPago WHERE metodoid = %d;", id);
 
-            if (DBC.getStatement().execute(delete_query)) // si el método execute() regresa true, se pudo eliminar.
+            if (DBC.executeQuery(delete_query)) // si el método execute() regresa true, se pudo eliminar.
                 System.out.println("Se ha eliminado el método de pago! :D");
             else
                 System.out.println("Ocurrió un error al eliminar al método de pago :/");
