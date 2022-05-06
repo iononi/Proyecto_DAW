@@ -36,6 +36,21 @@ public class Cliente implements Serializable {
         setDir(dir);
     }
 
+    // Insertion constructor method
+    public Cliente(String curp, String rfc, String nombre, String apellidop, String apellidom, String correo,
+                   String contrasenia, String extension, String telefono, Direccion dir) {
+        setCurp(curp);
+        setRfc(rfc);
+        setNombre(nombre);
+        setApellidop(apellidop);
+        setApellidom(apellidom);
+        setCorreo(correo);
+        setContrasenia(contrasenia);
+        setExtension(extension);
+        setTelefono(telefono);
+        setDir(dir);
+    }
+
     public long getClienteId() {
         return clienteId;
     }
