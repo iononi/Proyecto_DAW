@@ -1,6 +1,11 @@
 package model;
 
-public class Direccion {
+import java.sql.SQLData;
+import java.sql.SQLException;
+import java.sql.SQLInput;
+import java.sql.SQLOutput;
+
+public class Direccion implements SQLData {
 
     private String codigoPostal;
     private String colonia;
@@ -11,6 +16,7 @@ public class Direccion {
     private String ciudad;
     private String municipio;
     private String estado;
+    private String sql_type;
 
     public Direccion() {
     }
@@ -108,5 +114,37 @@ public class Direccion {
         return String.format("Codigo Postal: %s\nColonia: %s\nCalle: %s\nReferencias: %s\nNumero Interior: #%d\n" +
                 "Numero Exterior: #%d\nCiudad: %s\nMunicipio: %s\nEstado: %s", codigoPostal, colonia, calle, referencias,
                 numeroInterior, numeroExterior, ciudad, municipio, estado);
+    }
+
+    @Override
+    public String getSQLTypeName() throws SQLException {
+        return sql_type;
+    }
+
+    @Override
+    public void readSQL(SQLInput stream, String typeName) throws SQLException {
+        sql_type = typeName;
+        codigoPostal = stream.readString();
+        colonia = stream.readString();
+        calle = stream.readString();
+        referencias = stream.readString();
+        numeroInterior = stream.readShort();
+        numeroExterior = stream.readShort();
+        ciudad = stream.readString();
+        municipio = stream.readString();
+        estado = stream.readString();
+    }
+
+    @Override
+    public void writeSQL(SQLOutput stream) throws SQLException {
+        stream.writeString(codigoPostal);
+        stream.writeString(colonia);
+        stream.writeString(calle);
+        stream.writeString(referencias);
+        stream.writeShort(numeroInterior);
+        stream.writeShort(numeroExterior);
+        stream.writeString(ciudad);
+        stream.writeString(municipio);
+        stream.writeString(estado);
     }
 }
