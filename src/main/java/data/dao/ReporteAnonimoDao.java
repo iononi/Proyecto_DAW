@@ -103,21 +103,7 @@ public class ReporteAnonimoDao implements CrudUtilities<ReporteAnonimo> {
                 entity.getDir().getNumeroInterior(), entity.getDir().getCiudad(), entity.getDir().getMunicipio(),
                 entity.getDir().getCiudad(), entity.getFolio());
 
-        DBC.setConnection();
-        DBC.createStmt();
-
-        try {
-            if ( DBC.executeQuery(updateQuery) )
-                Logger.getLogger(ConnectionDB.class.getName()).log(Level.INFO,
-                        "El reporte con folio " + entity.getFolio() + " ha sido actualizado.");
-        } catch(SQLException ex) {
-            ex.printStackTrace();
-            Logger.getLogger(ConnectionDB.class.getName()).log(Level.SEVERE, "Error al actualizar el reporte con folio " + entity.getFolio(),
-                    ex);
-        } finally {
-            DBC.closeStmt();
-            DBC.disconnect();
-        }
+        ReporteClienteDao.executeUpdate(updateQuery, DBC, entity.getFolio());
     }
 
     @Override
