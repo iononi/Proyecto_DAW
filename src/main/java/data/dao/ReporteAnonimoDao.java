@@ -96,12 +96,12 @@ public class ReporteAnonimoDao implements CrudUtilities<ReporteAnonimo> {
     public void update(ReporteAnonimo entity) {
         String updateQuery = String.format("UPDATE ReporteAnonimo SET nombre = '%s', apellidop = '%s', apellidom = '%s', " +
                 "telefono = '%s', \"Extension\" = '%s', fk_tiporesiduo = %d, fk_metodopago = %d, pagado = %b, " +
-                "direction = ROW('%s', '%s', '%s', '%s', %d, %d, '%s', '%s', '%s')", entity.getNombre(),
+                "direction = ROW('%s', '%s', '%s', '%s', %d, %d, '%s', '%s', '%s') WHERE folio = %d;", entity.getNombre(),
                 entity.getApellidop(), entity.getApellidom(), entity.getTelefono(), entity.getExtension(), entity.getFkTipoResiduo(),
                 entity.getFkMetodoPago(), entity.isPagado(), entity.getDir().getCodigoPostal(), entity.getDir().getColonia(),
                 entity.getDir().getCalle(), entity.getDir().getReferencias(), entity.getDir().getNumeroExterior(),
                 entity.getDir().getNumeroInterior(), entity.getDir().getCiudad(), entity.getDir().getMunicipio(),
-                entity.getDir().getCiudad());
+                entity.getDir().getCiudad(), entity.getFolio());
 
         DBC.setConnection();
         DBC.createStmt();
