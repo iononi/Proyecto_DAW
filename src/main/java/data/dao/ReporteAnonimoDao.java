@@ -94,7 +94,30 @@ public class ReporteAnonimoDao implements CrudUtilities<ReporteAnonimo> {
 
     @Override
     public void update(ReporteAnonimo entity) {
+        String updateQuery = String.format("UPDATE ReporteAnonimo SET nombre = '%s', apellidop = '%s', apellidom = '%s', " +
+                "telefono = '%s', \"Extension\" = '%s', fk_tiporesiduo = %d, fk_metodopago = %d, pagado = %b, " +
+                "direction = ROW('%s', '%s', '%s', '%s', %d, %d, '%s', '%s', '%s')", entity.getNombre(),
+                entity.getApellidop(), entity.getApellidom(), entity.getTelefono(), entity.getExtension(), entity.getFkTipoResiduo(),
+                entity.getFkMetodoPago(), entity.isPagado(), entity.getDir().getCodigoPostal(), entity.getDir().getColonia(),
+                entity.getDir().getCalle(), entity.getDir().getReferencias(), entity.getDir().getNumeroExterior(),
+                entity.getDir().getNumeroInterior(), entity.getDir().getCiudad(), entity.getDir().getMunicipio(),
+                entity.getDir().getCiudad());
 
+        DBC.setConnection();
+        DBC.createStmt();
+
+        try {
+            if ( DBC.executeQuery(updateQuery) )
+                Logger.getLogger(ConnectionDB.class.getName()).log(Level.INFO,
+                        "El reporte con folio " + entity.getFolio() + " ha sido actualizado.");
+        } catch(SQLException ex) {
+            ex.printStackTrace();
+            Logger.getLogger(ConnectionDB.class.getName()).log(Level.SEVERE, "Error al actualizar el reporte con folio " + entity.getFolio(),
+                    ex);
+        } finally {
+            DBC.closeStmt();
+            DBC.disconnect();
+        }
     }
 
     @Override
