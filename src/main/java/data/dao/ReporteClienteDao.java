@@ -82,7 +82,7 @@ public class ReporteClienteDao implements CrudUtilities<ReporteCliente> {
     }
 
     @Override
-    public void update(int id) {
+    public void update(ReporteCliente entity) {
 
     }
 

@@ -67,7 +67,7 @@ public class MetodoPagoDao implements CrudUtilities<MetodoPago> {
     }
 
     @Override
-    public void update(int id) {
+    public void update(MetodoPago entity) {
 
     }
 

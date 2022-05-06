@@ -66,7 +66,7 @@ public class TipoResiduoDao implements CrudUtilities<TipoResiduo> {
     }
 
     @Override
-    public void update(int id) {
+    public void update(TipoResiduo entity) {
 
     }
 

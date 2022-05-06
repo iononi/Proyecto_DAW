@@ -89,7 +89,7 @@ public class ReporteAnonimoDao implements CrudUtilities<ReporteAnonimo> {
     }
 
     @Override
-    public void update(int id) {
+    public void update(ReporteAnonimo entity) {
 
     }
 

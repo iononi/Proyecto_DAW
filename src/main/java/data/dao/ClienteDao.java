@@ -75,10 +75,18 @@ public class ClienteDao implements CrudUtilities<Cliente> {
 
 
     @Override
-    public void update(int id) {
+    public void update(Cliente entity) {
+        String updateQuery = String.format("");
         DBC.setConnection();
         DBC.createStmt();
 
+        try {
+            if (DBC.executeQuery("")) {
+
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
     }
 
