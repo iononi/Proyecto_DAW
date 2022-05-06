@@ -19,6 +19,10 @@ public class ClienteDao implements CrudUtilities<Cliente> {
         studentList = null;
     }
 
+    public LinkedList<Cliente> getStudentList() {
+        return studentList;
+    }
+
     public void insert(Cliente entity) {
         System.out.println("Insertando cliente...");
         DBC.setConnection(); // establecemos conexión con la base de datos
