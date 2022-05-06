@@ -30,10 +30,14 @@ public class ReporteAnonimoDao implements CrudUtilities<ReporteAnonimo> {
         try {
 
 
-            String insertion_query = String.format("INSERT INTO ReporteAnonimo(nombre, apellidop, apellidom, telefono, extension," +
-                            " fk_tiporesiduo, fk_metodopago, pagado) VALUES ('%s', '%s', '%s', '%s', '%s', %d, %d, %b);",
+            String insertion_query = String.format("INSERT INTO ReporteAnonimo(nombre, apellidop, apellidom, telefono, \"Extension\"," +
+                            " fk_tiporesiduo, fk_metodopago, pagado, direction) VALUES ('%s', '%s', '%s', '%s', '%s', %d, %d, %b, " +
+                            "ROW('%s', '%s', '%s', '%s', %d, %d, '%s', '%s', '%s));",
                     entity.getNombre(), entity.getApellidop(), entity.getApellidom(), entity.getTelefono(), entity.getExtension(),
-                    entity.getFkTipoResiduo(), entity.getFkMetodoPago(), false);
+                    entity.getFkTipoResiduo(), entity.getFkMetodoPago(), false, entity.getDir().getCodigoPostal(),
+                    entity.getDir().getColonia(), entity.getDir().getCalle(), entity.getDir().getReferencias(),
+                    entity.getDir().getNumeroExterior(), entity.getDir().getNumeroInterior(), entity.getDir().getCiudad(),
+                    entity.getDir().getMunicipio(), entity.getDir().getEstado());
 
             // Se ejecuta la instrucción 'insertion_query' y, en caso de ser posible la inserción, devuelve un true.
             // Devuelve false en caso contrario y por lo tanto no se pudo insertar en la BD.
