@@ -170,7 +170,7 @@ public class Cliente implements Serializable {
     @Override
     public String toString() {
         return String.format("ID: %d\nCURP: %s\nRFC: %s\nNombre: %s\nApellido Paterno: %s\nApellido Materno: %s\n" +
-                "Correo: %s\nTelefono: (%s) %s\nDireccion: \n\n%s", clienteId, curp, rfc, nombre, apellidop, apellidom,
+                "Correo: %s\nTelefono: (%s) %s\n\n== Direccion ==\n%s", clienteId, curp, rfc, nombre, apellidop, apellidom,
                 correo, extension, telefono, dir);
     }
 }
