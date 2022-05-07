@@ -12,15 +12,15 @@ import java.util.logging.Logger;
 public class ClienteDao implements CrudUtilities<Cliente> {
 
     private final ConnectionDB DBC;
-    private LinkedList<Cliente> studentList; // Lista de alumnos.
+    private LinkedList<Cliente> clientList; // Lista de clientes.
 
     public ClienteDao() {
         DBC = new ConnectionDB("basura", "postgres", "lalo123");
-        studentList = null;
+        clientList = null;
     }
 
-    public LinkedList<Cliente> getStudentList() {
-        return studentList;
+    public LinkedList<Cliente> getClientList() {
+        return clientList;
     }
 
     public void insert(Cliente entity) {
@@ -114,9 +114,9 @@ public class ClienteDao implements CrudUtilities<Cliente> {
         String select_query = String.format("SELECT * FROM Cliente WHERE clienteid = %d;", id);
 
         try {
-            if (DBC.runQuery(select_query)) // Si el método executeQuery() regresa true, se encontró al alumno
-                studentList = fetchData(DBC.getResultSet()); // Obtiene los datos del ResultSet y lo guarda en studentList
-            if (studentList == null || studentList.size() == 0)
+            if (DBC.runQuery(select_query)) // Si el método executeQuery() regresa true, se encontró al cliente
+                clientList = fetchData(DBC.getResultSet()); // Obtiene los datos del ResultSet y lo guarda en clientList
+            if (clientList == null || clientList.size() == 0)
                 System.out.println("No se encontró al cliente con ID: " + id);
         } catch (SQLException ex) {
             System.out.println("Error al recuperar los datos de la tabla cliente.");
@@ -136,8 +136,8 @@ public class ClienteDao implements CrudUtilities<Cliente> {
         System.out.println("Recuperando los datos de los 'Clientes'...\n");
         try {
             if (DBC.runQuery("SELECT * FROM Cliente;")) // Si se pudo ejecutar la consulta
-                studentList = fetchData(DBC.getResultSet()); // recupera los datos del ResultSet
-            if (studentList == null || studentList.size() == 0)
+                clientList = fetchData(DBC.getResultSet()); // recupera los datos del ResultSet
+            if (clientList == null || clientList.size() == 0)
                 System.out.println("No se ha registrado ningún cliente.");
         } catch (SQLException ex) {
             System.out.println("Error al recuperar los datos de la tabla cliente.");
@@ -153,7 +153,7 @@ public class ClienteDao implements CrudUtilities<Cliente> {
     public LinkedList<Cliente> fetchData(ResultSet rs) {
         LinkedList<Cliente> tempList = new LinkedList<>();
         try {
-            while (rs.next()) { // Mientras haya un registro en el ResultSet, obtén los datos del alumno
+            while (rs.next()) { // Mientras haya un registro en el ResultSet, obtén los datos del cliente
                 int clienteID = rs.getInt("clienteid");
                 String curp = rs.getString("curp");
                 String rfc = rs.getString("rfc");
@@ -167,10 +167,10 @@ public class ClienteDao implements CrudUtilities<Cliente> {
                 Direccion direccion = (Direccion) rs.getObject("direction");
 
 
-                Cliente alumno = new Cliente(clienteID, curp, rfc, nombre, apellidop, apellidom, correo, contrasenia,
+                Cliente cliente = new Cliente(clienteID, curp, rfc, nombre, apellidop, apellidom, correo, contrasenia,
                         extension, telefono, direccion);
 
-                tempList.add(alumno);
+                tempList.add(cliente);
             }
 
             return tempList;
