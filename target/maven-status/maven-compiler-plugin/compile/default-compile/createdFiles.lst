@@ -1,0 +1,14 @@
+data\database\ConnectionDB.class
+model\ReporteCliente.class
+data\dao\CrudUtilities.class
+data\dao\ClienteDao.class
+data\dao\ReporteClienteDao.class
+model\Direccion.class
+data\database\Credentials.class
+data\dao\ReporteAnonimoDao.class
+model\Cliente.class
+data\dao\TipoResiduoDao.class
+model\ReporteAnonimo.class
+model\TipoResiduo.class
+data\dao\MetodoPagoDao.class
+model\MetodoPago.class
