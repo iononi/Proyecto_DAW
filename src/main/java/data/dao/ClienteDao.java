@@ -3,6 +3,8 @@ package data.dao;
 import data.database.ConnectionDB;
 import model.Cliente;
 import model.Direccion;
+import org.postgresql.util.PGobject;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.LinkedList;
@@ -65,7 +67,7 @@ public class ClienteDao implements CrudUtilities<Cliente> {
 
             String delete_query = String.format("DELETE FROM Cliente WHERE clienteid = %d;", id);
 
-            if (DBC.getStatement().execute(delete_query)) // si el método execute() regresa true, se pudo eliminar.
+            if (DBC.executeQuery(delete_query)) // si el método execute() regresa true, se pudo eliminar.
                 System.out.println("Se ha eliminado el cliente! :D");
             else
                 System.out.println("Ocurrió un error al eliminar al cliente :/");
@@ -81,7 +83,7 @@ public class ClienteDao implements CrudUtilities<Cliente> {
     @Override
     public void update(Cliente entity) {
         String updateQuery = String.format("UPDATE Cliente SET curp = '%s', rfc = '%s', nombre = '%s', apellidop = '%s', " +
-                "apellidom = '%s', correo = '%s', telefono = '%s', \"Extension\" = '%s', direction = ('%s', '%s', '%s', '%s', %d, %d, '%s', '%s', '%s') " +
+                "apellidom = '%s', correo = '%s', telefono = '%s', \"Extension\" = '%s', rs = ('%s', '%s', '%s', '%s', %d, %d, '%s', '%s', '%s') " +
                         "WHERE clienteid = %d",
                 entity.getCurp(), entity.getRfc(), entity.getNombre(), entity.getApellidop(), entity.getApellidom(),
                 entity.getCorreo(), entity.getTelefono(), entity.getExtension(), entity.getDir().getCodigoPostal(),
@@ -164,12 +166,26 @@ public class ClienteDao implements CrudUtilities<Cliente> {
                 String contrasenia = rs.getString("contraseña");
                 String telefono = rs.getString("telefono");
                 String extension = rs.getString("extension");
-                Direccion direccion = (Direccion) rs.getObject("direction");
+
+                PGobject direction = (PGobject) rs.getObject("direction");
+                String myDir = direction.getValue().replaceFirst("\\(", "").replaceFirst("\\)", "");
+                String[] dir = myDir.split(",");
+                String codigoPostal = dir[0];
+                String colonia = dir[1];
+                String calle = dir[2];
+                String ref = dir[3];
+                short numeroExterior = Short.parseShort(dir[4]);
+                short numeroInterior = Short.parseShort(dir[5]);
+                String ciudad = dir[6];
+                String municipio = dir[7];
+                String estado = dir[8];
+
+                Direccion direccion = new Direccion(codigoPostal, colonia, calle, ref, numeroExterior, numeroInterior,
+                        ciudad, municipio, estado);
 
 
                 Cliente cliente = new Cliente(clienteID, curp, rfc, nombre, apellidop, apellidom, correo, contrasenia,
                         extension, telefono, direccion);
-
                 tempList.add(cliente);
             }
 
