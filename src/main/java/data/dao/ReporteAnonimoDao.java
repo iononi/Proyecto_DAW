@@ -3,6 +3,8 @@ package data.dao;
 import model.Direccion;
 import model.ReporteAnonimo;
 import data.database.ConnectionDB;
+import org.postgresql.util.PGobject;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.LinkedList;
@@ -163,10 +165,22 @@ public class ReporteAnonimoDao implements CrudUtilities<ReporteAnonimo> {
                 int fkResiduo = rs.getInt("fk_tiporesiduo");
                 int fkPago = rs.getInt("fk_metodopago");
                 boolean paidOut = rs.getBoolean("pagado");
-                Direccion dir = (Direccion) rs.getObject("direction");
+                PGobject direction = (PGobject) rs.getObject("direction");
+                String myDir = direction.getValue().replaceFirst("\\(", "").replaceFirst("\\)", "");
+                String[] dir = myDir.split(",");
+                String codigoPostal = dir[0];
+                String colonia = dir[1];
+                String calle = dir[2];
+                String ref = dir[3];
+                short numeroExterior = Short.parseShort(dir[4]);
+                short numeroInterior = Short.parseShort(dir[5]);
+                String ciudad = dir[6];
+                String municipio = dir[7];
+                String estado = dir[8];
 
                 tempList.add( new ReporteAnonimo(folio, nombre, apellidop, apellidom, telefono, extension,
-                        dir, fkResiduo, fkPago, paidOut) );
+                        new Direccion(codigoPostal, colonia, calle, ref, numeroExterior, numeroInterior, ciudad, municipio,
+                                estado), fkResiduo, fkPago, paidOut) );
             }
 
             return tempList;
