@@ -58,6 +58,11 @@ public class ClienteDao implements CrudUtilities<Cliente> {
 
     @Override
     public void delete(int id) {
+        select(id);
+        if (clientList == null || clientList.size() == 0) {
+            System.out.println("No hay registro del cliente con ID: " + id);
+            return;
+        }
         DBC.setConnection(); // establecemos conexión con la BD
         DBC.createStmt();   // creamos el statement para ejecutar queries
 
@@ -83,7 +88,7 @@ public class ClienteDao implements CrudUtilities<Cliente> {
     @Override
     public void update(Cliente entity) {
         String updateQuery = String.format("UPDATE Cliente SET curp = '%s', rfc = '%s', nombre = '%s', apellidop = '%s', " +
-                "apellidom = '%s', correo = '%s', telefono = '%s', \"Extension\" = '%s', rs = ('%s', '%s', '%s', '%s', %d, %d, '%s', '%s', '%s') " +
+                "apellidom = '%s', correo = '%s', telefono = '%s', \"Extension\" = '%s', direction = ('%s', '%s', '%s', '%s', %d, %d, '%s', '%s', '%s') " +
                         "WHERE clienteid = %d",
                 entity.getCurp(), entity.getRfc(), entity.getNombre(), entity.getApellidop(), entity.getApellidom(),
                 entity.getCorreo(), entity.getTelefono(), entity.getExtension(), entity.getDir().getCodigoPostal(),
@@ -169,6 +174,7 @@ public class ClienteDao implements CrudUtilities<Cliente> {
 
                 PGobject direction = (PGobject) rs.getObject("direction");
                 String myDir = direction.getValue().replaceFirst("\\(", "").replaceFirst("\\)", "");
+                myDir = myDir.replaceAll("\"", "");
                 String[] dir = myDir.split(",");
                 String codigoPostal = dir[0];
                 String colonia = dir[1];
