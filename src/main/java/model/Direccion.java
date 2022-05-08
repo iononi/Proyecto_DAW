@@ -15,8 +15,8 @@ public class Direccion {
     public Direccion() {
     }
 
-    public Direccion(String codigoPostal, String colonia, String calle, String referencias, short numeroInterior,
-                     short numeroExterior, String ciudad, String municipio, String estado) {
+    public Direccion(String codigoPostal, String colonia, String calle, String referencias, short numeroExterior,
+                     short numeroInterior, String ciudad, String municipio, String estado) {
         setCodigoPostal(codigoPostal);
         setColonia(colonia);
         setCalle(calle);
