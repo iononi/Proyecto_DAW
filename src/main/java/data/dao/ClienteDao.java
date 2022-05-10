@@ -44,7 +44,7 @@ public class ClienteDao implements CrudUtilities<Cliente> {
 
             // Se ejecuta la instrucción 'insertion_query' y, en caso de ser posible la inserción, devuelve un true.
             // Devuelve false en caso contrario y por lo tanto no se pudo insertar en la BD.
-            if (DBC.getStatement().execute(insertion_query))
+            if (DBC.executeQuery(insertion_query))
                 System.out.println("La base de datos ha sido actualizada! :D");
             else
                 System.out.println("No se ha podido insertar al cliente :/");
