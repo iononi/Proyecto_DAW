@@ -204,7 +204,7 @@ public class ClienteDao implements CrudUtilities<Cliente> {
         }
     }
 
-    public boolean find(String email, int password) {
+    public Cliente find(String email, int password) {
         String findQuery = String.format("SELECT * FROM Cliente WHERE correo = '%s' AND contraseña = '%s';", email, password);
 
         DBC.setConnection();
@@ -213,19 +213,15 @@ public class ClienteDao implements CrudUtilities<Cliente> {
         try {
             if (DBC.runQuery(findQuery)) {
                 if (clientList == null || clientList.size() == 0)
-                    return false;
+                    return null;
             }
         } catch (Exception ex) {
             Logger.getLogger(ConnectionDB.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
-            return false;
+            return null;
         } finally {
             DBC.closeStmt();
             DBC.disconnect();
         }
-        return true;
-    }
-
-    public boolean found(String email, int password) {
-        return find(email, password);
+        return clientList.get(0);
     }
 }
