@@ -6,27 +6,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta content="text/html" charset="UTF-8">
     <link rel="shortcut icon" href="images/veracruz.ico" type="image/x-icon">
-    <link rel="stylesheet" type="text/css" href="styles/styles.css">
+    <link rel="stylesheet" type="text/css" href="static/css/styles.css">
     <title>Programa de recolección</title>
-    <style>
-        img {
-            width: 200px;
-            height: 100px;
-        }
-
-        img.toRight {
-            float: right;
-        }
-    </style>
 </head>
-<body>
+<body class="main">
 <div style="background-color: #dddddd; padding: 10px 10px 10px 10px">
     <img src="images/logo-veracruz-1.png" alt="Logo Veracruz">
     <img src="images/logo-me-llena-de-orgullo.png" alt="Veracruz me llena de orgullo" class="toRight">
 </div>
 
 <div class="topnav">
-    <a href="index.jsp">Inicio</a>
+    <a href="/FinalProject/index.jsp">Inicio</a>
+    <a href="views/signup.jsp">Registrarse</a>
 </div>
 
 <br>
