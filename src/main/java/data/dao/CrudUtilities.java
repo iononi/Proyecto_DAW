@@ -15,18 +15,21 @@ public interface CrudUtilities<T> {
      * Insert a new row on database.
      * In case of connection error, the state of database is unaltered.
      * @param entity Database entity.
+     * @return {@code true} if insertion was successful, {@code false} otherwise.
      * */
-    void insert(T entity);
+    boolean insert(T entity);
     /**
      * Delete the row with the specified id.
      * @param id The id of row to delete.
+     * @return {@code true} if deletion was successful, {@code false} otherwise.
      * */
-    void delete(int id);
+    boolean delete(int id);
     /**
      * Update the specified row.
      * @param entity The entity to be updated.
+     * @return {@code true} if update was successful, {@code false} otherwise.
      * */
-    void update(T entity);
+    boolean update(T entity);
     /**
      * Retrieve the specified by id parameter.
      * @param id The ID of the row to retrieve.
