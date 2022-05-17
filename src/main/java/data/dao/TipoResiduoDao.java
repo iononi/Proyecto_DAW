@@ -43,7 +43,7 @@ public class TipoResiduoDao implements CrudUtilities<TipoResiduo> {
     }
 
     @Override
-    public void delete(int id) {
+    public boolean delete(int id) {
         DBC.setConnection(); // establecemos conexión con la BD
         DBC.createStmt();   // creamos el statement para ejecutar queries
 
@@ -53,16 +53,20 @@ public class TipoResiduoDao implements CrudUtilities<TipoResiduo> {
 
             String delete_query = String.format("DELETE FROM TipoResiduo WHERE residuoid = %d;", id);
 
-            if (DBC.getStatement().execute(delete_query)) // si el método execute() regresa true, se pudo eliminar.
+            if (DBC.executeQuery(delete_query)) // si el método execute() regresa true, se pudo eliminar.
                 System.out.println("Se ha eliminado la categoría de residuo! :D");
-            else
+            else {
                 System.out.println("Ocurrió un error al eliminar la categoría del residuo :/");
+                return false;
+            }
         } catch (SQLException ex) {
             Logger.getLogger(ConnectionDB.class.getName()).log(Level.SEVERE, "Ocurrió un error al eliminar el tipo de residuo.", ex);
+            return false;
         } finally {
             DBC.closeStmt(); // Cerramos el statement
             DBC.disconnect(); // Nos desconectamos de la BD
         }
+        return true;
     }
 
     @Override

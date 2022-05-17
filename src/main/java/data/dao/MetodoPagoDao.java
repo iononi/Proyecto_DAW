@@ -44,7 +44,7 @@ public class MetodoPagoDao implements CrudUtilities<MetodoPago> {
     }
 
     @Override
-    public void delete(int id) {
+    public boolean delete(int id) {
         DBC.setConnection(); // establecemos conexión con la BD
         DBC.createStmt();   // creamos el statement para ejecutar queries
 
@@ -56,14 +56,19 @@ public class MetodoPagoDao implements CrudUtilities<MetodoPago> {
 
             if (DBC.executeQuery(delete_query)) // si el método execute() regresa true, se pudo eliminar.
                 System.out.println("Se ha eliminado el método de pago! :D");
-            else
+            else {
                 System.out.println("Ocurrió un error al eliminar al método de pago :/");
+                return false;
+            }
+
         } catch (SQLException ex) {
             Logger.getLogger(ConnectionDB.class.getName()).log(Level.SEVERE, "Ocurrió un error al eliminar el método de pago.", ex);
+            return false;
         } finally {
             DBC.closeStmt(); // Cerramos el statement
             DBC.disconnect(); // Nos desconectamos de la BD
         }
+        return true;
     }
 
     @Override

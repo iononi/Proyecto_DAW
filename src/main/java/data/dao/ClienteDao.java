@@ -61,11 +61,11 @@ public class ClienteDao implements CrudUtilities<Cliente> {
     }
 
     @Override
-    public void delete(int id) {
+    public boolean delete(int id) {
         select(id);
         if (clientList == null || clientList.size() == 0) {
             System.out.println("No hay registro del cliente con ID: " + id);
-            return;
+            return false;
         }
         DBC.setConnection(); // establecemos conexión con la BD
         DBC.createStmt();   // creamos el statement para ejecutar queries
@@ -78,14 +78,19 @@ public class ClienteDao implements CrudUtilities<Cliente> {
 
             if (DBC.executeQuery(delete_query)) // si el método execute() regresa true, se pudo eliminar.
                 System.out.println("Se ha eliminado el cliente! :D");
-            else
+            else {
                 System.out.println("Ocurrió un error al eliminar al cliente :/");
+                return false;
+            }
+
         } catch (SQLException ex) {
             Logger.getLogger(ConnectionDB.class.getName()).log(Level.SEVERE, "Ocurrió un error al eliminar al cliente.", ex);
+            return false;
         } finally {
             DBC.closeStmt(); // Cerramos el statement
             DBC.disconnect(); // Nos desconectamos de la BD
         }
+        return true;
     }
 
 

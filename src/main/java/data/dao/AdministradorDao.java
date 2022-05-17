@@ -51,11 +51,11 @@ public class AdministradorDao implements CrudUtilities<Administrador> {
     }
 
     @Override
-    public void delete(int id) {
+    public boolean delete(int id) {
         select(id);
         if (adminList == null || adminList.size() == 0) {
             System.out.println("No existe registro del administrador con ID: " + id);
-            return;
+            return false;
         }
         String deletionQuery = String.format("DELETE FROM Administrador WHERE adminid = %d;", id);
         DBC.setConnection();
@@ -64,15 +64,20 @@ public class AdministradorDao implements CrudUtilities<Administrador> {
         try {
             if (DBC.executeQuery(deletionQuery))
                 System.out.println("Se ha eliminado al administrador.");
-            else
+            else {
                 System.out.println("Ocurrió un error al eliminar al administrador.");
+                return false;
+            }
+
         } catch (SQLException ex) {
             ex.printStackTrace();
             Logger.getLogger(ConnectionDB.class.getName()).log(Level.SEVERE, "Error al eliminar al administrador.", ex);
+            return false;
         } finally {
             DBC.closeStmt();
             DBC.disconnect();
         }
+         return true;
     }
 
     @Override
