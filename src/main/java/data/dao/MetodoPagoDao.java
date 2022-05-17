@@ -20,7 +20,7 @@ public class MetodoPagoDao implements CrudUtilities<MetodoPago> {
     }
 
     @Override
-    public void insert(MetodoPago entity) {
+    public boolean insert(MetodoPago entity) {
         System.out.println("Insertando método de pago...");
         DBC.setConnection(); // establecemos conexión con la base de datos
         DBC.createStmt();   // creamos el statement necesario para ejecutar queries
@@ -33,14 +33,18 @@ public class MetodoPagoDao implements CrudUtilities<MetodoPago> {
             // Devuelve false en caso contrario y por lo tanto no se pudo insertar en la BD.
             if (DBC.executeQuery(insertion_query))
                 System.out.println("La base de datos ha sido actualizada! :D");
-            else
+            else {
                 System.out.println("No se ha podido insertar al método de pago :/");
+                return false;
+            }
         } catch (SQLException ex) {
             Logger.getLogger(ConnectionDB.class.getName()).log(Level.SEVERE, "Error al insertar.", ex);
+            return false;
         } finally {
             DBC.closeStmt(); // Independientemente de si se pudo realizar la operación de inserción o no, con este bloque
             DBC.disconnect(); // cerramos el statement y nos desconectamos de la BD.
         }
+        return true;
     }
 
     @Override

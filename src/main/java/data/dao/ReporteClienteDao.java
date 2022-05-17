@@ -19,7 +19,7 @@ public class ReporteClienteDao implements CrudUtilities<ReporteCliente> {
     }
 
     @Override
-    public void insert(ReporteCliente entity) {
+    public boolean insert(ReporteCliente entity) {
         String paymentMethod = "SELECT public.metodopago.metodopago FROM reportecliente\n" +
                 "INNER JOIN metodopago ON reportecliente.fk_metodopago = metodopago.metodoid\n" +
                 "WHERE metodopago.metodoid = %d" + entity.getFkMetodoPago();
@@ -33,7 +33,7 @@ public class ReporteClienteDao implements CrudUtilities<ReporteCliente> {
 
             // Se ejecuta la instrucción 'insertion_query' y, en caso de ser posible la inserción, devuelve un true.
             // Devuelve false en caso contrario y por lo tanto no se pudo insertar en la BD.
-            if (DBC.getStatement().execute(insertion_query)) {
+            if (DBC.executeQuery(insertion_query)) {
 
                 try {
                     DBC.getStatement().executeQuery(paymentMethod);
@@ -48,14 +48,17 @@ public class ReporteClienteDao implements CrudUtilities<ReporteCliente> {
                 }
                 System.out.println("La base de datos ha sido actualizada! :D");
             }
-            else
+            else {
                 System.out.println("No se ha podido registrar el reporte :/");
+                return false;
+            }
         } catch (SQLException ex) {
             Logger.getLogger(ConnectionDB.class.getName()).log(Level.SEVERE, "Error al insertar.", ex);
         } finally {
             DBC.closeStmt(); // Independientemente de si se pudo realizar la operación de inserción o no, con este bloque
             DBC.disconnect(); // cerramos el statement y nos desconectamos de la BD.
         }
+        return true;
     }
 
     @Override

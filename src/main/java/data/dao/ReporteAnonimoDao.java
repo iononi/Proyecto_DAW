@@ -22,7 +22,7 @@ public class ReporteAnonimoDao implements CrudUtilities<ReporteAnonimo> {
     }
 
     @Override
-    public void insert(ReporteAnonimo entity) {
+    public boolean insert(ReporteAnonimo entity) {
         String paymentMethod = "SELECT public.metodopago.metodopago FROM reporteanonimo\n" +
                 "INNER JOIN metodopago ON reporteanonimo.fk_metodopago = metodopago.metodoid\n" +
         "WHERE metodopago.metodoid = %d" + entity.getFkMetodoPago();
@@ -61,14 +61,18 @@ public class ReporteAnonimoDao implements CrudUtilities<ReporteAnonimo> {
 
             }
 
-            else
+            else {
                 System.out.println("No se ha podido registrar el reporte :/");
+                return false;
+            }
         } catch (SQLException ex) {
             Logger.getLogger(ConnectionDB.class.getName()).log(Level.SEVERE, "Error al insertar.", ex);
+            return false;
         } finally {
             DBC.closeStmt(); // Independientemente de si se pudo realizar la operación de inserción o no, con este bloque
             DBC.disconnect(); // cerramos el statement y nos desconectamos de la BD.
         }
+        return true;
     }
 
     @Override
