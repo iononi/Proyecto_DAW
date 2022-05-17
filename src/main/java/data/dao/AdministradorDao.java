@@ -85,7 +85,7 @@ public class AdministradorDao implements CrudUtilities<Administrador> {
     }
 
     @Override
-    public void update(Administrador entity) {
+    public boolean update(Administrador entity) {
         String updateQuery = String.format("UPDATE Administrador SET curp = '%s', rfc = '%s', nombre = '%s', apellidop = '%s', " +
                         "apellidom = '%s', correo = '%s', telefono = '%s', \"Extension\" = '%s', direction = ('%s', '%s', '%s', '%s', %d, %d, '%s', '%s', '%s') " +
                         "WHERE clienteid = %d",
@@ -100,15 +100,19 @@ public class AdministradorDao implements CrudUtilities<Administrador> {
         try {
             if (DBC.executeQuery(updateQuery))
                 System.out.println("Los datos del cliente " + entity.getNombre() + " han sido actualizados.");
-            else
+            else {
                 System.out.println("Ocurrió un error al actualizar los datos del cliente " + entity.getNombre());
+                return false;
+            }
         } catch (SQLException ex) {
             ex.printStackTrace();
             Logger.getLogger(ConnectionDB.class.getName()).log(Level.SEVERE, "Error al actualizar administrador.", ex);
+            return false;
         } finally {
             DBC.closeStmt();
             DBC.disconnect();
         }
+        return true;
     }
 
     @Override

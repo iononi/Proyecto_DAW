@@ -89,15 +89,15 @@ public class ReporteClienteDao implements CrudUtilities<ReporteCliente> {
     }
 
     @Override
-    public void update(ReporteCliente entity) {
+    public boolean update(ReporteCliente entity) {
         String updateQuery = String.format("UPDATE ReporteCliente SET fk_cliente = %d, fk_tiporesiduo = %d, " +
                 "fk_metodopago = %d, pagado = %b WHERE folio = %d;", entity.getFkCliente(), entity.getFkTipoResiduo(),
                 entity.getFkMetodoPago(), entity.getPagado(), entity.getFolio());
 
-        executeUpdate(updateQuery, DBC, entity.getFolio());
+        return executeUpdate(updateQuery, DBC, entity.getFolio());
     }
 
-    public static void executeUpdate(String updateQuery, ConnectionDB dbc, long folio) {
+    public static boolean executeUpdate(String updateQuery, ConnectionDB dbc, long folio) {
         dbc.setConnection();
         dbc.createStmt();
 
@@ -105,14 +105,18 @@ public class ReporteClienteDao implements CrudUtilities<ReporteCliente> {
             if ( dbc.executeQuery(updateQuery) )
                 Logger.getLogger(ConnectionDB.class.getName()).log(Level.INFO,
                         "El reporte con folio " + folio + " ha sido actualizado.");
+            else
+                return false;
         } catch(SQLException ex) {
             ex.printStackTrace();
             Logger.getLogger(ConnectionDB.class.getName()).log(Level.SEVERE, "Error al actualizar el reporte con folio " + folio,
                     ex);
+            return false;
         } finally {
             dbc.closeStmt();
             dbc.disconnect();
         }
+        return true;
     }
 
     @Override

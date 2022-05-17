@@ -95,7 +95,7 @@ public class ClienteDao implements CrudUtilities<Cliente> {
 
 
     @Override
-    public void update(Cliente entity) {
+    public boolean update(Cliente entity) {
         String updateQuery = String.format("UPDATE Cliente SET curp = '%s', rfc = '%s', nombre = '%s', apellidop = '%s', " +
                 "apellidom = '%s', correo = '%s', telefono = '%s', \"Extension\" = '%s', direction = ('%s', '%s', '%s', '%s', %d, %d, '%s', '%s', '%s') " +
                         "WHERE clienteid = %d",
@@ -110,15 +110,19 @@ public class ClienteDao implements CrudUtilities<Cliente> {
         try {
             if (DBC.executeQuery(updateQuery)) {
                 System.out.println("Los datos del cliente " + entity.getNombre() + " han sido actualizados");
+            } else {
+                System.out.println("Los datos del cliente " + entity.getNombre() + " no se pudieron actualizar.");
+                return false;
             }
         } catch (SQLException e) {
             e.printStackTrace();
             Logger.getLogger(ConnectionDB.class.getName()).log(Level.SEVERE, "Error al actualizar.", e);
+            return false;
         } finally {
             DBC.closeStmt();
             DBC.disconnect();
         }
-
+        return true;
     }
 
     @Override

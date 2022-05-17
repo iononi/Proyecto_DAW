@@ -74,7 +74,7 @@ public class TipoResiduoDao implements CrudUtilities<TipoResiduo> {
     }
 
     @Override
-    public void update(TipoResiduo entity) {
+    public boolean update(TipoResiduo entity) {
         String updateQuery = String.format("UPDATE TipoResiduo SET tiporesiduo = '%s' WHERE residuoid = %d;",
                 entity.getTipoResiduo(), entity.getResiduoId());
 
@@ -84,13 +84,17 @@ public class TipoResiduoDao implements CrudUtilities<TipoResiduo> {
         try {
             if ( DBC.runQuery(updateQuery) )
                 System.out.println("El tipo de residuo ha sido actualizado exitosamente!");
+            else
+                return false;
         } catch (SQLException ex) {
             Logger.getLogger(ConnectionDB.class.getName()).log(Level.SEVERE, "No se pudo actualizar el tipo de residuo",
                     ex);
+            return false;
         } finally {
             DBC.closeStmt();
             DBC.disconnect();
         }
+        return true;
     }
 
     @Override

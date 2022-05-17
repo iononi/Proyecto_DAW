@@ -103,7 +103,7 @@ public class ReporteAnonimoDao implements CrudUtilities<ReporteAnonimo> {
     }
 
     @Override
-    public void update(ReporteAnonimo entity) {
+    public boolean update(ReporteAnonimo entity) {
         String updateQuery = String.format("UPDATE ReporteAnonimo SET nombre = '%s', apellidop = '%s', apellidom = '%s', " +
                 "telefono = '%s', \"Extension\" = '%s', fk_tiporesiduo = %d, fk_metodopago = %d, pagado = %b, " +
                 "direction = ROW('%s', '%s', '%s', '%s', %d, %d, '%s', '%s', '%s') WHERE folio = %d;", entity.getNombre(),
@@ -113,7 +113,7 @@ public class ReporteAnonimoDao implements CrudUtilities<ReporteAnonimo> {
                 entity.getDir().getNumeroInterior(), entity.getDir().getCiudad(), entity.getDir().getMunicipio(),
                 entity.getDir().getCiudad(), entity.getFolio());
 
-        ReporteClienteDao.executeUpdate(updateQuery, DBC, entity.getFolio());
+        return ReporteClienteDao.executeUpdate(updateQuery, DBC, entity.getFolio());
     }
 
     @Override
