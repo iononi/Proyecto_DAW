@@ -8,6 +8,7 @@
 <html>
 <head>
     <title>Inicio de sesión</title>
+    <link rel="shortcut icon" href="../images/veracruz.ico" type="image/x-icon">
 </head>
 <body>
 <h1 style="text-align: center">Inicio de sesión</h1>
