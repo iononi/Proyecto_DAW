@@ -22,7 +22,7 @@ public class AdministradorDao implements CrudUtilities<Administrador> {
     }
 
     @Override
-    public void insert(Administrador entity) {
+    public boolean insert(Administrador entity) {
         System.out.println("Registrando administrador...");
         String insertionQuery = String.format("INSERT INTO Administrador (curp, rfc, nombre, apellidop, apellidom, correo, " +
                         "contrasenia, telefono, \"Extension\", direction) VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', " +
@@ -39,15 +39,19 @@ public class AdministradorDao implements CrudUtilities<Administrador> {
         try {
             if (DBC.executeQuery(insertionQuery))
                 System.out.println("Nuevo administrador: " + entity.getNombre());
-            else
+            else {
                 System.out.println("No se pudo registrar al administrador.");
+                return false;
+            }
         } catch (SQLException ex) {
             ex.printStackTrace();
             Logger.getLogger(ConnectionDB.class.getName()).log(Level.SEVERE, "Error al registrar administrador.", ex);
+            return false;
         } finally {
             DBC.closeStmt();
             DBC.disconnect();
         }
+        return true;
     }
 
     @Override
