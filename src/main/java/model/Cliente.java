@@ -65,7 +65,7 @@ public class Cliente implements Serializable {
 
     public void setCurp(String curp) {
         if (curp != null)
-            this.curp = (curp.matches("[A-Z]{4}[\\d]{6}[A-Z]{7}[\\d]{1}")) ? curp : "";
+            this.curp = (curp.matches("[A-Z]{4}[\\d]{6}[A-Z\\d]{8}")) ? curp : "";
         else
             this.curp = "";
     }
