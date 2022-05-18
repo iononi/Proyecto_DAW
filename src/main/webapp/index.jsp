@@ -21,6 +21,10 @@
 </div>
 
 <br>
+<c:if test="${sessionScope.currentUser != null}">
+    <span>¡Bienvenido<c:out value=", ${sessionScope.user.nombre}"/>!</span>
+</c:if>
+<br>
 
 <h1 class="center">Importancia de la recolección de residuos</h1>
 <div class="center">
