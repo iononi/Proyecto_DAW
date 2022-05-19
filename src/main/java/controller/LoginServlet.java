@@ -69,7 +69,6 @@ public class LoginServlet extends HttpServlet {
                 // Create new client, currentUser
                 newClient = new Cliente(curp, rfc, nombre, apellidop, apellidom, correo, contrasenia, extension, telefono,
                         myDir);
-                System.out.println("hasCode for " + contrasenia + ": " + contrasenia.hashCode());
                 if ( !myClient.insert(newClient) ) {
                     request.getSession().setAttribute("userSignUpFail", "Error al registrar. Inténtelo de nuevo.");
                     request.getRequestDispatcher("views/signup.jsp").forward(request, response);
