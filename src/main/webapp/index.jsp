@@ -1,4 +1,5 @@
-<%@page pageEncoding="UTF-8" %>
+<%@page pageEncoding="UTF-8" isELIgnored="false" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <!DOCTYPE html>
 <html lang="es">
@@ -18,11 +19,14 @@
 <div class="topnav">
     <a href="/FinalProject/index.jsp">Inicio</a>
     <a href="views/signup.jsp">Registrarse</a>
+    <c:if test="${sessionScope.currentUser != null}">
+        <a href="views/profile.jsp">Mi Perfil</a>
+    </c:if>
 </div>
 
 <br>
 <c:if test="${sessionScope.currentUser != null}">
-    <span>¡Bienvenido<c:out value=", ${sessionScope.user.nombre}"/>!</span>
+    <span>¡Bienvenido<c:out value=", ${sessionScope.currentUser.nombre}"/>!</span>
 </c:if>
 <br>
 
