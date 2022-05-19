@@ -20,6 +20,9 @@
 <div class="topnav">
     <a href="/FinalProject/index.jsp" style="font-size: larger">Inicio</a>
 </div>
+<c:if test="${sessionScope.userSignUpFail != null}">
+    <c:out value="${sessionScope.userSignUpFail}" />
+</c:if>
 <div style="text-align: center">
     <form action="../signup" method="post">
         <fieldset title="Ingrese sus datos" class="wrapper">
