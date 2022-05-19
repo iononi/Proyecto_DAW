@@ -26,7 +26,7 @@
 
         <input type="submit" value="Enviar">
         <p>
-            <a href="signup.jsp">¿No tiene cuenta? ¡Registrese ahora!</a>
+            <a href="./signup.jsp">¿No tiene cuenta? ¡Registrese ahora!</a>
         </p>
     </form>
 </fieldset>
