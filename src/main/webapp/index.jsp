@@ -19,7 +19,8 @@
 <div class="topnav">
     <a href="/FinalProject/index.jsp">Inicio</a>
     <a href="views/signup.jsp">Registrarse</a>
-    <a href="views/login.jsp">Iniciar sesión</a>
+    <a href="views/login.jsp" onclick="<c:set var="userLogin" value="userLogin" scope="session"/>">Iniciar sesión</a>
+    <a href="views/login.jsp" onclick="<c:set var="userLogin" value="null" scope="session" />">Administrador</a>
     <c:if test="${sessionScope.currentUser != null}">
         <a href="views/profile.jsp">Mi Perfil</a>
     </c:if>
