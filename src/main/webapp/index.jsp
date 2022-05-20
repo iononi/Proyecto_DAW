@@ -19,6 +19,7 @@
 <div class="topnav">
     <a href="/FinalProject/index.jsp">Inicio</a>
     <a href="views/signup.jsp">Registrarse</a>
+    <a href="views/login.jsp">Iniciar sesión</a>
     <c:if test="${sessionScope.currentUser != null}">
         <a href="views/profile.jsp">Mi Perfil</a>
     </c:if>
