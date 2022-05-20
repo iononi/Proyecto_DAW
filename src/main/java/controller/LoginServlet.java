@@ -31,7 +31,7 @@ public class LoginServlet extends HttpServlet {
                 user = client.find(email, password);
                 // If not exists, throw login error
                 if ( user == null )
-                    request.getRequestDispatcher("views/loginFail.jsp").forward(request, response);
+                    response.sendRedirect("views/loginFail.jsp");
                 else {
                     // If exists, redirect the user to index.jsp with new sessions created for user
                     request.getSession().setAttribute("user", user);
