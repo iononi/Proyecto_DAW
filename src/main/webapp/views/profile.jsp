@@ -9,6 +9,8 @@
     <title>Profile test</title>
 </head>
 <body>
-This is a profile test! :D
+<form action="../logout" method="post">
+    <button type="submit">Log out</button>
+</form>
 </body>
 </html>
