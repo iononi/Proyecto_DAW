@@ -83,3 +83,10 @@
 0:0:0:0:0:0:0:1 - - [19/May/2022:19:51:22 -0500] "GET /FinalProject/views/login.jsp HTTP/1.1" 200 977 http-bio-8080-exec-7 2
 0:0:0:0:0:0:0:1 - - [19/May/2022:19:52:30 -0500] "POST /FinalProject/login HTTP/1.1" 200 977 http-bio-8080-exec-9 68
 0:0:0:0:0:0:0:1 - - [19/May/2022:19:52:51 -0500] "POST /login HTTP/1.1" 404 - http-bio-8080-exec-9 0
+0:0:0:0:0:0:0:1 - - [19/May/2022:19:53:56 -0500] "GET /FinalProject HTTP/1.1" 302 - http-bio-8080-exec-1 0
+0:0:0:0:0:0:0:1 - - [19/May/2022:19:53:56 -0500] "GET /FinalProject/ HTTP/1.1" 200 2932 http-bio-8080-exec-3 81
+0:0:0:0:0:0:0:1 - - [19/May/2022:19:53:59 -0500] "GET /FinalProject/views/login.jsp HTTP/1.1" 200 975 http-bio-8080-exec-4 596
+0:0:0:0:0:0:0:1 - - [19/May/2022:19:54:04 -0500] "POST /FinalProject/login HTTP/1.1" 302 - http-bio-8080-exec-5 257
+0:0:0:0:0:0:0:1 - - [19/May/2022:19:54:04 -0500] "GET /FinalProject/views/loginFail.jsp HTTP/1.1" 200 1119 http-bio-8080-exec-6 6
+0:0:0:0:0:0:0:1 - - [19/May/2022:19:54:13 -0500] "POST /FinalProject/login HTTP/1.1" 302 - http-bio-8080-exec-7 50
+0:0:0:0:0:0:0:1 - - [19/May/2022:19:54:13 -0500] "GET /FinalProject/views/loginFail.jsp HTTP/1.1" 200 1119 http-bio-8080-exec-8 1
