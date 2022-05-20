@@ -34,8 +34,8 @@ public class LoginServlet extends HttpServlet {
                     response.sendRedirect("views/loginFail.jsp");
                 else {
                     // If exists, redirect the user to index.jsp with new sessions created for user
-                    request.getSession().setAttribute("user", user);
-                    request.getRequestDispatcher("index.jsp").forward(request, response);
+                    request.getSession().setAttribute("currentUser", user);
+                    response.sendRedirect("./index.jsp");
                 }
                 break;
 
@@ -74,7 +74,7 @@ public class LoginServlet extends HttpServlet {
                     request.getRequestDispatcher("views/signup.jsp").forward(request, response);
                 } else {
                     request.getSession(true).setAttribute("currentUser", newClient);
-                    request.getRequestDispatcher("/index.jsp").forward(request, response);
+                    response.sendRedirect("./index.jsp");
                 }
 
                 break;
