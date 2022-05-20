@@ -219,15 +219,15 @@ public class ClienteDao implements CrudUtilities<Cliente> {
 
     public Cliente find(String email, int password) {
         String findQuery = String.format("SELECT * FROM Cliente WHERE correo = '%s' AND contraseña = '%s';", email, password);
-
+        clientList = null;
         DBC.setConnection();
         DBC.createStmt();
 
         try {
-            if (DBC.runQuery(findQuery)) {
-                if (clientList == null || clientList.size() == 0)
-                    return null;
-            }
+            if (DBC.runQuery(findQuery))
+                clientList = fetchData(DBC.getResultSet());
+            if (clientList == null || clientList.size() == 0)
+                return null;
         } catch (Exception ex) {
             Logger.getLogger(ConnectionDB.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
             return null;
