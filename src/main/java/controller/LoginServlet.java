@@ -85,7 +85,8 @@ public class LoginServlet extends HttpServlet {
                 break;
 
             case "/loginAdmin":
-                response.getWriter().println("Hola cabrón");
+                // check if admin exists in database
+                response.sendRedirect("./views/admin.jsp");
                 break;
         }
 
