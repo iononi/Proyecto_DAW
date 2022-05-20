@@ -9,7 +9,7 @@ import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
 
-@WebServlet(name = "LoginServlet", value = {"/login", "/signup", "/logout"})
+@WebServlet(name = "LoginServlet", value = {"/login", "/signup", "/logout", "/loginAdmin"})
 public class LoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -82,6 +82,10 @@ public class LoginServlet extends HttpServlet {
             case "/logout":
                 request.getSession().invalidate();
                 response.sendRedirect("./index.jsp");
+                break;
+
+            case "/loginAdmin":
+                response.getWriter().println("Hola cabrón");
                 break;
         }
 
