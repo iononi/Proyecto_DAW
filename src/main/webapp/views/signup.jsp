@@ -18,7 +18,7 @@
 </div>
 
 <div class="topnav">
-    <a href="/FinalProject/index.jsp" style="font-size: larger">Inicio</a>
+    <a href="./index.jsp" style="font-size: larger">Inicio</a>
 </div>
 <c:if test="${sessionScope.userSignUpFail != null}">
     <c:out value="${sessionScope.userSignUpFail}" />
