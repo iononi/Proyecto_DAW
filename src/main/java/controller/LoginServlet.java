@@ -1,6 +1,8 @@
 package controller;
 
+import data.dao.AdministradorDao;
 import data.dao.ClienteDao;
+import model.Administrador;
 import model.Cliente;
 import model.Direccion;
 
@@ -9,7 +11,7 @@ import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
 
-@WebServlet(name = "LoginServlet", value = {"/login", "/signup", "/logout", "/loginAdmin"})
+@WebServlet(name = "LoginServlet", value = {"/login", "/signup", "/logout", "/loginAdmin", "/signupAdmin"})
 public class LoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -87,6 +89,45 @@ public class LoginServlet extends HttpServlet {
             case "/loginAdmin":
                 // check if admin exists in database
                 response.sendRedirect("./views/admin.jsp");
+                break;
+
+            case "/signupAdmin":
+                Administrador admin;
+                AdministradorDao myAdmin = new AdministradorDao();
+                Direccion dir;
+                curp = request.getParameter("curp");
+                rfc = request.getParameter("rfc");
+                nombre = request.getParameter("nombre");
+                apellidop = request.getParameter("apellidop");
+                apellidom = request.getParameter("apellidom");
+                correo = request.getParameter("correo");
+                contrasenia = request.getParameter("contrasenia");
+                extension = request.getParameter("extension");
+                telefono = request.getParameter("telefono");
+                codigoPostal = request.getParameter("codigoPostal");
+                colonia = request.getParameter("colonia");
+                calle = request.getParameter("calle");
+                referencias = request.getParameter("ref");
+                ciudad = request.getParameter("ciudad");
+                municipio = request.getParameter("municipio");
+                estado = request.getParameter("estado");
+                numeroExterior = Short.parseShort( request.getParameter("numeroExterior") );
+                numeroInterior = ( request.getParameter("numeroInterior").isEmpty() ) ? (short) 0 :
+                                Short.parseShort( request.getParameter("numeroExterior") );
+
+                myDir = new Direccion(codigoPostal, colonia, calle, referencias, numeroExterior, numeroInterior,
+                        ciudad, municipio, estado);
+
+                // Create new client, currentUser
+                admin = new Administrador(curp, rfc, nombre, apellidop, apellidom, correo, contrasenia, extension, telefono,
+                        myDir);
+                if ( !myAdmin.insert(admin) ) {
+                    request.getSession().setAttribute("userSignUpFail", "Error al registrar. Inténtelo de nuevo.");
+                    request.getRequestDispatcher("views/signup.jsp").forward(request, response);
+                } else {
+                    request.getSession(true).setAttribute("currentUser", admin);
+                    response.sendRedirect("./views/admin.jsp");
+                }
                 break;
         }
 
