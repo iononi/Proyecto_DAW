@@ -2,6 +2,7 @@ package data.dao;
 
 import data.database.ConnectionDB;
 import model.Administrador;
+import model.Cliente;
 import model.Direccion;
 import org.postgresql.util.PGobject;
 
@@ -199,5 +200,26 @@ public class AdministradorDao implements CrudUtilities<Administrador> {
                     " del ResultSet.", ex);
             return null;
         }
+    }
+
+    public Administrador find(String email, int password) {
+        adminList = null;
+        String findQuery = String.format("SELECT * FROM Administrador WHERE correo = '%s' AND contraseña = '%s';", email, password);
+        DBC.setConnection();
+        DBC.createStmt();
+
+        try {
+            if (DBC.runQuery(findQuery))
+                adminList = fetchData(DBC.getResultSet());
+            if (adminList == null || adminList.size() == 0)
+                return null;
+        } catch (Exception ex) {
+            Logger.getLogger(ConnectionDB.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
+            return null;
+        } finally {
+            DBC.closeStmt();
+            DBC.disconnect();
+        }
+        return adminList.get(0);
     }
 }
