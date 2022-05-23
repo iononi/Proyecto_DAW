@@ -88,12 +88,24 @@ public class LoginServlet extends HttpServlet {
 
             case "/loginAdmin":
                 // check if admin exists in database
-                response.sendRedirect("./views/admin.jsp");
+                AdministradorDao myAdmin = new AdministradorDao();
+                Administrador admin;
+                email = request.getParameter("email");
+                password = request.getParameter("password").hashCode();
+                admin = myAdmin.find(email, password);
+                // If not exists, throw login error
+                if ( admin == null )
+                    response.sendRedirect("views/loginAdminFail.jsp");
+                else {
+                    // If exists, redirect the user to admin.jsp with new sessions created for admin
+                    request.getSession().setAttribute("currentAdmin", admin);
+                    response.sendRedirect("./views/admin.jsp");
+                }
                 break;
 
             case "/signupAdmin":
-                Administrador admin;
-                AdministradorDao myAdmin = new AdministradorDao();
+                //Administrador admin;
+                myAdmin = new AdministradorDao();
                 Direccion dir;
                 curp = request.getParameter("curp");
                 rfc = request.getParameter("rfc");
