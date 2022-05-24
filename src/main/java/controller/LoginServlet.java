@@ -33,7 +33,7 @@ public class LoginServlet extends HttpServlet {
                 user = client.find(email, password);
                 // If not exists, throw login error
                 if ( user == null )
-                    response.sendRedirect("views/loginFail.jsp");
+                    response.sendRedirect("views/user/loginFail.jsp");
                 else {
                     // If exists, redirect the user to index.jsp with new sessions created for user
                     request.getSession().setAttribute("currentUser", user);
@@ -73,7 +73,7 @@ public class LoginServlet extends HttpServlet {
                         myDir);
                 if ( !myClient.insert(newClient) ) {
                     request.getSession().setAttribute("userSignUpFail", "Error al registrar. Inténtelo de nuevo.");
-                    request.getRequestDispatcher("views/signup.jsp").forward(request, response);
+                    request.getRequestDispatcher("views/user/signup.jsp").forward(request, response);
                 } else {
                     request.getSession(true).setAttribute("currentUser", newClient);
                     response.sendRedirect("./index.jsp");
@@ -95,11 +95,11 @@ public class LoginServlet extends HttpServlet {
                 admin = myAdmin.find(email, password);
                 // If not exists, throw login error
                 if ( admin == null )
-                    response.sendRedirect("views/loginAdminFail.jsp");
+                    response.sendRedirect("views/admin/loginAdminFail.jsp");
                 else {
                     // If exists, redirect the user to admin.jsp with new sessions created for admin
                     request.getSession().setAttribute("currentAdmin", admin);
-                    response.sendRedirect("./views/admin.jsp");
+                    response.sendRedirect("./views/admin/admin.jsp");
                 }
                 break;
 
@@ -127,18 +127,18 @@ public class LoginServlet extends HttpServlet {
                 numeroInterior = ( request.getParameter("numeroInterior").isEmpty() ) ? (short) 0 :
                                 Short.parseShort( request.getParameter("numeroExterior") );
 
-                myDir = new Direccion(codigoPostal, colonia, calle, referencias, numeroExterior, numeroInterior,
+                dir = new Direccion(codigoPostal, colonia, calle, referencias, numeroExterior, numeroInterior,
                         ciudad, municipio, estado);
 
                 // Create new client, currentUser
                 admin = new Administrador(curp, rfc, nombre, apellidop, apellidom, correo, contrasenia, extension, telefono,
-                        myDir);
+                        dir);
                 if ( !myAdmin.insert(admin) ) {
                     request.getSession().setAttribute("userSignUpFail", "Error al registrar. Inténtelo de nuevo.");
-                    request.getRequestDispatcher("views/signup.jsp").forward(request, response);
+                    request.getRequestDispatcher("views/admin/signupAdmin.jsp").forward(request, response);
                 } else {
                     request.getSession(true).setAttribute("currentUser", admin);
-                    response.sendRedirect("./views/admin.jsp");
+                    response.sendRedirect("./views/admin/admin.jsp");
                 }
                 break;
         }
