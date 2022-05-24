@@ -134,7 +134,7 @@ public class LoginServlet extends HttpServlet {
                 admin = new Administrador(curp, rfc, nombre, apellidop, apellidom, correo, contrasenia, extension, telefono,
                         dir);
                 if ( !myAdmin.insert(admin) ) {
-                    request.getSession().setAttribute("userSignUpFail", "Error al registrar. Inténtelo de nuevo.");
+                    request.setAttribute("adminSignUpFail", "Error al registrar. Inténtelo de nuevo.");
                     request.getRequestDispatcher("views/admin/signupAdmin.jsp").forward(request, response);
                 } else {
                     request.getSession(true).setAttribute("currentUser", admin);
