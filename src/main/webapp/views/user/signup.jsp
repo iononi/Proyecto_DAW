@@ -18,7 +18,7 @@
 </div>
 
 <div class="topnav">
-    <a href="../../index.jsp" style="font-size: larger">Inicio</a>
+    <a href="/FinalProject/index.jsp" style="font-size: larger">Inicio</a>
 </div>
 <c:if test="${sessionScope.userSignUpFail != null}">
     <c:out value="${sessionScope.userSignUpFail}" />
@@ -99,7 +99,7 @@
 
             <div>
                 <label for="numeroInterior">Número interior</label><br>
-                <input type="number" name="numeroInterior" id="numeroInterior" min="1" placeholder="0">
+                <input type="number" name="numeroInterior" id="numeroInterior" min="0" placeholder="0">
             </div>
 
             <div>
