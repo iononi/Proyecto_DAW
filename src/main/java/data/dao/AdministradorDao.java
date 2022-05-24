@@ -2,7 +2,6 @@ package data.dao;
 
 import data.database.ConnectionDB;
 import model.Administrador;
-import model.Cliente;
 import model.Direccion;
 import org.postgresql.util.PGobject;
 
@@ -26,7 +25,7 @@ public class AdministradorDao implements CrudUtilities<Administrador> {
     public boolean insert(Administrador entity) {
         System.out.println("Registrando administrador...");
         String insertionQuery = String.format("INSERT INTO Administrador (curp, rfc, nombre, apellidop, apellidom, correo, " +
-                        "contrasenia, telefono, \"Extension\", direction) VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', " +
+                        "contrasenia, telefono, \"extension\", direction) VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', " +
                         "ROW('%s', '%s', '%s', '%s', %d, %d, '%s', '%s', '%s'))", entity.getCurp(), entity.getRfc(),
                 entity.getNombre(), entity.getApellidop(), entity.getApellidom(), entity.getCorreo(), entity.getContrasenia(),
                 entity.getTelefono(), entity.getExtension(), entity.getDir().getCodigoPostal(), entity.getDir().getColonia(),
@@ -88,7 +87,7 @@ public class AdministradorDao implements CrudUtilities<Administrador> {
     @Override
     public boolean update(Administrador entity) {
         String updateQuery = String.format("UPDATE Administrador SET curp = '%s', rfc = '%s', nombre = '%s', apellidop = '%s', " +
-                        "apellidom = '%s', correo = '%s', telefono = '%s', \"Extension\" = '%s', direction = ('%s', '%s', '%s', '%s', %d, %d, '%s', '%s', '%s') " +
+                        "apellidom = '%s', correo = '%s', telefono = '%s', \"extension\" = '%s', direction = ('%s', '%s', '%s', '%s', %d, %d, '%s', '%s', '%s') " +
                         "WHERE clienteid = %d",
                 entity.getCurp(), entity.getRfc(), entity.getNombre(), entity.getApellidop(), entity.getApellidom(),
                 entity.getCorreo(), entity.getTelefono(), entity.getExtension(), entity.getDir().getCodigoPostal(),
