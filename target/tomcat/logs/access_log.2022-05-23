@@ -85,3 +85,9 @@
 0:0:0:0:0:0:0:1 - - [23/May/2022:23:03:46 -0500] "GET /images/logo-veracruz-1.png HTTP/1.1" 404 - http-bio-8080-exec-10 0
 0:0:0:0:0:0:0:1 - - [23/May/2022:23:03:46 -0500] "GET /images/logo-me-llena-de-orgullo.png HTTP/1.1" 404 - http-bio-8080-exec-5 0
 0:0:0:0:0:0:0:1 - - [23/May/2022:23:03:46 -0500] "GET /images/veracruz.ico HTTP/1.1" 404 - http-bio-8080-exec-5 0
+0:0:0:0:0:0:0:1 - - [23/May/2022:23:11:46 -0500] "GET /FinalProject HTTP/1.1" 302 - http-bio-8080-exec-2 0
+0:0:0:0:0:0:0:1 - - [23/May/2022:23:11:47 -0500] "GET /FinalProject/ HTTP/1.1" 200 3046 http-bio-8080-exec-3 136
+0:0:0:0:0:0:0:1 - - [23/May/2022:23:11:54 -0500] "GET /FinalProject/views/admin/loginAdmin.jsp HTTP/1.1" 200 996 http-bio-8080-exec-5 12
+0:0:0:0:0:0:0:1 - - [23/May/2022:23:11:55 -0500] "GET /FinalProject/views/admin/signupAdmin.jsp HTTP/1.1" 200 5165 http-bio-8080-exec-7 18
+0:0:0:0:0:0:0:1 - - [23/May/2022:23:12:23 -0500] "POST /FinalProject/signupAdmin HTTP/1.1" 302 - http-bio-8080-exec-8 869
+0:0:0:0:0:0:0:1 - - [23/May/2022:23:12:24 -0500] "GET /FinalProject/views/admin/admin.jsp HTTP/1.1" 200 103 http-bio-8080-exec-9 877
