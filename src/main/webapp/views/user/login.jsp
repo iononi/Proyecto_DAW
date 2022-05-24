@@ -8,12 +8,12 @@
 <html>
 <head>
     <title>Inicio de sesión</title>
-    <link rel="shortcut icon" href="../images/veracruz.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="../../images/veracruz.ico" type="image/x-icon">
 </head>
 <body>
 <h1 style="text-align: center">Inicio de sesión</h1>
 <fieldset style="width: 100px; height: auto; margin: 0 auto">
-    <form action="../login" method="post">
+    <form action="../../login" method="post">
         <p>
             <label for="email">Correo electrónico</label>
             <input type="text" name="email" id="email" placeholder="example@email.com" required title="Ingresa tu email">

@@ -9,7 +9,7 @@
     <title>Profile test</title>
 </head>
 <body>
-<form action="../logout" method="post">
+<form action="../../logout" method="post">
     <button type="submit">Log out</button>
 </form>
 </body>
