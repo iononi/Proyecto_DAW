@@ -3,7 +3,7 @@
   Date: 23/05/2022
   Time: 3:27 p. m.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ page contentType="text/html;charset=UTF-8" isELIgnored="false" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <html>
 <head>
@@ -18,10 +18,10 @@
 </div>
 
 <div class="topnav">
-    <a href="../../index.jsp" style="font-size: larger">Inicio</a>
+    <a href="/FinalProject/index.jsp" style="font-size: larger">Inicio</a>
 </div>
-<c:if test="${sessionScope.userSignUpFail != null}">
-    <c:out value="${sessionScope.userSignUpFail}" />
+<c:if test="${requestScope.adminSignUpFail != null}">
+    <c:out value="${requestScope.adminSignUpFail}" />
 </c:if>
 <div style="text-align: center">
     <form action="../../signupAdmin" method="post">
@@ -99,7 +99,7 @@
 
             <div>
                 <label for="numeroInterior">Número interior</label><br>
-                <input type="number" name="numeroInterior" id="numeroInterior" min="1" placeholder="0">
+                <input type="number" name="numeroInterior" id="numeroInterior" min="0" placeholder="0">
             </div>
 
             <div>
