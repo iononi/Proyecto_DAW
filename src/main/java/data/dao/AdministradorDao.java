@@ -25,7 +25,7 @@ public class AdministradorDao implements CrudUtilities<Administrador> {
     public boolean insert(Administrador entity) {
         System.out.println("Registrando administrador...");
         String insertionQuery = String.format("INSERT INTO Administrador (curp, rfc, nombre, apellidop, apellidom, correo, " +
-                        "contrasenia, telefono, \"extension\", direction) VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', " +
+                        "contrasenia, telefono, \"extension\", direccion) VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', " +
                         "ROW('%s', '%s', '%s', '%s', %d, %d, '%s', '%s', '%s'))", entity.getCurp(), entity.getRfc(),
                 entity.getNombre(), entity.getApellidop(), entity.getApellidom(), entity.getCorreo(), entity.getContrasenia(),
                 entity.getTelefono(), entity.getExtension(), entity.getDir().getCodigoPostal(), entity.getDir().getColonia(),
@@ -87,7 +87,7 @@ public class AdministradorDao implements CrudUtilities<Administrador> {
     @Override
     public boolean update(Administrador entity) {
         String updateQuery = String.format("UPDATE Administrador SET curp = '%s', rfc = '%s', nombre = '%s', apellidop = '%s', " +
-                        "apellidom = '%s', correo = '%s', telefono = '%s', \"extension\" = '%s', direction = ('%s', '%s', '%s', '%s', %d, %d, '%s', '%s', '%s') " +
+                        "apellidom = '%s', correo = '%s', telefono = '%s', \"extension\" = '%s', direccion = ('%s', '%s', '%s', '%s', %d, %d, '%s', '%s', '%s') " +
                         "WHERE clienteid = %d",
                 entity.getCurp(), entity.getRfc(), entity.getNombre(), entity.getApellidop(), entity.getApellidom(),
                 entity.getCorreo(), entity.getTelefono(), entity.getExtension(), entity.getDir().getCodigoPostal(),
@@ -169,7 +169,7 @@ public class AdministradorDao implements CrudUtilities<Administrador> {
                 String telefono = rs.getString("telefono");
                 String extension = rs.getString("extension");
 
-                PGobject direction = (PGobject) rs.getObject("direction");
+                PGobject direction = (PGobject) rs.getObject("direccion");
                 String myDir = direction.getValue().replaceFirst("\\(", "").replaceFirst("\\)", "");
                 myDir = myDir.replaceAll("\"", "");
                 String[] dir = myDir.split(",");
