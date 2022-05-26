@@ -11,13 +11,14 @@ public class ReporteAnonimo implements Serializable {
     private Direccion dir;
     private int fkTipoResiduo, fkMetodoPago;
     private boolean pagado;
+    private short fk_estado;
 
     public ReporteAnonimo() {
 
     }
 
     public ReporteAnonimo(int folio, String nombre, String apellidop, String apellidom, String telefono, String extension,
-                          Direccion dir, int fkTipoResiduo, int fkMetodoPago, boolean pagado) {
+                          Direccion dir, int fkTipoResiduo, int fkMetodoPago, boolean pagado, short fk_estado) {
         setFolio(folio);
         setNombre(nombre);
         setApellidop(apellidop);
@@ -28,6 +29,7 @@ public class ReporteAnonimo implements Serializable {
         setFkTipoResiduo(fkTipoResiduo);
         setFkMetodoPago(fkMetodoPago);
         setPagado(pagado);
+        setFk_estado(fk_estado);
     }
 
     public int getFolio() {
@@ -125,9 +127,17 @@ public class ReporteAnonimo implements Serializable {
         this.pagado = pagado;
     }
 
+    public short getFk_estado() {
+        return fk_estado;
+    }
+
+    public void setFk_estado(short fk_estado) {
+        this.fk_estado = fk_estado;
+    }
+
     @Override
     public String toString() {
-        return String.format("Folio: %d\n\nDatos Cliente:\n\n\tNombre: %s\n\tApellidos: %s, %s\n\tTelefono: (%s) %s\n\t" +
+        return String.format("Folio: %d\n\nDatos Usuario:\n\n\tNombre: %s\n\tApellidos: %s, %s\n\tTelefono: (%s) %s\n\t" +
                 "Tipo Residuo: %d\n\tMetodo Pago: %d\n\tPagado: %b", folio, nombre, apellidop, apellidom, extension, telefono,
                 fkTipoResiduo, fkMetodoPago, pagado);
     }
