@@ -178,6 +178,10 @@ public class Usuario implements Serializable {
         this.dir = dir;
     }
 
+    public boolean isAdmin() {
+        return (this.fk_rol == 1);
+    }
+
     @Override
     public String toString() {
         return String.format("ID: %d\nCURP: %s\nRFC: %s\nNombre: %s\nApellido Paterno: %s\nApellido Materno: %s\n" +
