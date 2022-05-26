@@ -75,7 +75,7 @@ public class ReporteCliente implements Serializable {
 
     @Override
     public String toString() {
-        return String.format("Folio: %d\nUsuario: %d\nTipo Residuo: %d\nMetodo de pago: %d\nPagado: %b",
-                folio, fkCliente, fkTipoResiduo, fkMetodoPago, pagado);
+        return String.format("Folio: %d\nUsuario: %d\nTipo Residuo: %d\nMetodo de pago: %d\nPagado: %b\nEstado: %d",
+                folio, fkCliente, fkTipoResiduo, fkMetodoPago, pagado, fkEstado);
     }
 }
