@@ -9,18 +9,20 @@ public class ReporteCliente implements Serializable {
     private long fkTipoResiduo;
     private long fkMetodoPago;
     private boolean pagado;
+    private short fkEstado;
 
 
     public ReporteCliente() {
 
     }
 
-    public ReporteCliente(long folio, long fkCliente, long fkTipoResiduo, long fkMetodoPago, boolean pagado) {
+    public ReporteCliente(long folio, long fkCliente, long fkTipoResiduo, long fkMetodoPago, boolean pagado, short fkEstado) {
         this.folio = folio;
         this.fkCliente = fkCliente;
         this.fkTipoResiduo = fkTipoResiduo;
         this.fkMetodoPago = fkMetodoPago;
         this.pagado = pagado;
+        setFkEstado(fkEstado);
     }
 
     public long getFolio() {
@@ -63,9 +65,17 @@ public class ReporteCliente implements Serializable {
         this.pagado = pagado;
     }
 
+    public short getFkEstado() {
+        return fkEstado;
+    }
+
+    public void setFkEstado(short fkEstado) {
+        this.fkEstado = fkEstado;
+    }
+
     @Override
     public String toString() {
-        return String.format("Folio: %d\nCliente: %d\nTipo Residuo: %d\nMetodo de pago: %d\nPagado: %b",
+        return String.format("Folio: %d\nUsuario: %d\nTipo Residuo: %d\nMetodo de pago: %d\nPagado: %b",
                 folio, fkCliente, fkTipoResiduo, fkMetodoPago, pagado);
     }
 }
