@@ -64,27 +64,27 @@ public class UsuarioDao implements CrudUtilities<Usuario> {
     public boolean delete(int id) {
         select(id);
         if (userList == null || userList.size() == 0) {
-            System.out.println("No hay registro del cliente con ID: " + id);
+            System.out.println("No hay registro del usuario con ID: " + id);
             return false;
         }
         DBC.setConnection(); // establecemos conexión con la BD
         DBC.createStmt();   // creamos el statement para ejecutar queries
 
-        System.out.println("Eliminando cliente...");
+        System.out.println("Eliminando usuario...");
 
         try {
 
-            String delete_query = String.format("DELETE FROM Usuario WHERE clienteid = %d;", id);
+            String delete_query = String.format("DELETE FROM Usuario WHERE usuarioid = %d;", id);
 
             if (DBC.executeQuery(delete_query)) // si el método execute() regresa true, se pudo eliminar.
-                System.out.println("Se ha eliminado el cliente! :D");
+                System.out.println("Se ha eliminado el usuario.");
             else {
-                System.out.println("Ocurrió un error al eliminar al cliente :/");
+                System.out.println("Ocurrió un error al eliminar al usuario.");
                 return false;
             }
 
         } catch (SQLException ex) {
-            Logger.getLogger(ConnectionDB.class.getName()).log(Level.SEVERE, "Ocurrió un error al eliminar al cliente.", ex);
+            Logger.getLogger(ConnectionDB.class.getName()).log(Level.SEVERE, "Ocurrió un error al eliminar al usuario.", ex);
             return false;
         } finally {
             DBC.closeStmt(); // Cerramos el statement
@@ -97,7 +97,7 @@ public class UsuarioDao implements CrudUtilities<Usuario> {
     @Override
     public boolean update(Usuario entity) {
         String updateQuery = String.format("UPDATE Usuario SET curp = '%s', rfc = '%s', nombre = '%s', apellidop = '%s', " +
-                "apellidom = '%s', correo = '%s', telefono = '%s', \"Extension\" = '%s', direction = ('%s', '%s', '%s', '%s', %d, %d, '%s', '%s', '%s') " +
+                "apellidom = '%s', correo = '%s', telefono = '%s', \"Extension\" = '%s', direccion = ('%s', '%s', '%s', '%s', %d, %d, '%s', '%s', '%s') " +
                         "WHERE clienteid = %d",
                 entity.getCurp(), entity.getRfc(), entity.getNombre(), entity.getApellidop(), entity.getApellidom(),
                 entity.getCorreo(), entity.getTelefono(), entity.getExtension(), entity.getDir().getCodigoPostal(),
@@ -109,9 +109,9 @@ public class UsuarioDao implements CrudUtilities<Usuario> {
 
         try {
             if (DBC.executeQuery(updateQuery)) {
-                System.out.println("Los datos del cliente " + entity.getNombre() + " han sido actualizados");
+                System.out.println("Los datos del usuario " + entity.getNombre() + " han sido actualizados");
             } else {
-                System.out.println("Los datos del cliente " + entity.getNombre() + " no se pudieron actualizar.");
+                System.out.println("Los datos del usuario " + entity.getNombre() + " no se pudieron actualizar.");
                 return false;
             }
         } catch (SQLException e) {
@@ -130,16 +130,16 @@ public class UsuarioDao implements CrudUtilities<Usuario> {
         DBC.setConnection(); // Establecemos conexión con la BD
         DBC.createStmt();   // Creamos el Statement
 
-        System.out.printf("Consultando datos del cliente con ID: %d...\n", id);
-        String select_query = String.format("SELECT * FROM Usuario WHERE clienteid = %d;", id);
+        System.out.printf("Consultando datos del usuario con ID: %d...\n", id);
+        String select_query = String.format("SELECT * FROM Usuario WHERE usuarioid = %d;", id);
 
         try {
             if (DBC.runQuery(select_query)) // Si el método executeQuery() regresa true, se encontró al cliente
                 userList = fetchData(DBC.getResultSet()); // Obtiene los datos del ResultSet y lo guarda en userList
             if (userList == null || userList.size() == 0)
-                System.out.println("No se encontró al cliente con ID: " + id);
+                System.out.println("No se encontró al usuario con ID: " + id);
         } catch (SQLException ex) {
-            System.out.println("Error al recuperar los datos de la tabla cliente.");
+            System.out.println("Error al recuperar los datos de la tabla usuario.");
             Logger.getLogger(ConnectionDB.class.getName()).log(Level.SEVERE, "No se pudo recuperar los datos.", ex);
         } finally {
             DBC.disconnect();
@@ -153,14 +153,14 @@ public class UsuarioDao implements CrudUtilities<Usuario> {
     public void selectAll() {
         DBC.setConnection(); // Establecemos conexión con la BD
         DBC.createStmt();   // Creamos el statement
-        System.out.println("Recuperando los datos de los 'Clientes'...\n");
+        System.out.println("Recuperando los datos de los 'Usuarios'...\n");
         try {
             if (DBC.runQuery("SELECT * FROM Usuario;")) // Si se pudo ejecutar la consulta
                 userList = fetchData(DBC.getResultSet()); // recupera los datos del ResultSet
             if (userList == null || userList.size() == 0)
-                System.out.println("No se ha registrado ningún cliente.");
+                System.out.println("No se ha registrado ningún usuario.");
         } catch (SQLException ex) {
-            System.out.println("Error al recuperar los datos de la tabla cliente.");
+            System.out.println("Error al recuperar los datos de la tabla usuario.");
             Logger.getLogger(ConnectionDB.class.getName()).log(Level.SEVERE, "No se pudo recuperar los datos.", ex);
         } finally {
             DBC.closeStmt(); // Cerramos el statement
@@ -174,12 +174,13 @@ public class UsuarioDao implements CrudUtilities<Usuario> {
         LinkedList<Usuario> tempList = new LinkedList<>();
         try {
             while (rs.next()) { // Mientras haya un registro en el ResultSet, obtén los datos del usuario
-                int clienteID = rs.getInt("clienteid");
+                int usuarioID = rs.getInt("usuarioid");
                 String curp = rs.getString("curp");
                 String rfc = rs.getString("rfc");
                 String nombre = rs.getString("nombre");
                 String apellidop = rs.getString("apellidop");
                 String apellidom = rs.getString("apellidom");
+                short fk_rol = rs.getShort("fk_rol");
                 String correo = rs.getString("correo");
                 String contrasenia = rs.getString("contraseña");
                 String telefono = rs.getString("telefono");
@@ -203,7 +204,7 @@ public class UsuarioDao implements CrudUtilities<Usuario> {
                         ciudad, municipio, estado);
 
 
-                Usuario usuario = new Usuario(clienteID, curp, rfc, nombre, apellidop, apellidom, correo, contrasenia,
+                Usuario usuario = new Usuario(usuarioID, curp, rfc, nombre, apellidop, apellidom, fk_rol, correo, contrasenia,
                         extension, telefono, direccion);
                 tempList.add(usuario);
             }
@@ -218,7 +219,7 @@ public class UsuarioDao implements CrudUtilities<Usuario> {
     }
 
     public Usuario find(String email, int password) {
-        String findQuery = String.format("SELECT * FROM Usuario WHERE correo = '%s' AND contraseña = '%s';", email, password);
+        String findQuery = String.format("SELECT * FROM Usuario WHERE correo = '%s' AND contrasenia = '%s';", email, password);
         userList = null;
         DBC.setConnection();
         DBC.createStmt();
