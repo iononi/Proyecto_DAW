@@ -14,15 +14,15 @@ import java.util.logging.Logger;
 public class UsuarioDao implements CrudUtilities<Usuario> {
 
     private final ConnectionDB DBC;
-    private LinkedList<Usuario> clientList; // Lista de clientes.
+    private LinkedList<Usuario> userList; // Lista de clientes.
 
     public UsuarioDao() {
         DBC = new ConnectionDB("basura", "postgres", "lalo123");
-        clientList = null;
+        userList = null;
     }
 
     public LinkedList<Usuario> getClientList() {
-        return clientList;
+        return userList;
     }
 
     public boolean insert(Usuario entity) {
@@ -63,7 +63,7 @@ public class UsuarioDao implements CrudUtilities<Usuario> {
     @Override
     public boolean delete(int id) {
         select(id);
-        if (clientList == null || clientList.size() == 0) {
+        if (userList == null || userList.size() == 0) {
             System.out.println("No hay registro del cliente con ID: " + id);
             return false;
         }
@@ -135,8 +135,8 @@ public class UsuarioDao implements CrudUtilities<Usuario> {
 
         try {
             if (DBC.runQuery(select_query)) // Si el método executeQuery() regresa true, se encontró al cliente
-                clientList = fetchData(DBC.getResultSet()); // Obtiene los datos del ResultSet y lo guarda en clientList
-            if (clientList == null || clientList.size() == 0)
+                userList = fetchData(DBC.getResultSet()); // Obtiene los datos del ResultSet y lo guarda en userList
+            if (userList == null || userList.size() == 0)
                 System.out.println("No se encontró al cliente con ID: " + id);
         } catch (SQLException ex) {
             System.out.println("Error al recuperar los datos de la tabla cliente.");
@@ -156,8 +156,8 @@ public class UsuarioDao implements CrudUtilities<Usuario> {
         System.out.println("Recuperando los datos de los 'Clientes'...\n");
         try {
             if (DBC.runQuery("SELECT * FROM Usuario;")) // Si se pudo ejecutar la consulta
-                clientList = fetchData(DBC.getResultSet()); // recupera los datos del ResultSet
-            if (clientList == null || clientList.size() == 0)
+                userList = fetchData(DBC.getResultSet()); // recupera los datos del ResultSet
+            if (userList == null || userList.size() == 0)
                 System.out.println("No se ha registrado ningún cliente.");
         } catch (SQLException ex) {
             System.out.println("Error al recuperar los datos de la tabla cliente.");
@@ -219,14 +219,14 @@ public class UsuarioDao implements CrudUtilities<Usuario> {
 
     public Usuario find(String email, int password) {
         String findQuery = String.format("SELECT * FROM Usuario WHERE correo = '%s' AND contraseña = '%s';", email, password);
-        clientList = null;
+        userList = null;
         DBC.setConnection();
         DBC.createStmt();
 
         try {
             if (DBC.runQuery(findQuery))
-                clientList = fetchData(DBC.getResultSet());
-            if (clientList == null || clientList.size() == 0)
+                userList = fetchData(DBC.getResultSet());
+            if (userList == null || userList.size() == 0)
                 return null;
         } catch (Exception ex) {
             Logger.getLogger(ConnectionDB.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
@@ -235,6 +235,6 @@ public class UsuarioDao implements CrudUtilities<Usuario> {
             DBC.closeStmt();
             DBC.disconnect();
         }
-        return clientList.get(0);
+        return userList.get(0);
     }
 }
