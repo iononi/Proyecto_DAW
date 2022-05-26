@@ -26,28 +26,28 @@ public class UsuarioDao implements CrudUtilities<Usuario> {
     }
 
     public boolean insert(Usuario entity) {
-        System.out.println("Insertando cliente...");
+        System.out.println("Insertando usuario...");
         DBC.setConnection(); // establecemos conexión con la base de datos
         DBC.createStmt();   // creamos el statement necesario para ejecutar queries
         try {
 
-            Direccion clientDir = entity.getDir();
+            Direccion userDir = entity.getDir();
 
-            String insertion_query = String.format("INSERT INTO Usuario (curp, rfc, nombre, apellidop, apellidom, correo, " +
-                            "contraseña, telefono, \"Extension\", direction) VALUES " +
-                    "('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', ROW('%s', '%s', '%s', '%s', %d, %d, '%s', '%s', '%s')) " +
-                            "RETURNING clienteid", entity.getCurp(), entity.getRfc(), entity.getNombre(),
-                    entity.getApellidop(), entity.getApellidom(), entity.getCorreo(), entity.getContrasenia(),
-                    entity.getTelefono(), entity.getExtension(), clientDir.getCodigoPostal(), clientDir.getColonia(),
-                    clientDir.getCalle(), clientDir.getReferencias(), clientDir.getNumeroExterior(), clientDir.getNumeroInterior(),
-                    clientDir.getCiudad(), clientDir.getMunicipio(), clientDir.getEstado());
+            String insertion_query = String.format("INSERT INTO Usuario (curp, rfc, nombre, apellidop, apellidom, fk_rol, correo, " +
+                            "contrasenia, telefono, \"Extension\", direccion) VALUES " +
+                    "('%s', '%s', '%s', '%s', '%s', %d, '%s', '%s', '%s', '%s', ROW('%s', '%s', '%s', '%s', %d, %d, '%s', '%s', '%s')) " +
+                            "RETURNING clienteid;", entity.getCurp(), entity.getRfc(), entity.getNombre(),
+                    entity.getApellidop(), entity.getApellidom(), entity.getFk_rol(), entity.getCorreo(), entity.getContrasenia(),
+                    entity.getTelefono(), entity.getExtension(), userDir.getCodigoPostal(), userDir.getColonia(),
+                    userDir.getCalle(), userDir.getReferencias(), userDir.getNumeroExterior(), userDir.getNumeroInterior(),
+                    userDir.getCiudad(), userDir.getMunicipio(), userDir.getEstado());
 
             // Se ejecuta la instrucción 'insertion_query' y, en caso de ser posible la inserción, devuelve un true.
             // Devuelve false en caso contrario y por lo tanto no se pudo insertar en la BD.
             if (DBC.executeQuery(insertion_query))
-                System.out.println("La base de datos ha sido actualizada! :D");
+                System.out.println("Se ha registrado al usuario! :D");
             else {
-                System.out.println("No se ha podido insertar al cliente :/");
+                System.out.println("No se ha podido insertar al usuario :/");
                 return false;
             }
         } catch (SQLException ex) {
