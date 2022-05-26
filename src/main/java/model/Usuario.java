@@ -2,7 +2,7 @@ package model;
 
 import java.io.Serializable;
 
-public class Cliente implements Serializable {
+public class Usuario implements Serializable {
 
     private int clienteId;
     private String curp;
@@ -16,12 +16,12 @@ public class Cliente implements Serializable {
     private String telefono;
     private Direccion dir;
 
-    public Cliente() {
+    public Usuario() {
 
     }
 
     // Main constructor
-    public Cliente(int clienteId, String curp, String rfc, String nombre, String apellidop, String apellidom,
+    public Usuario(int clienteId, String curp, String rfc, String nombre, String apellidop, String apellidom,
                    String correo, String contrasenia, String extension, String tel, Direccion dir) {
         setClienteId(clienteId);
         setCurp(curp);
@@ -37,7 +37,7 @@ public class Cliente implements Serializable {
     }
 
     // Insertion constructor method
-    public Cliente(String curp, String rfc, String nombre, String apellidop, String apellidom, String correo,
+    public Usuario(String curp, String rfc, String nombre, String apellidop, String apellidom, String correo,
                    String contrasenia, String extension, String telefono, Direccion dir) {
         setCurp(curp);
         setRfc(rfc);

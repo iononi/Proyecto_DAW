@@ -1,7 +1,7 @@
 package data.dao;
 
 import data.database.ConnectionDB;
-import model.Cliente;
+import model.Usuario;
 import model.Direccion;
 import org.postgresql.util.PGobject;
 
@@ -11,21 +11,21 @@ import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class ClienteDao implements CrudUtilities<Cliente> {
+public class UsuarioDao implements CrudUtilities<Usuario> {
 
     private final ConnectionDB DBC;
-    private LinkedList<Cliente> clientList; // Lista de clientes.
+    private LinkedList<Usuario> clientList; // Lista de clientes.
 
-    public ClienteDao() {
+    public UsuarioDao() {
         DBC = new ConnectionDB("basura", "postgres", "lalo123");
         clientList = null;
     }
 
-    public LinkedList<Cliente> getClientList() {
+    public LinkedList<Usuario> getClientList() {
         return clientList;
     }
 
-    public boolean insert(Cliente entity) {
+    public boolean insert(Usuario entity) {
         System.out.println("Insertando cliente...");
         DBC.setConnection(); // establecemos conexión con la base de datos
         DBC.createStmt();   // creamos el statement necesario para ejecutar queries
@@ -33,7 +33,7 @@ public class ClienteDao implements CrudUtilities<Cliente> {
 
             Direccion clientDir = entity.getDir();
 
-            String insertion_query = String.format("INSERT INTO Cliente (curp, rfc, nombre, apellidop, apellidom, correo, " +
+            String insertion_query = String.format("INSERT INTO Usuario (curp, rfc, nombre, apellidop, apellidom, correo, " +
                             "contraseña, telefono, \"Extension\", direction) VALUES " +
                     "('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', ROW('%s', '%s', '%s', '%s', %d, %d, '%s', '%s', '%s')) " +
                             "RETURNING clienteid", entity.getCurp(), entity.getRfc(), entity.getNombre(),
@@ -74,7 +74,7 @@ public class ClienteDao implements CrudUtilities<Cliente> {
 
         try {
 
-            String delete_query = String.format("DELETE FROM Cliente WHERE clienteid = %d;", id);
+            String delete_query = String.format("DELETE FROM Usuario WHERE clienteid = %d;", id);
 
             if (DBC.executeQuery(delete_query)) // si el método execute() regresa true, se pudo eliminar.
                 System.out.println("Se ha eliminado el cliente! :D");
@@ -95,8 +95,8 @@ public class ClienteDao implements CrudUtilities<Cliente> {
 
 
     @Override
-    public boolean update(Cliente entity) {
-        String updateQuery = String.format("UPDATE Cliente SET curp = '%s', rfc = '%s', nombre = '%s', apellidop = '%s', " +
+    public boolean update(Usuario entity) {
+        String updateQuery = String.format("UPDATE Usuario SET curp = '%s', rfc = '%s', nombre = '%s', apellidop = '%s', " +
                 "apellidom = '%s', correo = '%s', telefono = '%s', \"Extension\" = '%s', direction = ('%s', '%s', '%s', '%s', %d, %d, '%s', '%s', '%s') " +
                         "WHERE clienteid = %d",
                 entity.getCurp(), entity.getRfc(), entity.getNombre(), entity.getApellidop(), entity.getApellidom(),
@@ -131,7 +131,7 @@ public class ClienteDao implements CrudUtilities<Cliente> {
         DBC.createStmt();   // Creamos el Statement
 
         System.out.printf("Consultando datos del cliente con ID: %d...\n", id);
-        String select_query = String.format("SELECT * FROM Cliente WHERE clienteid = %d;", id);
+        String select_query = String.format("SELECT * FROM Usuario WHERE clienteid = %d;", id);
 
         try {
             if (DBC.runQuery(select_query)) // Si el método executeQuery() regresa true, se encontró al cliente
@@ -155,7 +155,7 @@ public class ClienteDao implements CrudUtilities<Cliente> {
         DBC.createStmt();   // Creamos el statement
         System.out.println("Recuperando los datos de los 'Clientes'...\n");
         try {
-            if (DBC.runQuery("SELECT * FROM Cliente;")) // Si se pudo ejecutar la consulta
+            if (DBC.runQuery("SELECT * FROM Usuario;")) // Si se pudo ejecutar la consulta
                 clientList = fetchData(DBC.getResultSet()); // recupera los datos del ResultSet
             if (clientList == null || clientList.size() == 0)
                 System.out.println("No se ha registrado ningún cliente.");
@@ -170,10 +170,10 @@ public class ClienteDao implements CrudUtilities<Cliente> {
     }
 
     @Override
-    public LinkedList<Cliente> fetchData(ResultSet rs) {
-        LinkedList<Cliente> tempList = new LinkedList<>();
+    public LinkedList<Usuario> fetchData(ResultSet rs) {
+        LinkedList<Usuario> tempList = new LinkedList<>();
         try {
-            while (rs.next()) { // Mientras haya un registro en el ResultSet, obtén los datos del cliente
+            while (rs.next()) { // Mientras haya un registro en el ResultSet, obtén los datos del usuario
                 int clienteID = rs.getInt("clienteid");
                 String curp = rs.getString("curp");
                 String rfc = rs.getString("rfc");
@@ -203,9 +203,9 @@ public class ClienteDao implements CrudUtilities<Cliente> {
                         ciudad, municipio, estado);
 
 
-                Cliente cliente = new Cliente(clienteID, curp, rfc, nombre, apellidop, apellidom, correo, contrasenia,
+                Usuario usuario = new Usuario(clienteID, curp, rfc, nombre, apellidop, apellidom, correo, contrasenia,
                         extension, telefono, direccion);
-                tempList.add(cliente);
+                tempList.add(usuario);
             }
 
             return tempList;
@@ -217,8 +217,8 @@ public class ClienteDao implements CrudUtilities<Cliente> {
         }
     }
 
-    public Cliente find(String email, int password) {
-        String findQuery = String.format("SELECT * FROM Cliente WHERE correo = '%s' AND contraseña = '%s';", email, password);
+    public Usuario find(String email, int password) {
+        String findQuery = String.format("SELECT * FROM Usuario WHERE correo = '%s' AND contraseña = '%s';", email, password);
         clientList = null;
         DBC.setConnection();
         DBC.createStmt();
