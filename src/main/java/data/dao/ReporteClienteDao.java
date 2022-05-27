@@ -33,22 +33,23 @@ public class ReporteClienteDao implements CrudUtilities<ReporteCliente> {
 
             // Se ejecuta la instrucción 'insertion_query' y, en caso de ser posible la inserción, devuelve un true.
             // Devuelve false en caso contrario y por lo tanto no se pudo insertar en la BD.
-            if (DBC.executeQuery(insertion_query)) {
-
-                try {
-                    DBC.getStatement().executeQuery(paymentMethod);
-                    if (DBC.getResultSet() != null) {
-                        String payment = DBC.getResultSet().getString(1);
-                        if (payment.equals("Tarjeta credito/debito")) {
-                            // actualizar el campo pagado a true con update()
-                        }
+            if ( DBC.executeQuery(insertion_query) ) {
+                DBC.executeQuery(paymentMethod);
+                if (DBC.getResultSet() != null) {
+                    String payment = DBC.getResultSet().getString(1);
+                    if (payment.equals("Tarjeta debito") || payment.equals("Tarjeta credito")) {
+                        // actualizar el campo pagado a true con update()
+                        // hacer verificacion con API para pago
+                        entity.setPagado(true);
+                        if ( update(entity) )
+                            System.out.println("Se ha actualizado el estado del pago del reporte.");
+                        else
+                            System.out.println("Ocurrió un error al actualizar el estado del pago.");
                     }
-                } catch(SQLException ex) {
-                    ex.printStackTrace();
                 }
+
                 System.out.println("La base de datos ha sido actualizada! :D");
-            }
-            else {
+            } else {
                 System.out.println("No se ha podido registrar el reporte :/");
                 return false;
             }
