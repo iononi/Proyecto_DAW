@@ -1,6 +1,8 @@
 package model;
 
-public class Direccion {
+import java.io.Serializable;
+
+public class Direccion implements Serializable {
 
     private String codigoPostal;
     private String colonia;
