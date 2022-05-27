@@ -3,7 +3,7 @@
   Date: 16/05/2022
   Time: 4:32 p. m.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ page contentType="text/html;charset=UTF-8" isELIgnored="false" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <html>
 <head>
@@ -20,8 +20,8 @@
 <div class="topnav">
     <a href="/FinalProject/index.jsp" style="font-size: larger">Inicio</a>
 </div>
-<c:if test="${sessionScope.userSignUpFail != null}">
-    <c:out value="${sessionScope.userSignUpFail}" />
+<c:if test="${not empty requestScope.userSignUpFail}">
+    <script>alert('${requestScope.userSignUpFail}')</script>
 </c:if>
 <div style="text-align: center">
     <form action="../../signup" method="post">
@@ -50,6 +50,22 @@
                 <label for="apellidom">Apellido Materno</label><br>
                 <input type="text" name="apellidom" id="apellidom" placeholder="Rios" required onkeydown="return /[a-zA-Z ]/i.test(event.key)">
             </div>
+
+            <%-- If isn't admin filling this form, default role is user (2) --%>
+            <c:if test="${empty sessionScope.userIsAdmin}">
+                <label for="role" hidden>Rol</label> <br>
+                <input type="number" name="role" id="role" value="2" hidden readonly>
+            </c:if>
+
+            <c:if test="${sessionScope.userIsAdmin}">
+                <div>
+                    <label for="role">Rol</label> <br>
+                    <select name="role" id="role" required>
+                        <option value="1">Administrador</option>
+                        <option value="2" selected>Usuario</option>
+                    </select>
+                </div>
+            </c:if>
 
             <div>
                 <label for="correo">Correo electrónico</label><br>
