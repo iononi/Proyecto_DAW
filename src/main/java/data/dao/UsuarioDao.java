@@ -36,7 +36,7 @@ public class UsuarioDao implements CrudUtilities<Usuario> {
             String insertion_query = String.format("INSERT INTO Usuario (curp, rfc, nombre, apellidop, apellidom, fk_rol, correo, " +
                             "contrasenia, telefono, \"Extension\", direccion) VALUES " +
                     "('%s', '%s', '%s', '%s', '%s', %d, '%s', '%s', '%s', '%s', ROW('%s', '%s', '%s', '%s', %d, %d, '%s', '%s', '%s')) " +
-                            "RETURNING clienteid;", entity.getCurp(), entity.getRfc(), entity.getNombre(),
+                            "RETURNING usuarioid;", entity.getCurp(), entity.getRfc(), entity.getNombre(),
                     entity.getApellidop(), entity.getApellidom(), entity.getFk_rol(), entity.getCorreo(), entity.getContrasenia(),
                     entity.getTelefono(), entity.getExtension(), userDir.getCodigoPostal(), userDir.getColonia(),
                     userDir.getCalle(), userDir.getReferencias(), userDir.getNumeroExterior(), userDir.getNumeroInterior(),
@@ -98,7 +98,7 @@ public class UsuarioDao implements CrudUtilities<Usuario> {
     public boolean update(Usuario entity) {
         String updateQuery = String.format("UPDATE Usuario SET curp = '%s', rfc = '%s', nombre = '%s', apellidop = '%s', " +
                 "apellidom = '%s', correo = '%s', telefono = '%s', \"Extension\" = '%s', direccion = ('%s', '%s', '%s', '%s', %d, %d, '%s', '%s', '%s') " +
-                        "WHERE clienteid = %d",
+                        "WHERE usuarioid = %d",
                 entity.getCurp(), entity.getRfc(), entity.getNombre(), entity.getApellidop(), entity.getApellidom(),
                 entity.getCorreo(), entity.getTelefono(), entity.getExtension(), entity.getDir().getCodigoPostal(),
                 entity.getDir().getColonia(), entity.getDir().getCalle(), entity.getDir().getReferencias(),
@@ -182,11 +182,11 @@ public class UsuarioDao implements CrudUtilities<Usuario> {
                 String apellidom = rs.getString("apellidom");
                 short fk_rol = rs.getShort("fk_rol");
                 String correo = rs.getString("correo");
-                String contrasenia = rs.getString("contraseña");
+                String contrasenia = rs.getString("contrasenia");
                 String telefono = rs.getString("telefono");
                 String extension = rs.getString("extension");
 
-                PGobject direction = (PGobject) rs.getObject("direction");
+                PGobject direction = (PGobject) rs.getObject("direccion");
                 String myDir = direction.getValue().replaceFirst("\\(", "").replaceFirst("\\)", "");
                 myDir = myDir.replaceAll("\"", "");
                 String[] dir = myDir.split(",");
