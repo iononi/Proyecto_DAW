@@ -43,8 +43,10 @@ public class ReporteClienteDao implements CrudUtilities<ReporteCliente> {
                         entity.setPagado(true);
                         if ( update(entity) )
                             System.out.println("Se ha actualizado el estado del pago del reporte.");
-                        else
+                        else {
                             System.out.println("Ocurrió un error al actualizar el estado del pago.");
+                            return false;
+                        }
                     }
                 }
 

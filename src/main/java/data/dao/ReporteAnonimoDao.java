@@ -53,8 +53,10 @@ public class ReporteAnonimoDao implements CrudUtilities<ReporteAnonimo> {
                             entity.setPagado(true);
                             if ( update(entity) )
                                 System.out.println("Se ha actualizado el estado del pago del reporte.");
-                            else
+                            else {
                                 System.out.println("Ocurrió un error al actualizar el estado del pago.");
+                                return false;
+                            }
                         }
                     }
 
