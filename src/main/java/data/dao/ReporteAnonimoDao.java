@@ -33,13 +33,13 @@ public class ReporteAnonimoDao implements CrudUtilities<ReporteAnonimo> {
 
 
             String insertion_query = String.format("INSERT INTO ReporteAnonimo(nombre, apellidop, apellidom, telefono, \"Extension\"," +
-                            " fk_tiporesiduo, fk_metodopago, pagado, direccion, fk_estado) VALUES ('%s', '%s', '%s', '%s', '%s', %d, %d, %b, " +
-                            "ROW('%s', '%s', '%s', '%s', %d, %d, '%s', '%s', '%s), %d);",
+                            " fk_tiporesiduo, fk_metodopago, pagado, direccion, fk_estado, correo) VALUES ('%s', '%s', '%s', '%s', '%s', %d, %d, %b, " +
+                            "ROW('%s', '%s', '%s', '%s', %d, %d, '%s', '%s', '%s), %d, '%s');",
                     entity.getNombre(), entity.getApellidop(), entity.getApellidom(), entity.getTelefono(), entity.getExtension(),
                     entity.getFkTipoResiduo(), entity.getFkMetodoPago(), false, entity.getDir().getCodigoPostal(),
                     entity.getDir().getColonia(), entity.getDir().getCalle(), entity.getDir().getReferencias(),
                     entity.getDir().getNumeroExterior(), entity.getDir().getNumeroInterior(), entity.getDir().getCiudad(),
-                    entity.getDir().getMunicipio(), entity.getDir().getEstado(), entity.getFk_estado());
+                    entity.getDir().getMunicipio(), entity.getDir().getEstado(), entity.getFk_estado(), entity.getCorreo());
 
             // Se ejecuta la instrucción 'insertion_query' y, en caso de ser posible la inserción, devuelve un true.
             // Devuelve false en caso contrario y por lo tanto no se pudo insertar en la BD.
@@ -106,12 +106,12 @@ public class ReporteAnonimoDao implements CrudUtilities<ReporteAnonimo> {
     public boolean update(ReporteAnonimo entity) {
         String updateQuery = String.format("UPDATE ReporteAnonimo SET nombre = '%s', apellidop = '%s', apellidom = '%s', " +
                 "telefono = '%s', \"Extension\" = '%s', fk_tiporesiduo = %d, fk_metodopago = %d, pagado = %b, " +
-                "direccion = ROW('%s', '%s', '%s', '%s', %d, %d, '%s', '%s', '%s'), fk_estado = %d WHERE folio = %d;", entity.getNombre(),
+                "direccion = ROW('%s', '%s', '%s', '%s', %d, %d, '%s', '%s', '%s'), fk_estado = %d, correo = '%s' WHERE folio = %d;", entity.getNombre(),
                 entity.getApellidop(), entity.getApellidom(), entity.getTelefono(), entity.getExtension(), entity.getFkTipoResiduo(),
                 entity.getFkMetodoPago(), entity.isPagado(), entity.getDir().getCodigoPostal(), entity.getDir().getColonia(),
                 entity.getDir().getCalle(), entity.getDir().getReferencias(), entity.getDir().getNumeroExterior(),
                 entity.getDir().getNumeroInterior(), entity.getDir().getCiudad(), entity.getDir().getMunicipio(),
-                entity.getDir().getCiudad(), entity.getFolio(), entity.getFk_estado());
+                entity.getDir().getCiudad(), entity.getFk_estado(), entity.getCorreo(), entity.getFolio());
 
         return ReporteClienteDao.executeUpdate(updateQuery, DBC, entity.getFolio());
     }
@@ -186,10 +186,11 @@ public class ReporteAnonimoDao implements CrudUtilities<ReporteAnonimo> {
                 String municipio = dir[7];
                 String estado = dir[8];
                 short fkEstado = rs.getShort("fk_estado");
+                String correo = rs.getString("correo");
 
                 tempList.add( new ReporteAnonimo(folio, nombre, apellidop, apellidom, telefono, extension,
                         new Direccion(codigoPostal, colonia, calle, ref, numeroExterior, numeroInterior, ciudad, municipio,
-                                estado), fkResiduo, fkPago, paidOut, fkEstado) );
+                                estado), fkResiduo, fkPago, paidOut, fkEstado, correo) );
             }
 
             return tempList;
