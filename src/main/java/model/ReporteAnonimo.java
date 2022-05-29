@@ -9,6 +9,7 @@ public class ReporteAnonimo implements Serializable {
     private String apellidop, apellidom;
     private String telefono, extension;
     private Direccion dir;
+    private String correo;
     private int fkTipoResiduo, fkMetodoPago;
     private boolean pagado;
     private short fk_estado;
@@ -18,7 +19,7 @@ public class ReporteAnonimo implements Serializable {
     }
 
     public ReporteAnonimo(int folio, String nombre, String apellidop, String apellidom, String telefono, String extension,
-                          Direccion dir, int fkTipoResiduo, int fkMetodoPago, boolean pagado, short fk_estado) {
+                          Direccion dir, int fkTipoResiduo, int fkMetodoPago, boolean pagado, short fk_estado, String correo) {
         setFolio(folio);
         setNombre(nombre);
         setApellidop(apellidop);
@@ -30,6 +31,7 @@ public class ReporteAnonimo implements Serializable {
         setFkMetodoPago(fkMetodoPago);
         setPagado(pagado);
         setFk_estado(fk_estado);
+        setCorreo(correo);
     }
 
     public int getFolio() {
@@ -82,6 +84,17 @@ public class ReporteAnonimo implements Serializable {
             this.telefono = (telefono.matches("[\\d]+")) ? telefono : "";
         else
             this.telefono = "";
+    }
+
+    public String getCorreo() {
+        return correo;
+    }
+
+    public void setCorreo(String correo) {
+        if (correo != null)
+            this.correo = (correo.matches("[\\w.-]*@[a-z.]*")) ? correo : "";
+        else
+            this.correo = "";
     }
 
     public String getExtension() {
