@@ -18,6 +18,10 @@ public class TipoResiduoDao implements CrudUtilities<TipoResiduo> {
         trashList = null;
     }
 
+    public LinkedList<TipoResiduo> getTrashList() {
+        return trashList;
+    }
+
     @Override
     public boolean insert(TipoResiduo entity) {
         System.out.println("Insertando tipo de residuo...");
@@ -122,7 +126,7 @@ public class TipoResiduoDao implements CrudUtilities<TipoResiduo> {
         DBC.createStmt();   // Creamos el statement
         System.out.println("Recuperando los tipos de residuo registrados...\n");
         try {
-            if (DBC.executeQuery("SELECT * FROM TipoResiduo;")) // Si se pudo ejecutar la consulta
+            if (DBC.runQuery("SELECT * FROM TipoResiduo;")) // Si se pudo ejecutar la consulta
                 trashList = fetchData(DBC.getResultSet()); // recupera los datos del ResultSet
             if (trashList == null)
                 System.out.println("No hay información disponible.");
