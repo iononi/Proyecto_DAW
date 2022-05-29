@@ -67,7 +67,7 @@
 <br><br>
 <div style="text-align: center">
     <c:if test="${empty sessionScope.currentUser}">
-        <a href="views/user/login.jsp">
+        <a href="anonymousReportRequest"> <%-- call to ReportServlet --%>
             <button type="button" style="width: 100px; height: 50px">¡Solicita tu servicio!</button>
         </a>
     </c:if>
