@@ -1,0 +1,9 @@
+0:0:0:0:0:0:0:1 - - [28/May/2022:19:38:52 -0500] "GET /FinalProject HTTP/1.1" 302 - http-bio-8080-exec-1 0
+0:0:0:0:0:0:0:1 - - [28/May/2022:19:38:52 -0500] "GET /FinalProject/ HTTP/1.1" 200 3062 http-bio-8080-exec-3 188
+0:0:0:0:0:0:0:1 - - [28/May/2022:19:38:52 -0500] "GET /FinalProject/static/css/styles.css HTTP/1.1" 200 910 http-bio-8080-exec-4 11
+0:0:0:0:0:0:0:1 - - [28/May/2022:19:38:52 -0500] "GET /FinalProject/images/logo-veracruz-1.png HTTP/1.1" 200 27672 http-bio-8080-exec-5 16
+0:0:0:0:0:0:0:1 - - [28/May/2022:19:38:52 -0500] "GET /FinalProject/images/logo-me-llena-de-orgullo.png HTTP/1.1" 200 4674 http-bio-8080-exec-6 8
+0:0:0:0:0:0:0:1 - - [28/May/2022:19:38:56 -0500] "GET /FinalProject/images/veracruz.ico HTTP/1.1" 200 132542 http-bio-8080-exec-7 22
+0:0:0:0:0:0:0:1 - - [28/May/2022:19:38:57 -0500] "GET /FinalProject/anonymousReportRequest HTTP/1.1" 302 - http-bio-8080-exec-8 682
+0:0:0:0:0:0:0:1 - - [28/May/2022:19:38:57 -0500] "GET /FinalProject/views/report/anonymousReport.jsp HTTP/1.1" 200 5660 http-bio-8080-exec-9 81
+0:0:0:0:0:0:0:1 - - [28/May/2022:19:39:41 -0500] "GET /FinalProject/views/report/anonymousReport.jsp HTTP/1.1" 200 5666 http-bio-8080-exec-10 1835
