@@ -13,9 +13,7 @@ import java.io.IOException;
 public class LoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        response.setContentType("text/html");
-        response.getWriter().println("Hola desde el metodo doGet :D");
-
+        response.sendRedirect("./index.jsp");
     }
 
     @Override
@@ -38,7 +36,10 @@ public class LoginServlet extends HttpServlet {
 
                     // If exists, redirect the user to index.jsp with new session created for user
                     request.getSession().setAttribute("currentUser", user);
-                    response.sendRedirect("./index.jsp");
+                    if ( request.getSession().getAttribute("calledFromAnonymousReport").equals(true) ) // if servlet was called from anonymousReport.jsp view
+                        response.sendRedirect("views/report/clientReport.jsp");
+                    else
+                        response.sendRedirect("./index.jsp");
                 }
                 break;
 
@@ -80,8 +81,10 @@ public class LoginServlet extends HttpServlet {
                     // if no user/admin is logged in, we create its session. Otherwise just insertion on db is made
                     if ( request.getSession().getAttribute("currentUser") == null )
                         request.getSession().setAttribute("currentUser", newUser);
-
-                    response.sendRedirect("./index.jsp");
+                    if ( request.getSession().getAttribute("calledFromAnonymousReport").equals(true) )
+                        response.sendRedirect("views/report/clientReport.jsp");
+                    else
+                        response.sendRedirect("./index.jsp");
                 }
 
                 break;
