@@ -52,20 +52,15 @@
             </div>
 
             <%-- If isn't admin filling this form, default role is user (2) --%>
-            <c:if test="${empty sessionScope.userIsAdmin}">
-                <label for="role" hidden>Rol</label> <br>
-                <input type="number" name="role" id="role" value="2" hidden readonly>
-            </c:if>
-
-            <c:if test="${sessionScope.userIsAdmin}">
-                <div>
-                    <label for="role">Rol</label> <br>
-                    <select name="role" id="role" required>
+            <div>
+                <label for="role">Rol</label> <br>
+                <select name="role" id="role" required>
+                    <c:if test="${sessionScope.userIsAdmin}">
                         <option value="1">Administrador</option>
-                        <option value="2" selected>Usuario</option>
-                    </select>
-                </div>
-            </c:if>
+                    </c:if>
+                    <option value="2" selected>Usuario</option>
+                </select>
+            </div>
 
             <div>
                 <label for="correo">Correo electrónico</label><br>
