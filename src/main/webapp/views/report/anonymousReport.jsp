@@ -15,6 +15,7 @@
     <title>¡Haz tu reporte!</title>
 </head>
 <body>
+<c:set var="calledFromAnonymousReport" value="${true}" scope="session"/>
 <div style="background-color: #dddddd; padding: 10px 10px 10px 10px">
     <img src="../../images/logo-veracruz-1.png" alt="Logo Veracruz">
     <img src="../../images/logo-me-llena-de-orgullo.png" alt="Veracruz me llena de orgullo" class="toRight">
