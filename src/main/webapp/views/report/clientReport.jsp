@@ -10,18 +10,18 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta content="text/html" charset="UTF-8">
-    <link rel="shortcut icon" href="../../images/veracruz.ico" type="image/x-icon">
-    <link rel="stylesheet" type="text/css" href="../../static/css/styles.css">
+    <link rel="shortcut icon" href="${pageContext.request.contextPath}/images/veracruz.ico" type="image/x-icon">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/styles.css">
     <title>¡Haz tu reporte!</title>
 </head>
 <body>
 <div style="background-color: #dddddd; padding: 10px 10px 10px 10px">
-    <img src="../../images/logo-veracruz-1.png" alt="Logo Veracruz">
-    <img src="../../images/logo-me-llena-de-orgullo.png" alt="Veracruz me llena de orgullo" class="toRight">
+    <img src="${pageContext.request.contextPath}/images/logo-veracruz-1.png" alt="Logo Veracruz">
+    <img src="${pageContext.request.contextPath}/images/logo-me-llena-de-orgullo.png" alt="Veracruz me llena de orgullo" class="toRight">
 </div>
 
 <div class="topnav">
-    <a href="../../index.jsp">Inicio</a>
+    <a href="${pageContext.request.contextPath}/index.jsp">Inicio</a>
     <c:if test="${empty sessionScope.currentUser}">
         <a href="../user/signup.jsp">Registrarse</a>
         <a href="../user/login.jsp">Iniciar sesión</a>
@@ -38,7 +38,7 @@
 </div>
 
 <div style="text-align: center">
-    <form action="../../clientReport" method="post">
+    <form action="${pageContext.request.contextPath}/clientReport" method="post">
         <fieldset title="Ingrese sus datos" class="wrapper">
 
             <div>

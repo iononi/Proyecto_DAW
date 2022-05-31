@@ -8,23 +8,23 @@
 <html>
 <head>
     <title>Crear cuenta</title>
-    <link rel="shortcut icon" href="../../images/veracruz.ico" type="image/x-icon">
-    <link rel="stylesheet" href="../../static/css/styles.css" type="text/css">
+    <link rel="shortcut icon" href="${pageContext.request.contextPath}/images/veracruz.ico" type="image/x-icon">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/styles.css" type="text/css">
 </head>
 <body>
 <div style="background-color: #dddddd; padding: 10px 10px 10px 10px">
-    <img src="../../images/logo-veracruz-1.png" alt="Logo Veracruz">
-    <img src="../../images/logo-me-llena-de-orgullo.png" alt="Veracruz me llena de orgullo" class="toRight">
+    <img src="${pageContext.request.contextPath}/images/logo-veracruz-1.png" alt="Logo Veracruz">
+    <img src="${pageContext.request.contextPath}/images/logo-me-llena-de-orgullo.png" alt="Veracruz me llena de orgullo" class="toRight">
 </div>
 
 <div class="topnav">
-    <a href="/FinalProject/index.jsp" style="font-size: larger">Inicio</a>
+    <a href="${pageContext.request.contextPath}/index.jsp" style="font-size: larger">Inicio</a>
 </div>
 <c:if test="${not empty requestScope.userSignUpFail}">
     <script>alert('${requestScope.userSignUpFail}')</script>
 </c:if>
 <div style="text-align: center">
-    <form action="../../signup" method="post">
+    <form action="${pageContext.request.contextPath}/signup" method="post">
         <fieldset title="Ingrese sus datos" class="wrapper">
             <div>
                 <label for="curp"><abbr title="Clave Única de Registro de Población">CURP</abbr></label><br>
