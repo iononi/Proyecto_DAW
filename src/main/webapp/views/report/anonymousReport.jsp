@@ -39,6 +39,11 @@
 </div>
 
 <div style="text-align: center">
+    <c:if test="${requestScope.reportInsertFail}">
+        <div style="text-align: center">
+            <span style="color: red; font-size: large; font-weight: bold">Sucedió un error al registrar el reporte.</span>
+        </div>
+    </c:if>
     <form action="../../anonymousReport" method="post">
         <fieldset title="Ingrese sus datos" class="wrapper">
 
