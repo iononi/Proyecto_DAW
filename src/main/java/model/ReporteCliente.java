@@ -4,10 +4,10 @@ import java.io.Serializable;
 
 public class ReporteCliente implements Serializable {
 
-    public long folio;
-    private long fkCliente;
-    private long fkTipoResiduo;
-    private long fkMetodoPago;
+    public int folio;
+    private int fkCliente;
+    private int fkTipoResiduo;
+    private int fkMetodoPago;
     private boolean pagado;
     private short fkEstado;
 
@@ -16,44 +16,53 @@ public class ReporteCliente implements Serializable {
 
     }
 
-    public ReporteCliente(long folio, long fkCliente, long fkTipoResiduo, long fkMetodoPago, boolean pagado, short fkEstado) {
-        this.folio = folio;
-        this.fkCliente = fkCliente;
-        this.fkTipoResiduo = fkTipoResiduo;
-        this.fkMetodoPago = fkMetodoPago;
-        this.pagado = pagado;
+    public ReporteCliente(int folio, int fkCliente, int fkTipoResiduo, int fkMetodoPago, boolean pagado, short fkEstado) {
+        setFolio(folio);
+        setFkCliente(fkCliente);
+        setFkTipoResiduo(fkTipoResiduo);
+        setFkMetodoPago(fkMetodoPago);
+        setPagado(pagado);
         setFkEstado(fkEstado);
     }
 
-    public long getFolio() {
+    // Insertion constructor
+    public ReporteCliente(int fkCliente, int fkTipoResiduo, int fkMetodoPago, boolean pagado, short fkEstado) {
+        setFkCliente(fkCliente);
+        setFkTipoResiduo(fkTipoResiduo);
+        setFkMetodoPago(fkMetodoPago);
+        setPagado(pagado);
+        setFkEstado(fkEstado);
+    }
+
+    public int getFolio() {
         return folio;
     }
 
-    public void setFolio(long folio) {
+    public void setFolio(int folio) {
         this.folio = (folio < 0) ? 0 : folio;
     }
 
-    public long getFkCliente() {
+    public int getFkCliente() {
         return fkCliente;
     }
 
-    public void setFkCliente(long fkCliente) {
+    public void setFkCliente(int fkCliente) {
         this.fkCliente = (fkCliente <= 0) ? 1 : fkCliente;
     }
 
-    public long getFkTipoResiduo() {
+    public int getFkTipoResiduo() {
         return fkTipoResiduo;
     }
 
-    public void setFkTipoResiduo(long fkTipoResiduo) {
+    public void setFkTipoResiduo(int fkTipoResiduo) {
         this.fkTipoResiduo = (fkTipoResiduo <= 0) ? 1 : fkTipoResiduo;
     }
 
-    public long getFkMetodoPago() {
+    public int getFkMetodoPago() {
         return fkMetodoPago;
     }
 
-    public void setFkMetodoPago(long fkMetodoPago) {
+    public void setFkMetodoPago(int fkMetodoPago) {
         this.fkMetodoPago = (fkMetodoPago <= 0) ? 1 : fkMetodoPago;
     }
 
