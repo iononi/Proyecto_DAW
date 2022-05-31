@@ -13,7 +13,7 @@ import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
 
-@WebServlet(name = "ReportServlet", value = {"/clientReport", "/anonymousReport", "/anonymousReportRequest"})
+@WebServlet(name = "ReportServlet", value = {"/clientReport", "/anonymousReport", "/anonymousReportRequest", "/clientReportRequest"})
 public class ReportServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -24,7 +24,14 @@ public class ReportServlet extends HttpServlet {
         paymentMethod.selectAll();
         request.getSession(true).setAttribute("wasteType", wasteType.getTrashList());
         request.getSession(true).setAttribute("paymentMethod", paymentMethod.getPaymentList());
-        response.sendRedirect("views/report/anonymousReport.jsp");
+        switch ( request.getServletPath() ) {
+            case "/anonymousReportRequest":
+                response.sendRedirect("views/report/anonymousReport.jsp");
+                break;
+            case "/clientReportRequest":
+                response.sendRedirect("views/report/clientReport.jsp");
+                break;
+        }
     }
 
     @Override
