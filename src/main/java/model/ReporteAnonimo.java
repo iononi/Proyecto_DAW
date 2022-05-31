@@ -34,6 +34,22 @@ public class ReporteAnonimo implements Serializable {
         setCorreo(correo);
     }
 
+    // Insertion constructor
+    public ReporteAnonimo(String nombre, String apellidop, String apellidom, String telefono, String extension,
+                          Direccion dir, String correo, int fkTipoResiduo, int fkMetodoPago, boolean pagado, short fk_estado) {
+        setNombre(nombre);
+        setApellidop(apellidop);
+        setApellidom(apellidom);
+        setTelefono(telefono);
+        setExtension(extension);
+        setDir(dir);
+        setCorreo(correo);
+        setFkTipoResiduo(fkTipoResiduo);
+        setFkMetodoPago(fkMetodoPago);
+        setPagado(pagado);
+        setFk_estado(fk_estado);
+    }
+
     public int getFolio() {
         return folio;
     }
