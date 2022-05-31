@@ -29,6 +29,7 @@
     </c:if>
 
     <c:if test="${sessionScope.currentUser != null}">
+        <a href="clientReportRequest">Haz tu reporte</a>
         <a href="views/user/profile.jsp">Mi Perfil</a>
     </c:if>
 </div>
