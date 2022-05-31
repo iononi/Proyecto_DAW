@@ -257,3 +257,11 @@
 0:0:0:0:0:0:0:1 - - [30/May/2022:22:31:13 -0500] "GET /FinalProject/views/user/profile.jsp HTTP/1.1" 200 193 http-bio-8080-exec-9 5
 0:0:0:0:0:0:0:1 - - [30/May/2022:22:31:15 -0500] "POST /FinalProject/logout HTTP/1.1" 302 - http-bio-8080-exec-10 2
 0:0:0:0:0:0:0:1 - - [30/May/2022:22:31:15 -0500] "GET /FinalProject/index.jsp HTTP/1.1" 200 3063 http-bio-8080-exec-2 4
+0:0:0:0:0:0:0:1 - - [30/May/2022:22:44:23 -0500] "GET /FinalProject HTTP/1.1" 302 - http-bio-8080-exec-2 0
+0:0:0:0:0:0:0:1 - - [30/May/2022:22:44:23 -0500] "GET /FinalProject/ HTTP/1.1" 200 3063 http-bio-8080-exec-3 67
+0:0:0:0:0:0:0:1 - - [30/May/2022:22:44:25 -0500] "GET /FinalProject/views/user/login.jsp HTTP/1.1" 200 999 http-bio-8080-exec-4 37
+0:0:0:0:0:0:0:1 - - [30/May/2022:22:44:29 -0500] "POST /FinalProject/login HTTP/1.1" 302 - http-bio-8080-exec-5 248
+0:0:0:0:0:0:0:1 - - [30/May/2022:22:44:29 -0500] "GET /FinalProject/index.jsp HTTP/1.1" 200 2878 http-bio-8080-exec-6 6
+0:0:0:0:0:0:0:1 - - [30/May/2022:22:44:30 -0500] "GET /FinalProject/views/user/profile.jsp HTTP/1.1" 200 193 http-bio-8080-exec-7 11
+0:0:0:0:0:0:0:1 - - [30/May/2022:22:44:32 -0500] "POST /FinalProject/logout HTTP/1.1" 302 - http-bio-8080-exec-8 3
+0:0:0:0:0:0:0:1 - - [30/May/2022:22:44:32 -0500] "GET /FinalProject/index.jsp HTTP/1.1" 200 3063 http-bio-8080-exec-9 1
