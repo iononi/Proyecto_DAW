@@ -36,7 +36,7 @@ public class LoginServlet extends HttpServlet {
 
                     // If exists, redirect the user to index.jsp with new session created for user
                     request.getSession().setAttribute("currentUser", user);
-                    if ( request.getSession().getAttribute("calledFromAnonymousReport").equals(true) ) // if servlet was called from anonymousReport.jsp view
+                    if ( request.getSession().getAttribute("calledFromAnonymousReport") != null ) // if servlet was called from anonymousReport.jsp view
                         response.sendRedirect("views/report/clientReport.jsp");
                     else
                         response.sendRedirect("./index.jsp");
