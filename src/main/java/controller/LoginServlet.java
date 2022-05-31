@@ -28,8 +28,10 @@ public class LoginServlet extends HttpServlet {
                 int password = request.getParameter("password").hashCode();
                 user = client.find(email, password);
                 // If not exists, throw login error
-                if ( user == null )
-                    response.sendRedirect("views/user/loginFail.jsp");
+                if ( user == null ) {
+                    request.setAttribute("userNotFound", true);
+                    request.getRequestDispatcher("/views/user/login.jsp").forward(request, response);
+                }
                 else {
                     if ( user.isAdmin() )
                         request.getSession().setAttribute("userIsAdmin", true); // grant admin access
