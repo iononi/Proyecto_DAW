@@ -36,7 +36,7 @@ public class ReporteAnonimoDao implements CrudUtilities<ReporteAnonimo> {
                             " fk_tiporesiduo, fk_metodopago, pagado, direccion, fk_estado, correo) VALUES ('%s', '%s', '%s', '%s', '%s', %d, %d, %b, " +
                             "ROW('%s', '%s', '%s', '%s', %d, %d, '%s', '%s', '%s), %d, '%s');",
                     entity.getNombre(), entity.getApellidop(), entity.getApellidom(), entity.getTelefono(), entity.getExtension(),
-                    entity.getFkTipoResiduo(), entity.getFkMetodoPago(), false, entity.getDir().getCodigoPostal(),
+                    entity.getFkTipoResiduo(), entity.getFkMetodoPago(), entity.isPagado(), entity.getDir().getCodigoPostal(),
                     entity.getDir().getColonia(), entity.getDir().getCalle(), entity.getDir().getReferencias(),
                     entity.getDir().getNumeroExterior(), entity.getDir().getNumeroInterior(), entity.getDir().getCiudad(),
                     entity.getDir().getMunicipio(), entity.getDir().getEstado(), entity.getFk_estado(), entity.getCorreo());
@@ -44,22 +44,6 @@ public class ReporteAnonimoDao implements CrudUtilities<ReporteAnonimo> {
             // Se ejecuta la instrucción 'insertion_query' y, en caso de ser posible la inserción, devuelve un true.
             // Devuelve false en caso contrario y por lo tanto no se pudo insertar en la BD.
             if (DBC.executeQuery(insertion_query)) {
-                DBC.executeQuery(paymentMethod);
-                    if (DBC.getResultSet() != null) {
-                        String payment = DBC.getResultSet().getString(1);
-                        if (payment.equals("Tarjeta debito") || payment.equals("Tarjeta credito")) {
-                            // actualizar el campo pagado a true con update()
-                            // hacer verificacion con API para pago
-                            entity.setPagado(true);
-                            if ( update(entity) )
-                                System.out.println("Se ha actualizado el estado del pago del reporte.");
-                            else {
-                                System.out.println("Ocurrió un error al actualizar el estado del pago.");
-                                return false;
-                            }
-                        }
-                    }
-
                 System.out.println("La base de datos ha sido actualizada! :D");
             } else {
                 System.out.println("No se ha podido registrar el reporte :/");
