@@ -28,27 +28,14 @@ public class ReporteClienteDao implements CrudUtilities<ReporteCliente> {
         DBC.createStmt();   // creamos el statement necesario para ejecutar queries
         try {
             String insertion_query = String.format("INSERT INTO ReporteCliente(fk_cliente, fk_tiporesiduo, " +
-                    "fk_metodopago, pagado) VALUES (%d, %d, %d, %b)", entity.getFkCliente(), entity.getFkTipoResiduo(),
-                    entity.getFkMetodoPago(), false);
+                    "fk_metodopago, pagado, fk_estado) VALUES (%d, %d, %d, %b, %d)", entity.getFkCliente(), entity.getFkTipoResiduo(),
+                    entity.getFkMetodoPago(), entity.getPagado(), entity.getFkEstado());
 
             // Se ejecuta la instrucción 'insertion_query' y, en caso de ser posible la inserción, devuelve un true.
             // Devuelve false en caso contrario y por lo tanto no se pudo insertar en la BD.
-            if (DBC.executeQuery(insertion_query)) {
-
-                try {
-                    DBC.getStatement().executeQuery(paymentMethod);
-                    if (DBC.getResultSet() != null) {
-                        String payment = DBC.getResultSet().getString(1);
-                        if (payment.equals("Tarjeta credito/debito")) {
-                            // actualizar el campo pagado a true con update()
-                        }
-                    }
-                } catch(SQLException ex) {
-                    ex.printStackTrace();
-                }
+            if ( DBC.executeQuery(insertion_query) ) {
                 System.out.println("La base de datos ha sido actualizada! :D");
-            }
-            else {
+            } else {
                 System.out.println("No se ha podido registrar el reporte :/");
                 return false;
             }
@@ -72,7 +59,7 @@ public class ReporteClienteDao implements CrudUtilities<ReporteCliente> {
 
             String delete_query = String.format("DELETE FROM ReporteCliente WHERE folio = %d;", id);
 
-            if (DBC.getStatement().execute(delete_query)) // si el método execute() regresa true, se pudo eliminar.
+            if (DBC.executeQuery(delete_query)) // si el método execute() regresa true, se pudo eliminar.
                 System.out.println("Se ha eliminado el reporte :D");
             else {
                 System.out.println("Ocurrió un error al eliminar el reporte :/");
@@ -91,8 +78,8 @@ public class ReporteClienteDao implements CrudUtilities<ReporteCliente> {
     @Override
     public boolean update(ReporteCliente entity) {
         String updateQuery = String.format("UPDATE ReporteCliente SET fk_cliente = %d, fk_tiporesiduo = %d, " +
-                "fk_metodopago = %d, pagado = %b WHERE folio = %d;", entity.getFkCliente(), entity.getFkTipoResiduo(),
-                entity.getFkMetodoPago(), entity.getPagado(), entity.getFolio());
+                "fk_metodopago = %d, pagado = %b, fk_estado = %d WHERE folio = %d;", entity.getFkCliente(), entity.getFkTipoResiduo(),
+                entity.getFkMetodoPago(), entity.getPagado(), entity.getFkEstado(), entity.getFolio());
 
         return executeUpdate(updateQuery, DBC, entity.getFolio());
     }
@@ -172,8 +159,9 @@ public class ReporteClienteDao implements CrudUtilities<ReporteCliente> {
                 int fkResiduo = rs.getInt("fk_tiporesiduo");
                 int fkPago = rs.getInt("fk_metodopago");
                 boolean paidOut = rs.getBoolean("pagado");
+                short fkEstado = rs.getShort("fk_estado");
 
-                tempList.add( new ReporteCliente(folio, fkCliente, fkResiduo, fkPago, paidOut) );
+                tempList.add( new ReporteCliente(folio, fkCliente, fkResiduo, fkPago, paidOut, fkEstado) );
             }
 
             return tempList;

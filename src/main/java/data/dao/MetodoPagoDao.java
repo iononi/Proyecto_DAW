@@ -19,6 +19,10 @@ public class MetodoPagoDao implements CrudUtilities<MetodoPago> {
         paymentList = null;
     }
 
+    public LinkedList<MetodoPago> getPaymentList() {
+        return paymentList;
+    }
+
     @Override
     public boolean insert(MetodoPago entity) {
         System.out.println("Insertando método de pago...");

@@ -1,7 +1,7 @@
 package data.dao;
 
 import data.database.ConnectionDB;
-import model.Cliente;
+import model.Usuario;
 import model.Direccion;
 import org.postgresql.util.PGobject;
 
@@ -11,43 +11,43 @@ import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class ClienteDao implements CrudUtilities<Cliente> {
+public class UsuarioDao implements CrudUtilities<Usuario> {
 
     private final ConnectionDB DBC;
-    private LinkedList<Cliente> clientList; // Lista de clientes.
+    private LinkedList<Usuario> userList; // Lista de clientes.
 
-    public ClienteDao() {
+    public UsuarioDao() {
         DBC = new ConnectionDB("basura", "postgres", "lalo123");
-        clientList = null;
+        userList = null;
     }
 
-    public LinkedList<Cliente> getClientList() {
-        return clientList;
+    public LinkedList<Usuario> getClientList() {
+        return userList;
     }
 
-    public boolean insert(Cliente entity) {
-        System.out.println("Insertando cliente...");
+    public boolean insert(Usuario entity) {
+        System.out.println("Insertando usuario...");
         DBC.setConnection(); // establecemos conexión con la base de datos
         DBC.createStmt();   // creamos el statement necesario para ejecutar queries
         try {
 
-            Direccion clientDir = entity.getDir();
+            Direccion userDir = entity.getDir();
 
-            String insertion_query = String.format("INSERT INTO Cliente (curp, rfc, nombre, apellidop, apellidom, correo, " +
-                            "contraseña, telefono, \"Extension\", direction) VALUES " +
-                    "('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', ROW('%s', '%s', '%s', '%s', %d, %d, '%s', '%s', '%s')) " +
-                            "RETURNING clienteid", entity.getCurp(), entity.getRfc(), entity.getNombre(),
-                    entity.getApellidop(), entity.getApellidom(), entity.getCorreo(), entity.getContrasenia(),
-                    entity.getTelefono(), entity.getExtension(), clientDir.getCodigoPostal(), clientDir.getColonia(),
-                    clientDir.getCalle(), clientDir.getReferencias(), clientDir.getNumeroExterior(), clientDir.getNumeroInterior(),
-                    clientDir.getCiudad(), clientDir.getMunicipio(), clientDir.getEstado());
+            String insertion_query = String.format("INSERT INTO Usuario (curp, rfc, nombre, apellidop, apellidom, fk_rol, correo, " +
+                            "contrasenia, telefono, \"Extension\", direccion) VALUES " +
+                    "('%s', '%s', '%s', '%s', '%s', %d, '%s', '%s', '%s', '%s', ROW('%s', '%s', '%s', '%s', %d, %d, '%s', '%s', '%s')) " +
+                            "RETURNING usuarioid;", entity.getCurp(), entity.getRfc(), entity.getNombre(),
+                    entity.getApellidop(), entity.getApellidom(), entity.getFk_rol(), entity.getCorreo(), entity.getContrasenia(),
+                    entity.getTelefono(), entity.getExtension(), userDir.getCodigoPostal(), userDir.getColonia(),
+                    userDir.getCalle(), userDir.getReferencias(), userDir.getNumeroExterior(), userDir.getNumeroInterior(),
+                    userDir.getCiudad(), userDir.getMunicipio(), userDir.getEstado());
 
             // Se ejecuta la instrucción 'insertion_query' y, en caso de ser posible la inserción, devuelve un true.
             // Devuelve false en caso contrario y por lo tanto no se pudo insertar en la BD.
             if (DBC.executeQuery(insertion_query))
-                System.out.println("La base de datos ha sido actualizada! :D");
+                System.out.println("Se ha registrado al usuario! :D");
             else {
-                System.out.println("No se ha podido insertar al cliente :/");
+                System.out.println("No se ha podido insertar al usuario :/");
                 return false;
             }
         } catch (SQLException ex) {
@@ -63,28 +63,28 @@ public class ClienteDao implements CrudUtilities<Cliente> {
     @Override
     public boolean delete(int id) {
         select(id);
-        if (clientList == null || clientList.size() == 0) {
-            System.out.println("No hay registro del cliente con ID: " + id);
+        if (userList == null || userList.size() == 0) {
+            System.out.println("No hay registro del usuario con ID: " + id);
             return false;
         }
         DBC.setConnection(); // establecemos conexión con la BD
         DBC.createStmt();   // creamos el statement para ejecutar queries
 
-        System.out.println("Eliminando cliente...");
+        System.out.println("Eliminando usuario...");
 
         try {
 
-            String delete_query = String.format("DELETE FROM Cliente WHERE clienteid = %d;", id);
+            String delete_query = String.format("DELETE FROM Usuario WHERE usuarioid = %d;", id);
 
             if (DBC.executeQuery(delete_query)) // si el método execute() regresa true, se pudo eliminar.
-                System.out.println("Se ha eliminado el cliente! :D");
+                System.out.println("Se ha eliminado el usuario.");
             else {
-                System.out.println("Ocurrió un error al eliminar al cliente :/");
+                System.out.println("Ocurrió un error al eliminar al usuario.");
                 return false;
             }
 
         } catch (SQLException ex) {
-            Logger.getLogger(ConnectionDB.class.getName()).log(Level.SEVERE, "Ocurrió un error al eliminar al cliente.", ex);
+            Logger.getLogger(ConnectionDB.class.getName()).log(Level.SEVERE, "Ocurrió un error al eliminar al usuario.", ex);
             return false;
         } finally {
             DBC.closeStmt(); // Cerramos el statement
@@ -95,10 +95,10 @@ public class ClienteDao implements CrudUtilities<Cliente> {
 
 
     @Override
-    public boolean update(Cliente entity) {
-        String updateQuery = String.format("UPDATE Cliente SET curp = '%s', rfc = '%s', nombre = '%s', apellidop = '%s', " +
-                "apellidom = '%s', correo = '%s', telefono = '%s', \"Extension\" = '%s', direction = ('%s', '%s', '%s', '%s', %d, %d, '%s', '%s', '%s') " +
-                        "WHERE clienteid = %d",
+    public boolean update(Usuario entity) {
+        String updateQuery = String.format("UPDATE Usuario SET curp = '%s', rfc = '%s', nombre = '%s', apellidop = '%s', " +
+                "apellidom = '%s', correo = '%s', telefono = '%s', \"Extension\" = '%s', direccion = ('%s', '%s', '%s', '%s', %d, %d, '%s', '%s', '%s') " +
+                        "WHERE usuarioid = %d",
                 entity.getCurp(), entity.getRfc(), entity.getNombre(), entity.getApellidop(), entity.getApellidom(),
                 entity.getCorreo(), entity.getTelefono(), entity.getExtension(), entity.getDir().getCodigoPostal(),
                 entity.getDir().getColonia(), entity.getDir().getCalle(), entity.getDir().getReferencias(),
@@ -109,9 +109,9 @@ public class ClienteDao implements CrudUtilities<Cliente> {
 
         try {
             if (DBC.executeQuery(updateQuery)) {
-                System.out.println("Los datos del cliente " + entity.getNombre() + " han sido actualizados");
+                System.out.println("Los datos del usuario " + entity.getNombre() + " han sido actualizados");
             } else {
-                System.out.println("Los datos del cliente " + entity.getNombre() + " no se pudieron actualizar.");
+                System.out.println("Los datos del usuario " + entity.getNombre() + " no se pudieron actualizar.");
                 return false;
             }
         } catch (SQLException e) {
@@ -130,16 +130,16 @@ public class ClienteDao implements CrudUtilities<Cliente> {
         DBC.setConnection(); // Establecemos conexión con la BD
         DBC.createStmt();   // Creamos el Statement
 
-        System.out.printf("Consultando datos del cliente con ID: %d...\n", id);
-        String select_query = String.format("SELECT * FROM Cliente WHERE clienteid = %d;", id);
+        System.out.printf("Consultando datos del usuario con ID: %d...\n", id);
+        String select_query = String.format("SELECT * FROM Usuario WHERE usuarioid = %d;", id);
 
         try {
             if (DBC.runQuery(select_query)) // Si el método executeQuery() regresa true, se encontró al cliente
-                clientList = fetchData(DBC.getResultSet()); // Obtiene los datos del ResultSet y lo guarda en clientList
-            if (clientList == null || clientList.size() == 0)
-                System.out.println("No se encontró al cliente con ID: " + id);
+                userList = fetchData(DBC.getResultSet()); // Obtiene los datos del ResultSet y lo guarda en userList
+            if (userList == null || userList.size() == 0)
+                System.out.println("No se encontró al usuario con ID: " + id);
         } catch (SQLException ex) {
-            System.out.println("Error al recuperar los datos de la tabla cliente.");
+            System.out.println("Error al recuperar los datos de la tabla usuario.");
             Logger.getLogger(ConnectionDB.class.getName()).log(Level.SEVERE, "No se pudo recuperar los datos.", ex);
         } finally {
             DBC.disconnect();
@@ -153,14 +153,14 @@ public class ClienteDao implements CrudUtilities<Cliente> {
     public void selectAll() {
         DBC.setConnection(); // Establecemos conexión con la BD
         DBC.createStmt();   // Creamos el statement
-        System.out.println("Recuperando los datos de los 'Clientes'...\n");
+        System.out.println("Recuperando los datos de los 'Usuarios'...\n");
         try {
-            if (DBC.runQuery("SELECT * FROM Cliente;")) // Si se pudo ejecutar la consulta
-                clientList = fetchData(DBC.getResultSet()); // recupera los datos del ResultSet
-            if (clientList == null || clientList.size() == 0)
-                System.out.println("No se ha registrado ningún cliente.");
+            if (DBC.runQuery("SELECT * FROM Usuario;")) // Si se pudo ejecutar la consulta
+                userList = fetchData(DBC.getResultSet()); // recupera los datos del ResultSet
+            if (userList == null || userList.size() == 0)
+                System.out.println("No se ha registrado ningún usuario.");
         } catch (SQLException ex) {
-            System.out.println("Error al recuperar los datos de la tabla cliente.");
+            System.out.println("Error al recuperar los datos de la tabla usuario.");
             Logger.getLogger(ConnectionDB.class.getName()).log(Level.SEVERE, "No se pudo recuperar los datos.", ex);
         } finally {
             DBC.closeStmt(); // Cerramos el statement
@@ -170,22 +170,23 @@ public class ClienteDao implements CrudUtilities<Cliente> {
     }
 
     @Override
-    public LinkedList<Cliente> fetchData(ResultSet rs) {
-        LinkedList<Cliente> tempList = new LinkedList<>();
+    public LinkedList<Usuario> fetchData(ResultSet rs) {
+        LinkedList<Usuario> tempList = new LinkedList<>();
         try {
-            while (rs.next()) { // Mientras haya un registro en el ResultSet, obtén los datos del cliente
-                int clienteID = rs.getInt("clienteid");
+            while (rs.next()) { // Mientras haya un registro en el ResultSet, obtén los datos del usuario
+                int usuarioID = rs.getInt("usuarioid");
                 String curp = rs.getString("curp");
                 String rfc = rs.getString("rfc");
                 String nombre = rs.getString("nombre");
                 String apellidop = rs.getString("apellidop");
                 String apellidom = rs.getString("apellidom");
+                short fk_rol = rs.getShort("fk_rol");
                 String correo = rs.getString("correo");
-                String contrasenia = rs.getString("contraseña");
+                String contrasenia = rs.getString("contrasenia");
                 String telefono = rs.getString("telefono");
                 String extension = rs.getString("extension");
 
-                PGobject direction = (PGobject) rs.getObject("direction");
+                PGobject direction = (PGobject) rs.getObject("direccion");
                 String myDir = direction.getValue().replaceFirst("\\(", "").replaceFirst("\\)", "");
                 myDir = myDir.replaceAll("\"", "");
                 String[] dir = myDir.split(",");
@@ -203,9 +204,9 @@ public class ClienteDao implements CrudUtilities<Cliente> {
                         ciudad, municipio, estado);
 
 
-                Cliente cliente = new Cliente(clienteID, curp, rfc, nombre, apellidop, apellidom, correo, contrasenia,
+                Usuario usuario = new Usuario(usuarioID, curp, rfc, nombre, apellidop, apellidom, fk_rol, correo, contrasenia,
                         extension, telefono, direccion);
-                tempList.add(cliente);
+                tempList.add(usuario);
             }
 
             return tempList;
@@ -217,16 +218,16 @@ public class ClienteDao implements CrudUtilities<Cliente> {
         }
     }
 
-    public Cliente find(String email, int password) {
-        String findQuery = String.format("SELECT * FROM Cliente WHERE correo = '%s' AND contraseña = '%s';", email, password);
-        clientList = null;
+    public Usuario find(String email, int password) {
+        String findQuery = String.format("SELECT * FROM Usuario WHERE correo = '%s' AND contrasenia = '%s';", email, password);
+        userList = null;
         DBC.setConnection();
         DBC.createStmt();
 
         try {
             if (DBC.runQuery(findQuery))
-                clientList = fetchData(DBC.getResultSet());
-            if (clientList == null || clientList.size() == 0)
+                userList = fetchData(DBC.getResultSet());
+            if (userList == null || userList.size() == 0)
                 return null;
         } catch (Exception ex) {
             Logger.getLogger(ConnectionDB.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
@@ -235,6 +236,6 @@ public class ClienteDao implements CrudUtilities<Cliente> {
             DBC.closeStmt();
             DBC.disconnect();
         }
-        return clientList.get(0);
+        return userList.get(0);
     }
 }

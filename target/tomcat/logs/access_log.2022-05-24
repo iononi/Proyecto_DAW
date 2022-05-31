@@ -1,0 +1,16 @@
+0:0:0:0:0:0:0:1 - - [24/May/2022:17:15:38 -0500] "GET /FinalProject HTTP/1.1" 302 - http-bio-8080-exec-2 0
+0:0:0:0:0:0:0:1 - - [24/May/2022:17:15:40 -0500] "GET /FinalProject/ HTTP/1.1" 200 3046 http-bio-8080-exec-3 1456
+0:0:0:0:0:0:0:1 - - [24/May/2022:17:15:40 -0500] "GET /FinalProject/static/css/styles.css HTTP/1.1" 200 910 http-bio-8080-exec-4 10
+0:0:0:0:0:0:0:1 - - [24/May/2022:17:15:40 -0500] "GET /FinalProject/images/logo-veracruz-1.png HTTP/1.1" 200 27672 http-bio-8080-exec-5 10
+0:0:0:0:0:0:0:1 - - [24/May/2022:17:15:40 -0500] "GET /FinalProject/images/logo-me-llena-de-orgullo.png HTTP/1.1" 200 4674 http-bio-8080-exec-7 9
+0:0:0:0:0:0:0:1 - - [24/May/2022:17:15:42 -0500] "GET /FinalProject/images/veracruz.ico HTTP/1.1" 200 132542 http-bio-8080-exec-8 11
+0:0:0:0:0:0:0:1 - - [24/May/2022:17:17:20 -0500] "GET /FinalProject/views/user/login.jsp HTTP/1.1" 200 981 http-bio-8080-exec-10 189
+0:0:0:0:0:0:0:1 - - [24/May/2022:17:17:40 -0500] "GET /FinalProject/views/admin/loginAdmin.jsp HTTP/1.1" 200 996 http-bio-8080-exec-3 183
+0:0:0:0:0:0:0:1 - - [24/May/2022:17:18:08 -0500] "GET /FinalProject/views/user/login.jsp HTTP/1.1" 200 981 http-bio-8080-exec-7 9
+0:0:0:0:0:0:0:1 - - [24/May/2022:17:18:12 -0500] "GET /FinalProject/views/admin/loginAdmin.jsp HTTP/1.1" 200 996 http-bio-8080-exec-7 3
+0:0:0:0:0:0:0:1 - - [24/May/2022:17:25:23 -0500] "GET /FinalProject/views/user/login.jsp HTTP/1.1" 200 981 http-bio-8080-exec-1 8
+0:0:0:0:0:0:0:1 - - [24/May/2022:17:25:29 -0500] "GET /FinalProject/views/admin/loginAdmin.jsp HTTP/1.1" 200 996 http-bio-8080-exec-1 3
+0:0:0:0:0:0:0:1 - - [24/May/2022:17:25:36 -0500] "GET /FinalProject/views/admin/loginAdmin.jsp HTTP/1.1" 200 996 http-bio-8080-exec-1 4
+0:0:0:0:0:0:0:1 - - [24/May/2022:17:25:38 -0500] "GET /FinalProject/views/admin/signupAdmin.jsp HTTP/1.1" 200 5165 http-bio-8080-exec-1 238
+0:0:0:0:0:0:0:1 - - [24/May/2022:17:27:14 -0500] "GET /FinalProject/views/admin/loginAdmin.jsp HTTP/1.1" 200 996 http-bio-8080-exec-7 5
+0:0:0:0:0:0:0:1 - - [24/May/2022:17:27:17 -0500] "GET /FinalProject/views/admin/signupAdmin.jsp HTTP/1.1" 200 5165 http-bio-8080-exec-7 5

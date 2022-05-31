@@ -2,7 +2,7 @@ package model;
 
 import java.io.Serializable;
 
-public class Cliente implements Serializable {
+public class Usuario implements Serializable {
 
     private int clienteId;
     private String curp;
@@ -10,25 +10,27 @@ public class Cliente implements Serializable {
     private String nombre;
     private String apellidop;
     private String apellidom;
+    private short fk_rol;
     private String correo;
     private int contrasenia; // se guarda como hash por seguridad
     private String extension;
     private String telefono;
     private Direccion dir;
 
-    public Cliente() {
+    public Usuario() {
 
     }
 
     // Main constructor
-    public Cliente(int clienteId, String curp, String rfc, String nombre, String apellidop, String apellidom,
-                   String correo, String contrasenia, String extension, String tel, Direccion dir) {
+    public Usuario(int clienteId, String curp, String rfc, String nombre, String apellidop, String apellidom,
+                   short fk_rol, String correo, String contrasenia, String extension, String tel, Direccion dir) {
         setClienteId(clienteId);
         setCurp(curp);
         setRfc(rfc);
         setNombre(nombre);
         setApellidop(apellidop);
         setApellidom(apellidom);
+        setFk_rol(fk_rol);
         setCorreo(correo);
         setContrasenia(contrasenia);
         setExtension(extension);
@@ -37,13 +39,14 @@ public class Cliente implements Serializable {
     }
 
     // Insertion constructor method
-    public Cliente(String curp, String rfc, String nombre, String apellidop, String apellidom, String correo,
-                   String contrasenia, String extension, String telefono, Direccion dir) {
+    public Usuario(String curp, String rfc, String nombre, String apellidop, String apellidom, short fk_rol,
+                   String correo, String contrasenia, String extension, String telefono, Direccion dir) {
         setCurp(curp);
         setRfc(rfc);
         setNombre(nombre);
         setApellidop(apellidop);
         setApellidom(apellidom);
+        setFk_rol(fk_rol);
         setCorreo(correo);
         setContrasenia(contrasenia);
         setExtension(extension);
@@ -114,6 +117,14 @@ public class Cliente implements Serializable {
             this.apellidom = "";
     }
 
+    public short getFk_rol() {
+        return fk_rol;
+    }
+
+    public void setFk_rol(short fk_rol) {
+        this.fk_rol = fk_rol;
+    }
+
     public String getCorreo() {
         return correo;
     }
@@ -167,10 +178,14 @@ public class Cliente implements Serializable {
         this.dir = dir;
     }
 
+    public boolean isAdmin() {
+        return (this.fk_rol == 1);
+    }
+
     @Override
     public String toString() {
         return String.format("ID: %d\nCURP: %s\nRFC: %s\nNombre: %s\nApellido Paterno: %s\nApellido Materno: %s\n" +
-                "Correo: %s\nTelefono: (%s) %s\n\n== Direccion ==\n%s", clienteId, curp, rfc, nombre, apellidop, apellidom,
-                correo, extension, telefono, dir);
+                "Rol: %d\nCorreo: %s\nTelefono: (%s) %s\n\n== Direccion ==\n%s", clienteId, curp, rfc, nombre,
+                apellidop, apellidom, fk_rol, correo, extension, telefono, dir);
     }
 }

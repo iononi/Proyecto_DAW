@@ -23,45 +23,26 @@ public class ReporteAnonimoDao implements CrudUtilities<ReporteAnonimo> {
 
     @Override
     public boolean insert(ReporteAnonimo entity) {
-        String paymentMethod = "SELECT public.metodopago.metodopago FROM reporteanonimo\n" +
-                "INNER JOIN metodopago ON reporteanonimo.fk_metodopago = metodopago.metodoid\n" +
-        "WHERE metodopago.metodoid = %d" + entity.getFkMetodoPago();
         System.out.println("Registrando reporte anónimo...");
         DBC.setConnection(); // establecemos conexión con la base de datos
         DBC.createStmt();   // creamos el statement necesario para ejecutar queries
         try {
 
 
-            String insertion_query = String.format("INSERT INTO ReporteAnonimo(nombre, apellidop, apellidom, telefono, \"Extension\"," +
-                            " fk_tiporesiduo, fk_metodopago, pagado, direction) VALUES ('%s', '%s', '%s', '%s', '%s', %d, %d, %b, " +
-                            "ROW('%s', '%s', '%s', '%s', %d, %d, '%s', '%s', '%s));",
-                    entity.getNombre(), entity.getApellidop(), entity.getApellidom(), entity.getTelefono(), entity.getExtension(),
-                    entity.getFkTipoResiduo(), entity.getFkMetodoPago(), false, entity.getDir().getCodigoPostal(),
+            String insertion_query = String.format("INSERT INTO ReporteAnonimo(nombre, apellidop, apellidom, telefono, direccion, \"Extension\"," +
+                            " fk_tiporesiduo, fk_metodopago, pagado, fk_estado, correo) VALUES ('%s', '%s', '%s', '%s', ROW('%s', '%s', '%s', '%s', %d, %d, '%s', '%s', '%s'), " +
+                            "'%s', %d, %d, %b, %d, '%s');",
+                    entity.getNombre(), entity.getApellidop(), entity.getApellidom(), entity.getTelefono(), entity.getDir().getCodigoPostal(),
                     entity.getDir().getColonia(), entity.getDir().getCalle(), entity.getDir().getReferencias(),
                     entity.getDir().getNumeroExterior(), entity.getDir().getNumeroInterior(), entity.getDir().getCiudad(),
-                    entity.getDir().getMunicipio(), entity.getDir().getEstado());
+                    entity.getDir().getMunicipio(), entity.getDir().getEstado(), entity.getExtension(),
+                    entity.getFkTipoResiduo(), entity.getFkMetodoPago(), entity.isPagado(), entity.getFk_estado(), entity.getCorreo());
 
             // Se ejecuta la instrucción 'insertion_query' y, en caso de ser posible la inserción, devuelve un true.
             // Devuelve false en caso contrario y por lo tanto no se pudo insertar en la BD.
             if (DBC.executeQuery(insertion_query)) {
-
-                try {
-                    DBC.executeQuery(paymentMethod);
-                    if (DBC.getResultSet() != null) {
-                        String payment = DBC.getResultSet().getString(1);
-                        if (payment.equals("Tarjeta credito/debito")) {
-                            // actualizar el campo pagado a true con update()
-                        }
-                    }
-                } catch(SQLException ex) {
-                    ex.printStackTrace();
-                }
-
                 System.out.println("La base de datos ha sido actualizada! :D");
-
-            }
-
-            else {
+            } else {
                 System.out.println("No se ha podido registrar el reporte :/");
                 return false;
             }
@@ -106,12 +87,12 @@ public class ReporteAnonimoDao implements CrudUtilities<ReporteAnonimo> {
     public boolean update(ReporteAnonimo entity) {
         String updateQuery = String.format("UPDATE ReporteAnonimo SET nombre = '%s', apellidop = '%s', apellidom = '%s', " +
                 "telefono = '%s', \"Extension\" = '%s', fk_tiporesiduo = %d, fk_metodopago = %d, pagado = %b, " +
-                "direction = ROW('%s', '%s', '%s', '%s', %d, %d, '%s', '%s', '%s') WHERE folio = %d;", entity.getNombre(),
+                "direccion = ROW('%s', '%s', '%s', '%s', %d, %d, '%s', '%s', '%s'), fk_estado = %d, correo = '%s' WHERE folio = %d;", entity.getNombre(),
                 entity.getApellidop(), entity.getApellidom(), entity.getTelefono(), entity.getExtension(), entity.getFkTipoResiduo(),
                 entity.getFkMetodoPago(), entity.isPagado(), entity.getDir().getCodigoPostal(), entity.getDir().getColonia(),
                 entity.getDir().getCalle(), entity.getDir().getReferencias(), entity.getDir().getNumeroExterior(),
                 entity.getDir().getNumeroInterior(), entity.getDir().getCiudad(), entity.getDir().getMunicipio(),
-                entity.getDir().getCiudad(), entity.getFolio());
+                entity.getDir().getCiudad(), entity.getFk_estado(), entity.getCorreo(), entity.getFolio());
 
         return ReporteClienteDao.executeUpdate(updateQuery, DBC, entity.getFolio());
     }
@@ -185,10 +166,12 @@ public class ReporteAnonimoDao implements CrudUtilities<ReporteAnonimo> {
                 String ciudad = dir[6];
                 String municipio = dir[7];
                 String estado = dir[8];
+                short fkEstado = rs.getShort("fk_estado");
+                String correo = rs.getString("correo");
 
                 tempList.add( new ReporteAnonimo(folio, nombre, apellidop, apellidom, telefono, extension,
                         new Direccion(codigoPostal, colonia, calle, ref, numeroExterior, numeroInterior, ciudad, municipio,
-                                estado), fkResiduo, fkPago, paidOut) );
+                                estado), fkResiduo, fkPago, paidOut, fkEstado, correo) );
             }
 
             return tempList;

@@ -1,40 +1,51 @@
 <%--
   Author: Eduardo Ruiz Rios
-  Date: 23/05/2022
-  Time: 3:27 p. m.
+  Date: 27/05/2022
+  Time: 7:13 p. m.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" isELIgnored="false" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<html>
+<!DOCTYPE html>
+<html lang="es">
 <head>
-    <title>Crear cuenta</title>
-    <link rel="shortcut icon" href="../../images/veracruz.ico" type="image/x-icon">
-    <link rel="stylesheet" href="../../static/css/styles.css" type="text/css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="text/html" charset="UTF-8">
+    <link rel="shortcut icon" href="${pageContext.request.contextPath}/images/veracruz.ico" type="image/x-icon">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/styles.css">
+    <title>¡Haz tu reporte!</title>
 </head>
 <body>
+<c:set var="calledFromAnonymousReport" value="${true}" scope="session"/>
 <div style="background-color: #dddddd; padding: 10px 10px 10px 10px">
-    <img src="../../images/logo-veracruz-1.png" alt="Logo Veracruz">
-    <img src="../../images/logo-me-llena-de-orgullo.png" alt="Veracruz me llena de orgullo" class="toRight">
+    <img src="${pageContext.request.contextPath}/images/logo-veracruz-1.png" alt="Logo Veracruz">
+    <img src="${pageContext.request.contextPath}/images/logo-me-llena-de-orgullo.png" alt="Veracruz me llena de orgullo" class="toRight">
 </div>
 
 <div class="topnav">
-    <a href="/FinalProject/index.jsp" style="font-size: larger">Inicio</a>
-</div>
-<c:if test="${requestScope.adminSignUpFail != null}">
-    <c:out value="${requestScope.adminSignUpFail}" />
-</c:if>
-<div style="text-align: center">
-    <form action="../../signupAdmin" method="post">
-        <fieldset title="Ingrese sus datos" class="wrapper">
-            <div>
-                <label for="curp"><abbr title="Clave Única de Registro de Población">CURP</abbr></label><br>
-                <input type="text" name="curp" id="curp" minlength="18" maxlength="18" required>
-            </div>
+    <a href="../../index.jsp">Inicio</a>
+    <c:if test="${empty sessionScope.currentUser}">
+        <a href="../user/signup.jsp">Registrarse</a>
+        <a href="../user/login.jsp">Iniciar sesión</a>
+    </c:if>
 
-            <div>
-                <label for="rfc"><abbr title="Registro Federal de Contribuyentes">RFC</abbr> (Opcional)</label><br>
-                <input type="text" name="rfc" id="rfc" minlength="13" maxlength="13">
-            </div>
+    <c:if test="${sessionScope.userIsAdmin}">
+        <a href="../user/signup.jsp">Registrar usuario</a>
+        <a href="../admin/admin.jsp">Administrador</a>
+    </c:if>
+
+    <c:if test="${sessionScope.currentUser != null}">
+        <a href="../user/profile.jsp">Mi Perfil</a>
+    </c:if>
+</div>
+
+<div style="text-align: center">
+    <c:if test="${requestScope.reportInsertFail}">
+        <div style="text-align: center">
+            <span style="color: red; font-size: large; font-weight: bold">Sucedió un error al registrar el reporte.</span>
+        </div>
+    </c:if>
+    <form action="../../anonymousReport" method="post">
+        <fieldset title="Ingrese sus datos" class="wrapper">
 
             <div>
                 <label for="nombre">Nombre(s)</label><br>
@@ -54,12 +65,6 @@
             <div>
                 <label for="correo">Correo electrónico</label><br>
                 <input type="email" name="correo" id="correo" placeholder="example@email.com" required>
-            </div>
-
-            <div>
-                <label for="contrasenia">Contraseña</label><br>
-                <input type="password" name="contrasenia" id="contrasenia" minlength="8" required><br>
-                <span style="color: red; font-size: small">*Debe contener mínimo 8 caracteres</span>
             </div>
 
             <div>
@@ -117,7 +122,32 @@
                 <input type="text" name="estado" id="estado" placeholder="Veracruz" onkeydown="return /[a-zA-Z ]/i.test(event.key)" required>
             </div>
 
-            <input type="submit" value="Registrarse">
+            <div>
+                <label for="tipoResiduo">Tipo de Residuo</label> <br>
+                <select name="tipoResiduo" id="tipoResiduo">
+                    <c:forEach var="wasteType" items="${sessionScope.wasteType}">
+                        <option value="${wasteType.residuoId}">${wasteType.tipoResiduo}</option>
+                    </c:forEach>
+                </select>
+            </div>
+
+            <div>
+                <label for="metodoPago">Metodo de pago</label> <br>
+                <select name="metodoPago" id="metodoPago">
+                    <c:forEach var="paymentMethod" items="${sessionScope.paymentMethod}">
+                        <option value="${paymentMethod.metodoId}">${paymentMethod.metodoPago}</option>
+                    </c:forEach>
+                </select>
+            </div>
+
+            <div>
+                <label for="status">Estado</label> <br>
+                <select name="status" id="status">
+                    <option value="1">Recibido</option>
+                </select>
+            </div>
+
+            <input type="submit" value="Registrar reporte">
 
         </fieldset>
     </form>

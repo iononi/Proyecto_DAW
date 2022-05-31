@@ -18,9 +18,16 @@
 
 <div class="topnav">
     <a href="./index.jsp">Inicio</a>
-    <a href="views/user/signup.jsp">Registrarse</a>
-    <a href="views/user/login.jsp">Iniciar sesión</a>
-    <a href="views/admin/loginAdmin.jsp">Administrador</a>
+    <c:if test="${empty sessionScope.currentUser}">
+        <a href="views/user/signup.jsp">Registrarse</a>
+        <a href="views/user/login.jsp">Iniciar sesión</a>
+    </c:if>
+    
+    <c:if test="${sessionScope.userIsAdmin}">
+        <a href="views/user/signup.jsp">Registrar usuario</a>
+        <a href="./views/admin/admin.jsp">Administrador</a>
+    </c:if>
+
     <c:if test="${sessionScope.currentUser != null}">
         <a href="views/user/profile.jsp">Mi Perfil</a>
     </c:if>
@@ -59,9 +66,12 @@
 </div>
 <br><br>
 <div style="text-align: center">
-    <a href="views/user/login.jsp">
-        <button style="width: 100px; height: 50px">¡Solicita tu servicio!</button>
-    </a>
+    <c:if test="${empty sessionScope.currentUser}">
+        <a href="anonymousReportRequest"> <%-- call to ReportServlet --%>
+            <button type="button" style="width: 100px; height: 50px">¡Solicita tu servicio!</button>
+        </a>
+    </c:if>
+
 </div>
 
 
