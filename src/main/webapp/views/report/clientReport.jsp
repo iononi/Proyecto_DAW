@@ -36,7 +36,11 @@
         <a href="../user/profile.jsp">Mi Perfil</a>
     </c:if>
 </div>
-
+<c:if test="${requestScope.reportInsertFail}">
+    <div style="text-align: center">
+        <span style="color: red; font-size: large; font-weight: bold">Sucedió un error al registrar el reporte.</span>
+    </div>
+</c:if>
 <div style="text-align: center">
     <form action="${pageContext.request.contextPath}/clientReport" method="post">
         <fieldset title="Ingrese sus datos" class="wrapper">
