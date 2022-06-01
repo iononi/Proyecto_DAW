@@ -182,4 +182,29 @@ public class ReporteAnonimoDao implements CrudUtilities<ReporteAnonimo> {
             return null;
         }
     }
+
+    public int retrieveLastReportId() {
+        int folio = -1;
+        DBC.setConnection();
+        DBC.createStmt();
+
+        String selectLastOne = "SELECT folio FROM reporteanonimo\n" +
+                "ORDER BY folio DESC\n" +
+                "LIMIT 1;";
+
+        try {
+            if ( DBC.runQuery(selectLastOne) ) {
+                while ( DBC.getResultSet().next() )
+                    folio = DBC.getResultSet().getInt("folio");
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(ConnectionDB.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
+        } finally {
+            DBC.closeResultSet();
+            DBC.closeStmt();
+            DBC.disconnect();
+        }
+        return folio;
+    }
 }
