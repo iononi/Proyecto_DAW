@@ -59,6 +59,8 @@ public class ReportServlet extends HttpServlet {
                     request.setAttribute("reportInsertFail", true);
                     request.getRequestDispatcher("views/report/clientReport.jsp").forward(request, response);
                 } else {
+                    request.getSession().setAttribute("reportInsert", true);
+                    request.getSession().setAttribute("folio", myClientReport.retrieveLastReportId());
                     response.sendRedirect("views/user/profile.jsp");
                 }
                 break;
@@ -89,7 +91,8 @@ public class ReportServlet extends HttpServlet {
                     request.setAttribute("reportInsertFail", true);
                     request.getRequestDispatcher("views/report/anonymousReport.jsp").forward(request, response);
                 } else {
-                    response.getWriter().println("<script>alert('Se ha registrado su reporte.')</script>");
+                    request.getSession().setAttribute("reportInsert", true);
+                    request.getSession().setAttribute("folio", myAnonimousReport.retrieveLastReportId());
                     response.sendRedirect("./index.jsp");
                 }
 
