@@ -34,6 +34,16 @@
     </c:if>
 </div>
 
+<c:if test="${sessionScope.reportInsert and sessionScope.folio > 0}">
+    <div class="popup open-popup" id="pop-up">
+        <img src="${pageContext.request.contextPath}/images/404-tick.png" alt="successful insertion">
+        <h2>¡Muchas gracias!</h2>
+        <p>Tu reporte ha sido registrado con el folio <c:out value="${sessionScope.folio}"/>.</p>
+        <script src="${pageContext.request.contextPath}/static/js/utilities.js"></script>
+        <button type="button" onclick="closePopup(); <c:remove var="folio" scope="session"/> <c:remove var="reportInsert" scope="session"/> ">OK</button>
+    </div>
+</c:if>
+
 <br>
 <c:if test="${sessionScope.currentUser != null}">
     <span>¡Bienvenido<c:out value=", ${sessionScope.currentUser.nombre}"/>!</span>
