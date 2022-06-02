@@ -2,6 +2,8 @@ package data.dao;
 
 import data.database.ConnectionDB;
 import model.ReporteCliente;
+
+import java.io.Serializable;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.LinkedList;
@@ -12,10 +14,41 @@ public class ReporteClienteDao implements CrudUtilities<ReporteCliente> {
 
     private final ConnectionDB DBC;
     private LinkedList<ReporteCliente> reportList;
-
+    private LinkedList<User> auxUser;
     public ReporteClienteDao() {
         DBC = new ConnectionDB("basura", "postgres", "lalo123");
         reportList = null;
+        auxUser = null;
+    }
+
+    public LinkedList<ReporteCliente> getReportList() {
+        return reportList;
+    }
+
+    public LinkedList<User> getAuxUser() {
+        return auxUser;
+    }
+
+    public static boolean executeUpdate(String updateQuery, ConnectionDB dbc, long folio) {
+        dbc.setConnection();
+        dbc.createStmt();
+
+        try {
+            if (dbc.executeQuery(updateQuery))
+                Logger.getLogger(ConnectionDB.class.getName()).log(Level.INFO,
+                        "El reporte con folio " + folio + " ha sido actualizado.");
+            else
+                return false;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            Logger.getLogger(ConnectionDB.class.getName()).log(Level.SEVERE, "Error al actualizar el reporte con folio " + folio,
+                    ex);
+            return false;
+        } finally {
+            dbc.closeStmt();
+            dbc.disconnect();
+        }
+        return true;
     }
 
     @Override
@@ -28,12 +61,12 @@ public class ReporteClienteDao implements CrudUtilities<ReporteCliente> {
         DBC.createStmt();   // creamos el statement necesario para ejecutar queries
         try {
             String insertion_query = String.format("INSERT INTO ReporteCliente(fk_cliente, fk_tiporesiduo, " +
-                    "fk_metodopago, pagado, fk_estado) VALUES (%d, %d, %d, %b, %d)", entity.getFkCliente(), entity.getFkTipoResiduo(),
+                            "fk_metodopago, pagado, fk_estado) VALUES (%d, %d, %d, %b, %d)", entity.getFkCliente(), entity.getFkTipoResiduo(),
                     entity.getFkMetodoPago(), entity.getPagado(), entity.getFkEstado());
 
             // Se ejecuta la instrucción 'insertion_query' y, en caso de ser posible la inserción, devuelve un true.
             // Devuelve false en caso contrario y por lo tanto no se pudo insertar en la BD.
-            if ( DBC.executeQuery(insertion_query) ) {
+            if (DBC.executeQuery(insertion_query)) {
                 System.out.println("La base de datos ha sido actualizada! :D");
             } else {
                 System.out.println("No se ha podido registrar el reporte :/");
@@ -78,32 +111,10 @@ public class ReporteClienteDao implements CrudUtilities<ReporteCliente> {
     @Override
     public boolean update(ReporteCliente entity) {
         String updateQuery = String.format("UPDATE ReporteCliente SET fk_cliente = %d, fk_tiporesiduo = %d, " +
-                "fk_metodopago = %d, pagado = %b, fk_estado = %d WHERE folio = %d;", entity.getFkCliente(), entity.getFkTipoResiduo(),
+                        "fk_metodopago = %d, pagado = %b, fk_estado = %d WHERE folio = %d;", entity.getFkCliente(), entity.getFkTipoResiduo(),
                 entity.getFkMetodoPago(), entity.getPagado(), entity.getFkEstado(), entity.getFolio());
 
         return executeUpdate(updateQuery, DBC, entity.getFolio());
-    }
-
-    public static boolean executeUpdate(String updateQuery, ConnectionDB dbc, long folio) {
-        dbc.setConnection();
-        dbc.createStmt();
-
-        try {
-            if ( dbc.executeQuery(updateQuery) )
-                Logger.getLogger(ConnectionDB.class.getName()).log(Level.INFO,
-                        "El reporte con folio " + folio + " ha sido actualizado.");
-            else
-                return false;
-        } catch(SQLException ex) {
-            ex.printStackTrace();
-            Logger.getLogger(ConnectionDB.class.getName()).log(Level.SEVERE, "Error al actualizar el reporte con folio " + folio,
-                    ex);
-            return false;
-        } finally {
-            dbc.closeStmt();
-            dbc.disconnect();
-        }
-        return true;
     }
 
     @Override
@@ -112,7 +123,19 @@ public class ReporteClienteDao implements CrudUtilities<ReporteCliente> {
         DBC.createStmt();   // Creamos el Statement
 
         System.out.printf("Consultando los datos del reporte con folio: %d...\n", id);
-        String select_query = String.format("SELECT * FROM ReporteCliente WHERE folio = %d;", id);
+        String select_query = String.format("select reportecliente.folio, usuario.nombre, usuario.apellidop as \"Apellido Paterno\",\n" +
+                "       usuario.apellidom as \"Apellido Materno\", usuario.correo, usuario.\"Extension\",\n" +
+                "       usuario.telefono, concat_ws(', ', (direccion).calle,\n" +
+                "           (direccion).colonia, (direccion).codigoPostal,\n" +
+                "           (direccion).municipio, (direccion).estado) as \"Direccion\",\n" +
+                "       tiporesiduo.tiporesiduo, metodopago.metodopago, reportecliente.pagado,\n" +
+                "       estado.estado\n" +
+                "from reportecliente\n" +
+                "inner join usuario on reportecliente.fk_cliente = usuario.usuarioid\n" +
+                "inner join tiporesiduo on reportecliente.fk_tiporesiduo = tiporesiduo.residuoid\n" +
+                "inner join metodopago on reportecliente.fk_metodopago = metodopago.metodoid\n" +
+                "inner join estado on reportecliente.fk_estado = estado.estadoid\n" +
+                "where reportecliente.folio = %d;", id);
 
         try {
             if (DBC.runQuery(select_query)) // Si el método executeQuery() regresa true, se encontró al alumno
@@ -161,11 +184,11 @@ public class ReporteClienteDao implements CrudUtilities<ReporteCliente> {
                 boolean paidOut = rs.getBoolean("pagado");
                 short fkEstado = rs.getShort("fk_estado");
 
-                tempList.add( new ReporteCliente(folio, fkCliente, fkResiduo, fkPago, paidOut, fkEstado) );
+                tempList.add(new ReporteCliente(folio, fkCliente, fkResiduo, fkPago, paidOut, fkEstado));
             }
 
             return tempList;
-        } catch(SQLException ex) {
+        } catch (SQLException ex) {
             System.out.println("Error al recuperar los datos del result set.");
             Logger.getLogger(ConnectionDB.class.getName()).log(Level.SEVERE, "No se pudo recuperar los datos" +
                     " del ResultSet.", ex);
@@ -183,8 +206,8 @@ public class ReporteClienteDao implements CrudUtilities<ReporteCliente> {
                 "LIMIT 1;";
 
         try {
-            if ( DBC.runQuery(selectLastOne) ) {
-                while ( DBC.getResultSet().next() )
+            if (DBC.runQuery(selectLastOne)) {
+                while (DBC.getResultSet().next())
                     folio = DBC.getResultSet().getInt("folio");
             }
 
@@ -196,5 +219,164 @@ public class ReporteClienteDao implements CrudUtilities<ReporteCliente> {
             DBC.disconnect();
         }
         return folio;
+    }
+
+    public LinkedList<User> searchByStatus(int fkCliente, int fkEstado) {
+        DBC.setConnection();
+        DBC.createStmt();
+
+        String selectByStatus = String.format("select reportecliente.folio, usuario.nombre, usuario.apellidop as \"Apellido Paterno\",\n" +
+                "       usuario.apellidom as \"Apellido Materno\", usuario.correo, usuario.\"Extension\",\n" +
+                "       usuario.telefono, concat_ws(', ', (direccion).calle,\n" +
+                "           (direccion).colonia, (direccion).codigoPostal,\n" +
+                "           (direccion).municipio, (direccion).estado) as \"Direccion\",\n" +
+                "       tiporesiduo.tiporesiduo, metodopago.metodopago, reportecliente.pagado,\n" +
+                "       estado.estado\n" +
+                "from reportecliente\n" +
+                "inner join usuario on reportecliente.fk_cliente = usuario.usuarioid\n" +
+                "inner join tiporesiduo on reportecliente.fk_tiporesiduo = tiporesiduo.residuoid\n" +
+                "inner join metodopago on reportecliente.fk_metodopago = metodopago.metodoid\n" +
+                "inner join estado on reportecliente.fk_estado = estado.estadoid\n" +
+                "where reportecliente.fk_cliente = %d and reportecliente.fk_estado = %d;", fkCliente, fkEstado);
+
+        try {
+            if (DBC.runQuery(selectByStatus))
+                auxUser = fetchDataUser(DBC.getResultSet());
+            if ( auxUser == null || auxUser.isEmpty() )
+                System.out.println("No se ha encontrado ningún reporte realizado por el usuario " + fkCliente + ".");
+        } catch (SQLException ex) {
+            Logger.getLogger(ConnectionDB.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
+            return null;
+        } finally {
+            DBC.closeResultSet();
+            DBC.closeStmt();
+            DBC.disconnect();
+        }
+        return auxUser;
+    }
+
+    private LinkedList<User> fetchDataUser(ResultSet rs) {
+        LinkedList<User> tempList = new LinkedList<>();
+        try {
+            while ( rs.next() ) {
+                int folio = DBC.getResultSet().getInt("folio");
+                String nombre = DBC.getResultSet().getString("nombre"),
+                        apellidop = DBC.getResultSet().getString("Apellido Paterno"),
+                        apellidom = DBC.getResultSet().getString("Apellido Materno"),
+                        correo = DBC.getResultSet().getString("correo"),
+                        extension = DBC.getResultSet().getString("extension"),
+                        telefono = DBC.getResultSet().getString("telefono"),
+                        direccion = DBC.getResultSet().getString("Direccion"),
+                        tipoResiduo = DBC.getResultSet().getString("tiporesiduo"),
+                        metodoPago = DBC.getResultSet().getString("metodopago"),
+                        status = DBC.getResultSet().getString("estado");
+                boolean pagado = DBC.getResultSet().getBoolean("pagado");
+
+                tempList.add(new User(folio, nombre, apellidop, apellidom, correo, extension, telefono,
+                        direccion, tipoResiduo, metodoPago, status, pagado));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ConnectionDB.class.getName()).log(Level.SEVERE, "Error al recuperar el ResultSet.", ex);
+            return null;
+        }
+        return tempList;
+    }
+
+    // helper class for selectByStatus method
+    public static class User implements Serializable {
+        private final int folio;
+        private final String nombre;
+        private final String apellidop;
+        private final String apellidom;
+        private final String correo;
+        private final String extension;
+        private final String telefono;
+        private final String direccion;
+        private final String tipoResiduo;
+        private final String metodoPago;
+        private final String estado;
+        private final boolean pagado;
+
+        public User(int folio, String nombre, String apellidop, String apellidom, String correo, String extension,
+                    String telefono, String direccion, String tipoResiduo, String metodoPago, String estado, boolean pagado) {
+            this.folio = folio;
+            this.nombre = nombre;
+            this.apellidop = apellidop;
+            this.apellidom = apellidom;
+            this.correo = correo;
+            this.extension = extension;
+            this.telefono = telefono;
+            this.direccion = direccion;
+            this.tipoResiduo = tipoResiduo;
+            this.metodoPago = metodoPago;
+            this.estado = estado;
+            this.pagado = pagado;
+        }
+
+        public int getFolio() {
+            return folio;
+        }
+
+        public String getNombre() {
+            return nombre;
+        }
+
+        public String getApellidop() {
+            return apellidop;
+        }
+
+        public String getApellidom() {
+            return apellidom;
+        }
+
+        public String getCorreo() {
+            return correo;
+        }
+
+        public String getExtension() {
+            return extension;
+        }
+
+        public String getTelefono() {
+            return telefono;
+        }
+
+        public String getDireccion() {
+            return direccion;
+        }
+
+        public String getTipoResiduo() {
+            return tipoResiduo;
+        }
+
+        public String getMetodoPago() {
+            return metodoPago;
+        }
+
+        public String getEstado() {
+            return estado;
+        }
+
+        public boolean isPagado() {
+            return pagado;
+        }
+
+        @Override
+        public String toString() {
+            return "User{" +
+                    "folio=" + folio +
+                    ", nombre='" + nombre + '\'' +
+                    ", apellidop='" + apellidop + '\'' +
+                    ", apellidom='" + apellidom + '\'' +
+                    ", correo='" + correo + '\'' +
+                    ", extension='" + extension + '\'' +
+                    ", telefono='" + telefono + '\'' +
+                    ", direccion='" + direccion + '\'' +
+                    ", tipoResiduo='" + tipoResiduo + '\'' +
+                    ", metodoPago='" + metodoPago + '\'' +
+                    ", estado='" + estado + '\'' +
+                    ", pagado=" + pagado +
+                    '}';
+        }
     }
 }
