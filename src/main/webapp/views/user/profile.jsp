@@ -49,7 +49,7 @@
     <div class="popup open-popup" id="pop-up">
         <img src="${pageContext.request.contextPath}/images/404-oops.png" alt="something went wrong">
         <h2>¡Oops!</h2>
-        <p>Al parecer no existe ningún reporte con el estado especificado.</p>
+        <p>Al parecer no existe ningún reporte con el ${sessionScope.searchType} especificado.</p>
         <script src="${pageContext.request.contextPath}/static/js/utilities.js"></script>
         <button type="button" onclick="closePopup(); <c:remove var="folio" scope="session"/> <c:remove var="reportInsert" scope="session"/> ">OK</button>
     </div>
@@ -80,7 +80,9 @@
                 </select>
             </p>
 
+            <div style="text-align: center">
             <button type="submit">Buscar</button>
+            </div>
         </form>
     </fieldset>
 </div>
@@ -126,13 +128,8 @@
     </div>
 </c:if>
 
-<c:if test="">
-    <div class="popup">
-
-    </div>
-</c:if>
-
 <c:remove var="userReportList" scope="session"/>
 <c:remove var="showPopupMessage" scope="session"/>
+<c:remove var="searchType" scope="session"/>
 </body>
 </html>
