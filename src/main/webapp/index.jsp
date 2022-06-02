@@ -21,6 +21,7 @@
     <c:if test="${empty sessionScope.currentUser}">
         <a href="views/user/signup.jsp">Registrarse</a>
         <a href="views/user/login.jsp">Iniciar sesión</a>
+        <a href="views/report/queryAnonymousReport.jsp">Consulta tu reporte</a>
     </c:if>
     
     <c:if test="${sessionScope.userIsAdmin}">
