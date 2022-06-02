@@ -139,8 +139,8 @@ public class ReporteClienteDao implements CrudUtilities<ReporteCliente> {
 
         try {
             if (DBC.runQuery(select_query)) // Si el método executeQuery() regresa true, se encontró al alumno
-                reportList = fetchData(DBC.getResultSet()); // Obtiene los datos del ResultSet y lo guarda en reportList
-            if (reportList.size() == 0)
+                auxUser = fetchDataUser(DBC.getResultSet()); // Obtiene los datos del ResultSet y lo guarda en auxUser
+            if (auxUser == null || auxUser.isEmpty())
                 System.out.println("No se encontró el reporte con folio: " + id);
         } catch (SQLException ex) {
             System.out.println("Error al recuperar los datos del reporte especificado");
@@ -255,22 +255,22 @@ public class ReporteClienteDao implements CrudUtilities<ReporteCliente> {
         return auxUser;
     }
 
-    private LinkedList<User> fetchDataUser(ResultSet rs) {
+    public static LinkedList<User> fetchDataUser(ResultSet rs) {
         LinkedList<User> tempList = new LinkedList<>();
         try {
             while ( rs.next() ) {
-                int folio = DBC.getResultSet().getInt("folio");
-                String nombre = DBC.getResultSet().getString("nombre"),
-                        apellidop = DBC.getResultSet().getString("Apellido Paterno"),
-                        apellidom = DBC.getResultSet().getString("Apellido Materno"),
-                        correo = DBC.getResultSet().getString("correo"),
-                        extension = DBC.getResultSet().getString("extension"),
-                        telefono = DBC.getResultSet().getString("telefono"),
-                        direccion = DBC.getResultSet().getString("Direccion"),
-                        tipoResiduo = DBC.getResultSet().getString("tiporesiduo"),
-                        metodoPago = DBC.getResultSet().getString("metodopago"),
-                        status = DBC.getResultSet().getString("estado");
-                boolean pagado = DBC.getResultSet().getBoolean("pagado");
+                int folio = rs.getInt("folio");
+                String nombre = rs.getString("nombre"),
+                        apellidop = rs.getString("Apellido Paterno"),
+                        apellidom = rs.getString("Apellido Materno"),
+                        correo = rs.getString("correo"),
+                        extension = rs.getString("extension"),
+                        telefono = rs.getString("telefono"),
+                        direccion = rs.getString("Direccion"),
+                        tipoResiduo = rs.getString("tiporesiduo"),
+                        metodoPago = rs.getString("metodopago"),
+                        status = rs.getString("estado");
+                boolean pagado = rs.getBoolean("pagado");
 
                 tempList.add(new User(folio, nombre, apellidop, apellidom, correo, extension, telefono,
                         direccion, tipoResiduo, metodoPago, status, pagado));
