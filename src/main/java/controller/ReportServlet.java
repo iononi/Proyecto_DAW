@@ -16,7 +16,7 @@ import java.io.IOException;
 import java.util.LinkedList;
 
 @WebServlet(name = "ReportServlet", value = {"/clientReport", "/anonymousReport", "/anonymousReportRequest",
-        "/clientReportRequest", "/searchByStatus"})
+        "/clientReportRequest", "/searchByStatus", "/anonymousQuery"})
 public class ReportServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -42,6 +42,7 @@ public class ReportServlet extends HttpServlet {
 
 
         ReporteClienteDao myClientReport = new ReporteClienteDao();
+        ReporteAnonimoDao myAnonimousReport = new ReporteAnonimoDao();
         switch ( request.getServletPath() ) {
             case "/clientReport":
                 int tipoResiduo = Integer.parseInt( request.getParameter("tipoResiduo") ),
@@ -90,7 +91,6 @@ public class ReportServlet extends HttpServlet {
                         estado = request.getParameter("estado");
                 short numeroExterior = Short.parseShort( request.getParameter("numeroExterior") ),
                         numeroInterior = Short.parseShort( request.getParameter("numeroInterior") );
-                ReporteAnonimoDao myAnonimousReport = new ReporteAnonimoDao();
                 ReporteAnonimo anonymousReport = new ReporteAnonimo(nombre, apellidop, apellidom, telefono, extension,
                         new Direccion(codigoPostal, colonia, calle, referencias, numeroExterior, numeroInterior,
                                 ciudad, municipio, estado), correo, tipoResiduo, metodoPago, estaPagado, status);
@@ -134,7 +134,27 @@ public class ReportServlet extends HttpServlet {
                     response.sendRedirect("views/user/profile.jsp");
                 }
                 break;
+
+            case "/anonymousQuery":
+                folio = request.getParameter("folio");
+                if ( !folio.equals("") ) {
+                    myAnonimousReport.select( Integer.parseInt(folio) );
+                    LinkedList<ReporteClienteDao.User> report = myAnonimousReport.getReportAux();
+                    if ( report == null || report.isEmpty() ) {
+                        request.getSession().setAttribute("anonymousReportList", null);
+                        request.getSession().setAttribute("showPopupMessage", true);
+                        request.getSession().setAttribute("popupMessage", "No se encontró ningún reporte con el folio " + folio);
+                    } else {
+                        request.getSession().setAttribute("anonymousReportList", report);
+                    }
+                    response.sendRedirect("views/report/queryAnonymousReport.jsp");
+                } else {
+                    request.getSession().setAttribute("anonymousReportList", null);
+                    request.getSession().setAttribute("showPopupMessage", true);
+                    request.getSession().setAttribute("popupMessage", "Asegúrese de ingresar el número de folio e intente de nuevo.");
+                    response.sendRedirect("views/report/queryAnonymousReport.jsp");
+                }
+                break;
         }
     }
-
-    }
+}
