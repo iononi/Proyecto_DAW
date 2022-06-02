@@ -54,7 +54,7 @@ public class Usuario implements Serializable {
         setDir(dir);
     }
 
-    public long getClienteId() {
+    public int getClienteId() {
         return clienteId;
     }
 
