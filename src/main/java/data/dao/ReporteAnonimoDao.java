@@ -15,10 +15,20 @@ public class ReporteAnonimoDao implements CrudUtilities<ReporteAnonimo> {
 
     private final ConnectionDB DBC;
     private LinkedList<ReporteAnonimo> reportList;
+    private LinkedList<ReporteClienteDao.User> reportAux;
 
     public ReporteAnonimoDao() {
         DBC = new ConnectionDB("basura", "postgres", "lalo123");
         reportList = null;
+        reportAux = null;
+    }
+
+    public LinkedList<ReporteAnonimo> getReportList() {
+        return reportList;
+    }
+
+    public LinkedList<ReporteClienteDao.User> getReportAux() {
+        return reportAux;
     }
 
     @Override
@@ -103,12 +113,20 @@ public class ReporteAnonimoDao implements CrudUtilities<ReporteAnonimo> {
         DBC.createStmt();   // Creamos el Statement
 
         System.out.printf("Consultando los datos del reporte con folio: %d...\n", id);
-        String select_query = String.format("SELECT * FROM ReporteAnonimo WHERE folio = %d;", id);
+        String select_query = String.format("select reporteanonimo.folio, reporteanonimo.nombre, reporteanonimo.apellidop as \"Apellido Paterno\", reporteanonimo.apellidom as \"Apellido Materno\",\n" +
+                "       reporteanonimo.telefono, reporteanonimo.\"Extension\", reporteanonimo.telefono, reporteanonimo.correo,\n" +
+                "       concat_ws(', ', (direccion).calle, (direccion).colonia, (direccion).codigoPostal, (direccion).municipio,\n" +
+                "           (direccion).estado) as \"Direccion\", tiporesiduo.tiporesiduo, metodopago.metodopago, reporteanonimo.pagado,\n" +
+                "       estado.estado from reporteanonimo\n" +
+                "inner join tiporesiduo on reporteanonimo.fk_tiporesiduo = tiporesiduo.residuoid\n" +
+                "inner join estado on reporteanonimo.fk_estado = estado.estadoid\n" +
+                "inner join metodopago on reporteanonimo.fk_metodopago = metodopago.metodoid\n" +
+                "where reporteanonimo.folio = %d;", id);
 
         try {
             if (DBC.runQuery(select_query)) // Si el método executeQuery() regresa true, se encontró al alumno
-                reportList = fetchData(DBC.getResultSet()); // Obtiene los datos del ResultSet y lo guarda en reportList
-            if (reportList.size() == 0)
+                reportAux = ReporteClienteDao.fetchDataUser(DBC.getResultSet()); // Obtiene los datos del ResultSet y lo guarda en reportList
+            if (reportAux == null || reportAux.isEmpty())
                 System.out.println("No se encontró el reporte con folio: " + id);
         } catch (SQLException ex) {
             System.out.println("Error al recuperar los datos del reporte especificado");
