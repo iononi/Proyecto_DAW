@@ -106,4 +106,9 @@ button {
 
 table, th, td {
     border:1px solid black;
+    text-align: center;
+}
+
+th {
+    background-color: rgba(113,116,123,0.74);
 }
