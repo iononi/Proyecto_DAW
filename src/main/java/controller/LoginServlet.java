@@ -83,7 +83,7 @@ public class LoginServlet extends HttpServlet {
                     // if no user/admin is logged in, we create its session. Otherwise just insertion on db is made
                     if ( request.getSession().getAttribute("currentUser") == null )
                         request.getSession().setAttribute("currentUser", newUser);
-                    if ( request.getSession().getAttribute("calledFromAnonymousReport").equals(true) )
+                    if ( request.getSession().getAttribute("calledFromAnonymousReport") != null && request.getSession().getAttribute("calledFromAnonymousReport").equals(true) )
                         response.sendRedirect("views/report/clientReport.jsp");
                     else
                         response.sendRedirect("./index.jsp");
