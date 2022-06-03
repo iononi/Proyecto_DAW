@@ -16,22 +16,27 @@ import java.io.IOException;
 import java.util.LinkedList;
 
 @WebServlet(name = "ReportServlet", value = {"/clientReport", "/anonymousReport", "/anonymousReportRequest",
-        "/clientReportRequest", "/searchByStatus", "/anonymousQuery"})
+        "/clientReportRequest", "/searchByStatus", "/anonymousQuery", "/adminQuery"})
 public class ReportServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        TipoResiduoDao wasteType = new TipoResiduoDao();
-        MetodoPagoDao paymentMethod = new MetodoPagoDao();
-        wasteType.selectAll();
-        paymentMethod.selectAll();
-        request.getSession(true).setAttribute("wasteType", wasteType.getTrashList());
-        request.getSession(true).setAttribute("paymentMethod", paymentMethod.getPaymentList());
         switch ( request.getServletPath() ) {
+            case "/adminQuery":
+                ReporteClienteDao myReport = new ReporteClienteDao();
+                ReporteAnonimoDao anonymousReport = new ReporteAnonimoDao();
+                myReport.selectAll();
+                anonymousReport.selectAll();
+                request.getSession().setAttribute("userReport", myReport.getReportList());
+                request.getSession().setAttribute("anonymousReport", anonymousReport.getReportList());
+                response.sendRedirect("views/admin/admin.jsp");
+                break;
             case "/anonymousReportRequest":
+                setReportAttributes(request);
                 response.sendRedirect("views/report/anonymousReport.jsp");
                 break;
             case "/clientReportRequest":
+                setReportAttributes(request);
                 response.sendRedirect("views/report/clientReport.jsp");
                 break;
         }
@@ -156,5 +161,14 @@ public class ReportServlet extends HttpServlet {
                 }
                 break;
         }
+    }
+
+    private void setReportAttributes(HttpServletRequest request) {
+        TipoResiduoDao wasteType = new TipoResiduoDao();
+        MetodoPagoDao paymentMethod = new MetodoPagoDao();
+        wasteType.selectAll();
+        paymentMethod.selectAll();
+        request.getSession(true).setAttribute("wasteType", wasteType.getTrashList());
+        request.getSession(true).setAttribute("paymentMethod", paymentMethod.getPaymentList());
     }
 }
