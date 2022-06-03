@@ -112,3 +112,15 @@ table, th, td {
 th {
     background-color: rgba(113,116,123,0.74);
 }
+
+.right {
+    float: right;
+}
+
+.left {
+    float: left;
+}
+
+input.small {
+    width: 100px;
+}
