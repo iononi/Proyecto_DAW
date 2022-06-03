@@ -16,19 +16,17 @@ import java.io.IOException;
 import java.util.LinkedList;
 
 @WebServlet(name = "ReportServlet", value = {"/clientReport", "/anonymousReport", "/anonymousReportRequest",
-        "/clientReportRequest", "/searchByStatus", "/anonymousQuery", "/adminQuery"})
+        "/clientReportRequest", "/searchByStatus", "/anonymousQuery", "/selectAllUser", "/adminQueryUser"})
 public class ReportServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+        ReporteClienteDao myReport = new ReporteClienteDao();
+        ReporteAnonimoDao anonymousReport = new ReporteAnonimoDao();
         switch ( request.getServletPath() ) {
-            case "/adminQuery":
-                ReporteClienteDao myReport = new ReporteClienteDao();
-                ReporteAnonimoDao anonymousReport = new ReporteAnonimoDao();
+            case "/selectAllUser":
                 myReport.selectAll();
-                anonymousReport.selectAll();
                 request.getSession().setAttribute("userReport", myReport.getReportList());
-                request.getSession().setAttribute("anonymousReport", anonymousReport.getReportList());
                 response.sendRedirect("views/admin/admin.jsp");
                 break;
             case "/anonymousReportRequest":
@@ -38,6 +36,37 @@ public class ReportServlet extends HttpServlet {
             case "/clientReportRequest":
                 setReportAttributes(request);
                 response.sendRedirect("views/report/clientReport.jsp");
+                break;
+            case "/adminQueryUser":
+                String folio = request.getParameter("folio"),
+                        usuarioid = request.getParameter("userid"),
+                        estado = request.getParameter("status"),
+                        sql = "";
+
+                if ( !folio.equals("") ) { // search by folio
+                    // select * from reportecliente where folio = folio
+                    sql = String.format("select * from reportecliente where folio = %d;", Integer.parseInt(folio));
+                } else { // search either by userid, report status or both
+                    if ( !usuarioid.equals("") ) {
+                        // select * from reportecliente where fk_cliente = usuarioid and fk_estado = estado
+                        sql = String.format("select * from reportecliente where fk_cliente = %d and fk_estado = %d;",
+                                Integer.parseInt(usuarioid), Integer.parseInt(estado));
+                    } else {
+                        // select * from reportecliente where fk_estado = estado
+                        sql = String.format("select * from reportecliente where fk_estado = %d;", Integer.parseInt(estado));
+                    }
+                }
+                if ( !myReport.selectAllWhere(sql) ) {
+                    // on failure
+                    request.getSession().setAttribute("showPopupMessage", true);
+                    request.getSession().setAttribute("popUpMessage", "No se encontró información con los parámetros de búsqueda especificados.");
+                    request.getSession().setAttribute("userReport", null);
+                } else {
+                    // on success
+                    request.getSession().setAttribute("userReport", myReport.getReportList());
+                }
+
+                response.sendRedirect("views/admin/admin.jsp");
                 break;
         }
     }
