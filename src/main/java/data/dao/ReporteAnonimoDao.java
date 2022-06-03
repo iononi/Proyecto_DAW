@@ -172,7 +172,7 @@ public class ReporteAnonimoDao implements CrudUtilities<ReporteAnonimo> {
                 int fkResiduo = rs.getInt("fk_tiporesiduo");
                 int fkPago = rs.getInt("fk_metodopago");
                 boolean paidOut = rs.getBoolean("pagado");
-                PGobject direction = (PGobject) rs.getObject("direction");
+                PGobject direction = (PGobject) rs.getObject("direccion");
                 String myDir = direction.getValue().replaceFirst("\\(", "").replaceFirst("\\)", "");
                 String[] dir = myDir.split(",");
                 String codigoPostal = dir[0];
