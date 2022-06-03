@@ -11,6 +11,7 @@ model\Direccion.class
 data\database\Credentials.class
 data\dao\ReporteAnonimoDao.class
 data\dao\RolDao.class
+controller\EditServlet.class
 data\dao\ReporteClienteDao$User.class
 data\dao\TipoResiduoDao.class
 model\Estado.class
