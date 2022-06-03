@@ -7,6 +7,8 @@ import java.io.Serializable;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.LinkedList;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -280,6 +282,32 @@ public class ReporteClienteDao implements CrudUtilities<ReporteCliente> {
             return null;
         }
         return tempList;
+    }
+
+    /**
+     * Select all rows that match either {@code ReporteCliente.folio}, {@code ReporteCliente.fk_estado}
+     * or {@code ReporteCliente.fk_cliente}.
+     * @param sql SQL to query ReporteCliente table
+     * @return {@code true} if query was possible, {@code false} otherwise.
+     * */
+    public boolean selectAllWhere(String sql) {
+        DBC.setConnection();
+        DBC.createStmt();
+        boolean wasQuerySuccessful = false;
+        try {
+            if ( DBC.runQuery(sql) ) {
+                reportList = fetchData(DBC.getResultSet());
+                wasQuerySuccessful = true;
+            }
+            if ( reportList == null || reportList.isEmpty() ) {
+                System.out.println("No se encontró la información con los parámetros especificados o sucedió un error.");
+                wasQuerySuccessful = false;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ConnectionDB.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
+        }
+
+        return wasQuerySuccessful;
     }
 
     // helper class for selectByStatus method
