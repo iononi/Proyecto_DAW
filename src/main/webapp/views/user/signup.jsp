@@ -19,6 +19,9 @@
 
 <div class="topnav">
     <a href="${pageContext.request.contextPath}/index.jsp" style="font-size: larger">Inicio</a>
+    <c:if test="${not empty sessionScope.userIsAdmin}">
+        <a href="${pageContext.request.contextPath}/views/admin/admin.jsp">Administrador</a>
+    </c:if>
 </div>
 <c:if test="${not empty requestScope.userSignUpFail}">
     <script>alert('${requestScope.userSignUpFail}')</script>
