@@ -26,7 +26,7 @@
     
     <c:if test="${sessionScope.userIsAdmin}">
         <a href="views/user/signup.jsp">Registrar usuario</a>
-        <a href="${pageContext.request.contextPath}/adminQuery">Administrador</a>
+        <a href="${pageContext.request.contextPath}/views/admin/admin.jsp">Administrador</a>
     </c:if>
 
     <c:if test="${not empty sessionScope.currentUser and not sessionScope.userIsAdmin}">
