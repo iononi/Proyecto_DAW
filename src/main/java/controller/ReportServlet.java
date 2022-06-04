@@ -67,6 +67,7 @@ public class ReportServlet extends HttpServlet {
                     request.getSession().setAttribute("showPopupMessage", true);
                     request.getSession().setAttribute("popUpMessage", "No se encontró información con los parámetros de búsqueda especificados.");
                     request.getSession().setAttribute("userReport", null);
+                    request.getSession().setAttribute("statusImage", "404-oops.png");
                 } else {
                     // on success
                     request.getSession().setAttribute("userReport", myReport.getReportList());
@@ -92,6 +93,7 @@ public class ReportServlet extends HttpServlet {
                     request.getSession().setAttribute("showPopupMessage", true);
                     request.getSession().setAttribute("popUpMessage", "No se encontró información con los parámetros de búsqueda especificados.");
                     request.getSession().setAttribute("anonymousReport", null);
+                    request.getSession().setAttribute("statusImage", "404-oops.png");
                 } else {
                     // on success
                     request.getSession().setAttribute("anonymousReport", anonymousReport.getReportList());
