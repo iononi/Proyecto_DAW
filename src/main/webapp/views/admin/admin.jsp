@@ -136,8 +136,8 @@ Para realizar la búsqueda por ID o estado asegúrese que el campo folio esté v
                 <input type="number" name="reportid" id="id" min="1" class="small right">
             </p>
             <p>
-                <label for="estado">Estado</label>
-                <select name="status" id="estado" class="right">
+                <label for="estatus">Estado</label>
+                <select name="estatus" id="estatus" class="right">
                     <option value="1">Recibido</option>
                     <option value="2" selected>En proceso</option>
                     <option value="3">Finalizado</option>
@@ -184,27 +184,30 @@ Para realizar la búsqueda por ID o estado asegúrese que el campo folio esté v
                     <td><c:out value="${anonymousReport.dir.calle}, ${anonymousReport.dir.colonia},
                     ${anonymousReport.dir.codigoPostal}, ${anonymousReport.dir.municipio},
                     ${anonymousReport.dir.estado}"/></td>
-                    <td>${anonymousReport.fkTipoResiduo}</td>
-                    <td>${anonymousReport.fkMetodoPago}</td>
-                    <td>
-                        <select name="paid">
-                            <option value="true" <c:if test="${anonymousReport.pagado eq 'true'}">selected</c:if> >Si</option>
-                            <option value="false" <c:if test="${anonymousReport.pagado eq 'false'}">selected</c:if> >No</option>
-                        </select>
-                    </td>
-                    <td>
-                        <select name="estado">
-                            <option value="1" <c:if test="${anonymousReport.fk_estado eq 1}">selected</c:if> >Recibido</option>
-                            <option value="2" <c:if test="${anonymousReport.fk_estado eq 2}">selected</c:if> >En proceso</option>
-                            <option value="3"  <c:if test="${anonymousReport.fk_estado eq 3}">selected</c:if> >Finalizado</option>
-                        </select>
-                    </td>
-                    <td>
-                        <a href="#">
-                            <button type="button" id="btnFolio" value="${anonymousReport.folio}">Modificar</button>
-                        </a>
-                    </td>
-                </tr>
+                        <td>${anonymousReport.fkTipoResiduo}</td>
+                        <td>${anonymousReport.fkMetodoPago}</td>
+                        <td>
+                            <label for="paid" hidden></label>
+                            <select name="paid" id="paid">
+                                <option value="true" <c:if test="${anonymousReport.pagado eq 'true'}">selected</c:if> >Si</option>
+                                <option value="false" <c:if test="${anonymousReport.pagado eq 'false'}">selected</c:if> >No</option>
+                            </select>
+                        </td>
+                        <td>
+                            <label for="estado" hidden></label>
+                            <select name="estado" id="estado">
+                                <option value="1" <c:if test="${anonymousReport.fk_estado eq 1}">selected</c:if> >Recibido</option>
+                                <option value="2" <c:if test="${anonymousReport.fk_estado eq 2}">selected</c:if> >En proceso</option>
+                                <option value="3"  <c:if test="${anonymousReport.fk_estado eq 3}">selected</c:if> >Finalizado</option>
+                            </select>
+                        </td>
+                        <td>
+                            <a href="#">
+                                <button type="button" id="btnFolio" value="${anonymousReport.folio}">Modificar</button>
+                            </a>
+                        </td>
+                    </tr>
+                </form>
             </c:forEach>
         </table>
     </c:if>
