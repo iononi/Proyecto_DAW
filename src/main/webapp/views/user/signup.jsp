@@ -31,12 +31,12 @@
         <fieldset title="Ingrese sus datos" class="wrapper">
             <div>
                 <label for="curp"><abbr title="Clave Única de Registro de Población">CURP</abbr></label><br>
-                <input type="text" name="curp" id="curp" minlength="18" maxlength="18" required>
+                <input type="text" name="curp" id="curp" minlength="18" onkeydown="return /[a-zA-Z ]/i.test(event.key)" maxlength="18" required>
             </div>
 
             <div>
                 <label for="rfc"><abbr title="Registro Federal de Contribuyentes">RFC</abbr> (Opcional)</label><br>
-                <input type="text" name="rfc" id="rfc" minlength="13" maxlength="13">
+                <input type="text" name="rfc" id="rfc" minlength="13" onkeydown="return /[a-zA-Z ]/i.test(event.key)" maxlength="13">
             </div>
 
             <div>
@@ -67,12 +67,12 @@
 
             <div>
                 <label for="correo">Correo electrónico</label><br>
-                <input type="email" name="correo" id="correo" placeholder="example@email.com" required>
+                <input type="email" name="correo" id="correo" placeholder="example@email.com" onkeydown="return /[a-zA-Z ]/i.test(event.key)" required>
             </div>
 
             <div>
                 <label for="contrasenia">Contraseña</label><br>
-                <input type="password" name="contrasenia" id="contrasenia" minlength="8" required><br>
+                <input type="password" name="contrasenia" id="contrasenia" minlength="8" onkeydown="return /[a-zA-Z ]/i.test(event.key)" required><br>
                 <span style="color: red; font-size: small">*Debe contener mínimo 8 caracteres</span>
             </div>
 
@@ -93,17 +93,17 @@
 
             <div>
                 <label for="colonia">Colonia</label><br>
-                <input type="text" name="colonia" id="colonia" placeholder="Geovillas del Puerto" required>
+                <input type="text" name="colonia" id="colonia" placeholder="Geovillas del Puerto" onkeydown="return /[a-zA-Z ]/i.test(event.key)" required>
             </div>
 
             <div>
                 <label for="calle">Calle</label><br>
-                <input type="text" name="calle" id="calle" placeholder="Blvd Veracruz Norte" required>
+                <input type="text" name="calle" id="calle" placeholder="Blvd Veracruz Norte" onkeydown="return /[a-zA-Z ]/i.test(event.key)" required>
             </div>
 
             <div>
                 <label for="ref">Referencias</label><br>
-                <input type="text" name="ref" id="ref" placeholder="Entre Nautla y Jamapa" maxlength="100">
+                <input type="text" name="ref" id="ref" placeholder="Entre Nautla y Jamapa" onkeydown="return /[a-zA-Z ]/i.test(event.key)" maxlength="100">
             </div>
 
             <div>

@@ -64,7 +64,7 @@
 
             <div>
                 <label for="correo">Correo electrónico</label><br>
-                <input type="email" name="correo" id="correo" placeholder="example@email.com" required>
+                <input type="email" name="correo" id="correo" placeholder="example@email.com" onkeydown="return /[a-zA-Z ]/i.test(event.key)" required>
             </div>
 
             <div>
@@ -84,17 +84,17 @@
 
             <div>
                 <label for="colonia">Colonia</label><br>
-                <input type="text" name="colonia" id="colonia" placeholder="Geovillas del Puerto" required>
+                <input type="text" name="colonia" id="colonia" placeholder="Geovillas del Puerto" onkeydown="return /[a-zA-Z ]/i.test(event.key)" required>
             </div>
 
             <div>
                 <label for="calle">Calle</label><br>
-                <input type="text" name="calle" id="calle" placeholder="Blvd Veracruz Norte" required>
+                <input type="text" name="calle" id="calle" placeholder="Blvd Veracruz Norte" onkeydown="return /[a-zA-Z ]/i.test(event.key)" required>
             </div>
 
             <div>
                 <label for="ref">Referencias</label><br>
-                <input type="text" name="ref" id="ref" placeholder="Entre Nautla y Jamapa" maxlength="100">
+                <input type="text" name="ref" id="ref" placeholder="Entre Nautla y Jamapa" maxlength="100" onkeydown="return /[a-zA-Z ]/i.test(event.key)">
             </div>
 
             <div>
