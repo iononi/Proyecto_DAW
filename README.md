@@ -15,7 +15,7 @@ de este proyecto es aplicar lo aprendido sobre los siguientes temas:
 - Cascade Style Sheets *(CSS)*.
 - Manejar dependencias con Maven.
 - Manejo de [Git](https://git-scm.com/) y [GitHub](https://github.com/).
----
+
 ## El problema 
 La cultura en México es sacar la basura a cierta hora del día dependiendo de la colonia, 
 que es cuando pasa el camión que la recolecta. El problema es que muchas veces se pueden
@@ -26,7 +26,7 @@ el material** del que está fabricado es tan resistente que la prensa podría su
 tratar de triturarlos. Es por ello que suelen quedarse varios días en incluso semanas en las
 calles, pudiendo llegar a caer, en el caso de los residuos de construcción, a los drenajes
 públicos ocasionando obstrucciones o simplemente una mala imagen.
----
+
 ## Solución propuesta
 Dado el reciente incremento en el uso de la tecnología, se apuesta por una aplicación web
 capaz de registrar los reportes realizados por los usuarios. La aplicación web da la
@@ -36,7 +36,7 @@ encuentran sus reportes desde la misma aplicación. Por otra parte, existe una v
 para un administrador el cual tendrá acceso tanto a los reportes realizados anónimamente como
 los que estén a nombre de algún cliente (usuario registrado). Podrá ser capaz de modificar el
 estado de los mismos y podrá registrar nuevos usuarios, ya sean clientes u otro administrador.
----
+
 ## Como utilizarlo
 Para hacer uso de este proyecto es necesario clonar este repositorio. Para ello, abrimos la terminal
 y ejecutamos el siguiente snippet:
