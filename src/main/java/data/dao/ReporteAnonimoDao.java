@@ -225,4 +225,30 @@ public class ReporteAnonimoDao implements CrudUtilities<ReporteAnonimo> {
         }
         return folio;
     }
+
+    /**
+     * Select all rows that match either {@code ReporteAnonimo.folio}, {@code ReporteAnonimo.fk_estado}
+     * or {@code ReporteAnonimo.fk_cliente}.
+     * @param sql SQL to query ReporteAnonimo table
+     * @return {@code true} if query was possible, {@code false} otherwise.
+     * */
+    public boolean selectAllWhere(String sql) {
+        DBC.setConnection();
+        DBC.createStmt();
+        boolean wasQuerySuccessful = false;
+        try {
+            if ( DBC.runQuery(sql) ) {
+                reportList = fetchData(DBC.getResultSet());
+                wasQuerySuccessful = true;
+            }
+            if ( reportList == null || reportList.isEmpty() ) {
+                System.out.println("No se encontró la información con los parámetros especificados o sucedió un error.");
+                wasQuerySuccessful = false;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ConnectionDB.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
+        }
+
+        return wasQuerySuccessful;
+    }
 }
