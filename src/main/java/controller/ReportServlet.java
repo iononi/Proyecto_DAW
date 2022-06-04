@@ -16,7 +16,8 @@ import java.io.IOException;
 import java.util.LinkedList;
 
 @WebServlet(name = "ReportServlet", value = {"/clientReport", "/anonymousReport", "/anonymousReportRequest",
-        "/clientReportRequest", "/searchByStatus", "/anonymousQuery", "/selectAllUser", "/adminQueryUser"})
+        "/clientReportRequest", "/searchByStatus", "/anonymousQuery", "/selectAllUser", "/selectAllAnonymous",
+        "/adminQueryUser"})
 public class ReportServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -27,6 +28,11 @@ public class ReportServlet extends HttpServlet {
             case "/selectAllUser":
                 myReport.selectAll();
                 request.getSession().setAttribute("userReport", myReport.getReportList());
+                response.sendRedirect("views/admin/admin.jsp");
+                break;
+            case "/selectAllAnonymous":
+                anonymousReport.selectAll();
+                request.getSession().setAttribute("anonymousReport", anonymousReport.getReportList());
                 response.sendRedirect("views/admin/admin.jsp");
                 break;
             case "/anonymousReportRequest":
