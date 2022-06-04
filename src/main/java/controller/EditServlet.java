@@ -2,6 +2,7 @@ package controller;
 
 import data.dao.ReporteAnonimoDao;
 import data.dao.ReporteClienteDao;
+import model.ReporteAnonimo;
 import model.ReporteCliente;
 
 import javax.servlet.*;
@@ -50,6 +51,29 @@ public class EditServlet extends HttpServlet {
                 response.sendRedirect("views/admin/admin.jsp");
                 break;
             case "/editAnonymousReport":
+                folio = Integer.parseInt( request.getParameter("btnFolio") );
+                LinkedList<ReporteAnonimo> anonymousReportList = (LinkedList<ReporteAnonimo>) request.getSession().getAttribute("anonymousReport");
+                ReporteAnonimo anonymousReport = anonymousReportList.get( folio - 1 );
+                isPaid = Boolean.parseBoolean( request.getParameter("paid") );
+                status = Short.parseShort( request.getParameter("estado") );
+                anonymousReport.setPagado(isPaid);
+                anonymousReport.setFk_estado(status);
+
+                if ( !myAnonymousReport.update(anonymousReport) ) {
+                    // on failure
+                    request.getSession().setAttribute("popUpMessage", "Ocurrió un error al actualizar el registro. Inténtelo de nuevo.");
+                    request.getSession().setAttribute("statusImage", "404-oops.png");
+                    request.getSession().setAttribute("alt","oops");
+                    request.getSession().setAttribute("title", "¡Oops!");
+                } else {
+                    // on success
+                    request.getSession().setAttribute("popUpMessage", "Se ha actualizado exitosamente el registro.");
+                    request.getSession().setAttribute("statusImage", "404-tick.png");
+                    request.getSession().setAttribute("alt","success");
+                    request.getSession().setAttribute("title", "¡Operación completada!");
+                }
+                request.getSession().setAttribute("showPopupMessage", true);
+                response.sendRedirect("views/admin/admin.jsp");
                 break;
         }
     }
