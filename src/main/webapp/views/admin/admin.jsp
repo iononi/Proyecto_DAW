@@ -67,6 +67,7 @@ Para realizar la búsqueda por ID o estado asegúrese que el campo folio esté v
             </div>
         </form>
     </fieldset>
+    <br>
 </div>
 <c:if test="${empty sessionScope.userReport and sessionScope.showPopupMessage}">
     <div class="popup open-popup" id="pop-up">
@@ -109,7 +110,7 @@ Para realizar la búsqueda por ID o estado asegúrese que el campo folio esté v
                     </td>
                     <td>
                         <a href="#">
-                            <button value="${userReport.folio}">Modificar</button>
+                            <button type="button" value="${userReport.folio}">Modificar</button>
                         </a>
                     </td>
                 </tr>
@@ -121,7 +122,35 @@ Para realizar la búsqueda por ID o estado asegúrese que el campo folio esté v
 <p>
 <p>
 <h2>Reportes anónimos</h2>
-
+<p>
+<div>
+    <fieldset style="width: 200px">
+        <legend>Buscar por:</legend>
+        <form action="${pageContext.request.contextPath}/adminQueryAnonymous" title="${pageScope.title}" method="get">
+            <p>
+                <label for="id">Folio</label>
+                <input type="number" name="reportid" id="id" min="1" class="small right">
+            </p>
+            <p>
+                <label for="estado">Estado</label>
+                <select name="status" id="estado" class="right">
+                    <option value="1">Recibido</option>
+                    <option value="2" selected>En proceso</option>
+                    <option value="3">Finalizado</option>
+                </select>
+            </p>
+            <div class="left">
+                <button type="submit">Buscar</button>
+            </div>
+        </form>
+        <form action="${pageContext.request.contextPath}/selectAllAnonymous" method="get">
+            <div>
+                <button type="submit" class="right">Mostrar todos</button>
+            </div>
+        </form>
+    </fieldset>
+    <br>
+</div>
 <div>
     <c:if test="${not empty sessionScope.anonymousReport}">
         <table>
@@ -161,14 +190,14 @@ Para realizar la búsqueda por ID o estado asegúrese que el campo folio esté v
                     </td>
                     <td>
                         <select name="estado">
-                            <option value="1" <c:if test="${anonymousReport.fkEstado eq 1}">selected</c:if> >Recibido</option>
-                            <option value="2" <c:if test="${anonymousReport.fkEstado eq 2}">selected</c:if> >En proceso</option>
-                            <option value="3"  <c:if test="${anonymousReport.fkEstado eq 3}">selected</c:if> >Finalizado</option>
+                            <option value="1" <c:if test="${anonymousReport.fk_estado eq 1}">selected</c:if> >Recibido</option>
+                            <option value="2" <c:if test="${anonymousReport.fk_estado eq 2}">selected</c:if> >En proceso</option>
+                            <option value="3"  <c:if test="${anonymousReport.fk_estado eq 3}">selected</c:if> >Finalizado</option>
                         </select>
                     </td>
                     <td>
                         <a href="#">
-                            <button value="${anonymousReport.folio}">Modificar</button>
+                            <button type="button" value="${anonymousReport.folio}">Modificar</button>
                         </a>
                     </td>
                 </tr>
