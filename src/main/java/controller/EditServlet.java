@@ -25,11 +25,8 @@ public class EditServlet extends HttpServlet {
         switch ( request.getServletPath() ) {
             case "/editClientReport":
                 folio = Integer.parseInt( request.getParameter("folioBtn") );
-                System.out.println("Folio: " + folio);
                 LinkedList<ReporteCliente> myList = (LinkedList<ReporteCliente>) request.getSession().getAttribute("userReport");
                 ReporteCliente myReport = myList.get( folio - 1 ); // due to folios starting at 1 and index at 0
-                System.out.println(myReport);
-                System.out.println("Esta pagado: " + isPaid);
                 isPaid = Boolean.parseBoolean( request.getParameter("pagado") );
                 status = Short.parseShort( request.getParameter("reportStatus") );
                 // we update the changes
