@@ -69,13 +69,14 @@ Para realizar la búsqueda por ID o estado asegúrese que el campo folio esté v
     </fieldset>
     <br>
 </div>
+<%-- Error/Success pop up message --%>
 <c:if test="${empty sessionScope.userReport and sessionScope.showPopupMessage}">
     <div class="popup open-popup" id="pop-up">
-        <img src="${pageContext.request.contextPath}/images/404-oops.png" alt="oops">
-        <h2>¡Oops!</h2>
-        <p>${sessionScope.popUpMessage} Inténtelo de nuevo.</p>
+        <img src="${pageContext.request.contextPath}/images/${sessionScope.statusImage}" alt="${sessionScope.alt}">
+        <h2>${sessionScope.title}</h2>
+        <p>${sessionScope.popUpMessage}</p>
         <script src="${pageContext.request.contextPath}/static/js/utilities.js"></script>
-        <button type="button" onclick="closePopup(); <c:remove var="showPopupMessage" scope="session"/> <c:remove var="popUpMessage" scope="session"/> ">OK</button>
+        <button type="button" onclick="closePopup(); <c:remove var="showPopupMessage" scope="session"/> <c:remove var="popUpMessage" scope="session"/> <c:remove var="statusImage" scope="session"/> <c:remove var="popUpMessage" scope="session"/> <c:remove var="alt" scope="session"/> <c:remove var="title" scope="session"/> <c:remove var="showPopupMessage" scope="session"/> <c:remove var="userReport" scope="session"/>">OK</button>
     </div>
 </c:if>
 <div>
@@ -90,36 +91,39 @@ Para realizar la búsqueda por ID o estado asegúrese que el campo folio esté v
                 <th>Estado</th>
             </tr>
             <c:forEach var="userReport" items="${sessionScope.userReport}">
-                <tr>
-                    <td>${userReport.folio}</td>
-                    <td>${userReport.fkCliente}</td>
-                    <td>${userReport.fkTipoResiduo}</td>
-                    <td>${userReport.fkMetodoPago}</td>
-                    <td>
-                        <select name="pagado">
-                            <option value="true" <c:if test="${userReport.pagado eq 'true'}">selected</c:if>>Si</option>
-                            <option value="false" <c:if test="${userReport.pagado eq 'false'}">selected</c:if> >No</option>
-                        </select>
-                    </td>
-                    <td>
-                        <select name="status">
-                            <option value="1" <c:if test="${userReport.fkEstado eq 1}">selected</c:if> >Recibido</option>
-                            <option value="2" <c:if test="${userReport.fkEstado eq 2}">selected</c:if> >En proceso</option>
-                            <option value="3" <c:if test="${userReport.fkEstado eq 3}">selected</c:if> >Finalizado</option>
-                        </select>
-                    </td>
-                    <td>
-                        <a href="#">
-                            <button type="button" value="${userReport.folio}">Modificar</button>
-                        </a>
-                    </td>
-                </tr>
+                <form action="${pageContext.request.contextPath}/editClientReport" method="get">
+                    <tr>
+                        <td>${userReport.folio}</td>
+                        <td>${userReport.fkCliente}</td>
+                        <td>${userReport.fkTipoResiduo}</td>
+                        <td>${userReport.fkMetodoPago}</td>
+                        <td>
+                            <label for="pagado" hidden></label>
+                            <select name="pagado" id="pagado">
+                                <option value="true" <c:if test="${userReport.pagado eq 'true'}">selected</c:if>>Si</option>
+                                <option value="false" <c:if test="${userReport.pagado eq 'false'}">selected</c:if> >No</option>
+                            </select>
+                        </td>
+                        <td>
+                            <label for="reportStatus" hidden></label>
+                            <select name="reportStatus" id="reportStatus">
+                                <option value="1" <c:if test="${userReport.fkEstado eq 1}">selected</c:if> >Recibido</option>
+                                <option value="2" <c:if test="${userReport.fkEstado eq 2}">selected</c:if> >En proceso</option>
+                                <option value="3" <c:if test="${userReport.fkEstado eq 3}">selected</c:if> >Finalizado</option>
+                            </select>
+                        </td>
+                        <td>
+                            <button type="submit" name="folioBtn" value="${userReport.folio}">Modificar</button>
+                        </td>
+                    </tr>
+                </form>
             </c:forEach>
         </table>
     </c:if>
 </div>
 
 <p>
+<hr>
 <p>
 <h2>Reportes anónimos</h2>
 <p>
@@ -197,7 +201,7 @@ Para realizar la búsqueda por ID o estado asegúrese que el campo folio esté v
                     </td>
                     <td>
                         <a href="#">
-                            <button type="button" value="${anonymousReport.folio}">Modificar</button>
+                            <button type="button" id="btnFolio" value="${anonymousReport.folio}">Modificar</button>
                         </a>
                     </td>
                 </tr>
@@ -208,7 +212,7 @@ Para realizar la búsqueda por ID o estado asegúrese que el campo folio esté v
 <div>
 
 </div>
-<c:remove var="userReport" scope="session"/>
-<c:remove var="anonymousReport" scope="session"/>
+<%--<c:remove var="userReport" scope="session"/>--%>
+<%--<c:remove var="anonymousReport" scope="session"/>--%>
 </body>
 </html>
