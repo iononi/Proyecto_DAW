@@ -17,7 +17,7 @@ import java.util.LinkedList;
 
 @WebServlet(name = "ReportServlet", value = {"/clientReport", "/anonymousReport", "/anonymousReportRequest",
         "/clientReportRequest", "/searchByStatus", "/anonymousQuery", "/selectAllUser", "/selectAllAnonymous",
-        "/adminQueryUser"})
+        "/adminQueryUser", "/adminQueryAnonymous"})
 public class ReportServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -70,6 +70,31 @@ public class ReportServlet extends HttpServlet {
                 } else {
                     // on success
                     request.getSession().setAttribute("userReport", myReport.getReportList());
+                }
+
+                response.sendRedirect("views/admin/admin.jsp");
+                break;
+            case "/adminQueryAnonymous":
+                folio = request.getParameter("reportid");
+                estado = request.getParameter("estado");
+                sql = "";
+
+                if ( !folio.equals("") ) { // search by folio
+                    // select * from reporteanonumo where folio = folio
+                    sql = String.format("select * from reporteanonimo where folio = %d;", Integer.parseInt(folio));
+                } else { // search report status
+                    // select * from anonimo where fk_estado = estado
+                    sql = String.format("select * from reporteanonimo where fk_estado = %d;", Integer.parseInt(estado));
+                }
+
+                if ( !anonymousReport.selectAllWhere(sql) ) {
+                    // on failure
+                    request.getSession().setAttribute("showPopupMessage", true);
+                    request.getSession().setAttribute("popUpMessage", "No se encontró información con los parámetros de búsqueda especificados.");
+                    request.getSession().setAttribute("anonymousReport", null);
+                } else {
+                    // on success
+                    request.getSession().setAttribute("anonymousReport", anonymousReport.getReportList());
                 }
 
                 response.sendRedirect("views/admin/admin.jsp");
