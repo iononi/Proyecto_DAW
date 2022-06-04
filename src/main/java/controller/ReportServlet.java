@@ -77,7 +77,7 @@ public class ReportServlet extends HttpServlet {
                 break;
             case "/adminQueryAnonymous":
                 folio = request.getParameter("reportid");
-                estado = request.getParameter("estado");
+                estado = request.getParameter("estatus");
                 sql = "";
 
                 if ( !folio.equals("") ) { // search by folio
