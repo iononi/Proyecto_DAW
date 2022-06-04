@@ -173,6 +173,7 @@ Para realizar la búsqueda por ID o estado asegúrese que el campo folio esté v
                 <th>ID Estado</th>
             </tr>
             <c:forEach var="anonymousReport" items="${sessionScope.anonymousReport}">
+                <form action="${pageContext.request.contextPath}/editAnonymousReport" method="get">
                 <tr>
                     <td>${anonymousReport.folio}</td>
                     <td>${anonymousReport.nombre}</td>
@@ -202,9 +203,7 @@ Para realizar la búsqueda por ID o estado asegúrese que el campo folio esté v
                             </select>
                         </td>
                         <td>
-                            <a href="#">
-                                <button type="button" id="btnFolio" value="${anonymousReport.folio}">Modificar</button>
-                            </a>
+                            <button type="submit" name="btnFolio" value="${anonymousReport.folio}">Modificar</button>
                         </td>
                     </tr>
                 </form>
