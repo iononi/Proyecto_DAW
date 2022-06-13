@@ -64,7 +64,7 @@
 
             <div>
                 <label for="correo">Correo electrónico</label><br>
-                <input type="email" name="correo" id="correo" placeholder="example@email.com" onkeydown="return /[a-zA-Z ]/i.test(event.key)" required>
+                <input type="email" name="correo" id="correo" placeholder="example@email.com" onkeydown="return /[a-zA-Z_@0-9.-]/i.test(event.key)" required>
             </div>
 
             <div>

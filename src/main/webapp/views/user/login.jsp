@@ -21,12 +21,12 @@
     <form action="${pageContext.request.contextPath}/login" method="post">
         <p>
             <label for="email">Correo electrónico</label>
-            <input type="text" name="email" id="email" placeholder="example@email.com" onkeydown="return /[a-zA-Z ]/i.test(event.key)" required title="Ingresa tu email">
+            <input type="text" name="email" id="email" placeholder="example@email.com" onkeydown="return /[a-zA-Z_@0-9.-]/i.test(event.key)" required title="Ingresa tu email">
         </p>
         <p>
             <label for="password">Contraseña</label>
             <input type="password" name="password" id="password" required title="La contraseña debe contener al menos 8 caracteres"
-                   onkeydown="return /[a-zA-Z ]/i.test(event.key)"  minlength="8">
+                   onkeydown="return /[a-zA-Z0-9]/i.test(event.key)"  minlength="8">
         </p>
 
         <input type="submit" value="Enviar">
