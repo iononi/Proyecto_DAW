@@ -77,7 +77,7 @@ public class ReporteAnonimoDao implements CrudUtilities<ReporteAnonimo> {
 
             String delete_query = String.format("DELETE FROM ReporteAnonimo WHERE folio = %d;", id);
 
-            if (DBC.getStatement().execute(delete_query)) // si el método execute() regresa true, se pudo eliminar.
+            if (DBC.executeQuery(delete_query)) // si el método execute() regresa true, se pudo eliminar.
                 System.out.println("Se ha eliminado el reporte :D");
             else {
                 System.out.println("Ocurrió un error al eliminar el reporte :/");
