@@ -15,7 +15,7 @@ import java.util.LinkedList;
  *  Servlet to handle report modifications
  *  made in admin.jsp view.
  * */
-@WebServlet(name = "EditServlet", value = {"/editClientReport", "/editAnonymousReport"})
+@WebServlet(name = "EditServlet", value = {"/editClientReport", "/editAnonymousReport", "/deleteAnonymous", "/deleteReport"})
 public class EditServlet extends HttpServlet {
 
     @Override
@@ -42,16 +42,10 @@ public class EditServlet extends HttpServlet {
 
                 if ( !myUserReport.update(myReport) ) {
                     // on failure set error message in admin view
-                    request.getSession().setAttribute("popUpMessage", "Ocurrió un error al actualizar el registro. Inténtelo de nuevo.");
-                    request.getSession().setAttribute("statusImage", "404-oops.png");
-                    request.getSession().setAttribute("alt","oops");
-                    request.getSession().setAttribute("title", "¡Oops!");
+                    setUpdateErrorPopup(request);
                 } else {
                     // on success set success message in admin view
-                    request.getSession().setAttribute("popUpMessage", "Se ha actualizado exitosamente el registro.");
-                    request.getSession().setAttribute("statusImage", "404-tick.png");
-                    request.getSession().setAttribute("alt","success");
-                    request.getSession().setAttribute("title", "¡Operación completada!");
+                    setUpdateSuccessPopup(request);
                 }
                 request.getSession().setAttribute("showPopupMessage", true);
                 response.sendRedirect("views/admin/admin.jsp");
@@ -68,16 +62,30 @@ public class EditServlet extends HttpServlet {
 
                 if ( !myAnonymousReport.update(anonymousReport) ) {
                     // on failure
-                    request.getSession().setAttribute("popUpMessage", "Ocurrió un error al actualizar el registro. Inténtelo de nuevo.");
-                    request.getSession().setAttribute("statusImage", "404-oops.png");
-                    request.getSession().setAttribute("alt","oops");
-                    request.getSession().setAttribute("title", "¡Oops!");
+                    setUpdateErrorPopup(request);
                 } else {
                     // on success
-                    request.getSession().setAttribute("popUpMessage", "Se ha actualizado exitosamente el registro.");
-                    request.getSession().setAttribute("statusImage", "404-tick.png");
-                    request.getSession().setAttribute("alt","success");
-                    request.getSession().setAttribute("title", "¡Operación completada!");
+                    setUpdateSuccessPopup(request);
+                }
+                request.getSession().setAttribute("showPopupMessage", true);
+                response.sendRedirect("views/admin/admin.jsp");
+                break;
+            case "/deleteAnonymous":
+                folio = Integer.parseInt( request.getParameter("btnFolio") );
+                if ( myAnonymousReport.delete(folio) ) { // on success
+                    setDeleteSuccessPopup(request);
+                } else { // on failure
+                    setDeleteErrorPopup(request);
+                }
+                request.getSession().setAttribute("showPopupMessage", true);
+                response.sendRedirect("views/admin/admin.jsp");
+                break;
+            case "/deleteReport":
+                folio = Integer.parseInt( request.getParameter("btnFolio") );
+                if ( myUserReport.delete(folio) ) { // on success
+                    setDeleteSuccessPopup(request);
+                } else { // on failure
+                    setDeleteErrorPopup(request);
                 }
                 request.getSession().setAttribute("showPopupMessage", true);
                 response.sendRedirect("views/admin/admin.jsp");
@@ -88,5 +96,33 @@ public class EditServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+    }
+
+    private void setUpdateErrorPopup(HttpServletRequest request) {
+        request.getSession().setAttribute("popUpMessage", "Ocurrió un error al actualizar el registro. Inténtelo de nuevo.");
+        request.getSession().setAttribute("statusImage", "404-oops.png");
+        request.getSession().setAttribute("alt", "oops");
+        request.getSession().setAttribute("title", "¡Oops!");
+    }
+
+    private void setUpdateSuccessPopup(HttpServletRequest request) {
+        request.getSession().setAttribute("popUpMessage", "Se ha actualizado exitosamente el registro.");
+        request.getSession().setAttribute("statusImage", "404-tick.png");
+        request.getSession().setAttribute("alt","success");
+        request.getSession().setAttribute("title", "¡Operación completada!");
+    }
+
+    private void setDeleteErrorPopup(HttpServletRequest request) {
+        request.getSession().setAttribute("popUpMessage", "Ocurrió un error al eliminar el registro. Inténtelo de nuevo.");
+        request.getSession().setAttribute("statusImage", "404-oops.png");
+        request.getSession().setAttribute("alt","oops");
+        request.getSession().setAttribute("title", "¡Oops!");
+    }
+
+    private void setDeleteSuccessPopup(HttpServletRequest request) {
+        request.getSession().setAttribute("popUpMessage", "Se ha eliminado exitosamente el reporte.");
+        request.getSession().setAttribute("statusImage", "404-tick.png");
+        request.getSession().setAttribute("alt","success");
+        request.getSession().setAttribute("title", "¡Operación completada!");
     }
 }
