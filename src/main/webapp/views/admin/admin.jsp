@@ -70,7 +70,7 @@ Para realizar la búsqueda por ID o estado asegúrese que el campo folio esté v
     <br>
 </div>
 <%-- Error/Success pop up message --%>
-<c:if test="${empty sessionScope.userReport and sessionScope.showPopupMessage}">
+<c:if test="${sessionScope.showPopupMessage}">
     <div class="popup open-popup" id="pop-up">
         <img src="${pageContext.request.contextPath}/images/${sessionScope.statusImage}" alt="${sessionScope.alt}">
         <h2>${sessionScope.title}</h2>
@@ -91,8 +91,8 @@ Para realizar la búsqueda por ID o estado asegúrese que el campo folio esté v
                 <th>Estado</th>
             </tr>
             <c:forEach var="userReport" items="${sessionScope.userReport}">
-                <form action="${pageContext.request.contextPath}/editClientReport" method="get">
-                    <tr>
+                <tr>
+                    <form action="${pageContext.request.contextPath}/editClientReport" method="get">
                         <td>${userReport.folio}</td>
                         <td>${userReport.fkCliente}</td>
                         <td>${userReport.fkTipoResiduo}</td>
@@ -115,8 +115,13 @@ Para realizar la búsqueda por ID o estado asegúrese que el campo folio esté v
                         <td>
                             <button type="submit" name="folioBtn" value="${userReport.folio}">Modificar</button>
                         </td>
-                    </tr>
-                </form>
+                    </form>
+                    <form action="${pageContext.request.contextPath}/deleteReport" method="get">
+                        <td>
+                            <button type="submit" name="btnFolio" value="${userReport.folio}">Eliminar</button>
+                        </td>
+                    </form>
+                </tr>
             </c:forEach>
         </table>
     </c:if>
@@ -173,16 +178,16 @@ Para realizar la búsqueda por ID o estado asegúrese que el campo folio esté v
                 <th>ID Estado</th>
             </tr>
             <c:forEach var="anonymousReport" items="${sessionScope.anonymousReport}">
-                <form action="${pageContext.request.contextPath}/editAnonymousReport" method="get">
                 <tr>
-                    <td>${anonymousReport.folio}</td>
-                    <td>${anonymousReport.nombre}</td>
-                    <td>${anonymousReport.apellidop}</td>
-                    <td>${anonymousReport.apellidom}</td>
-                    <td>${anonymousReport.correo}</td>
-                    <td>${anonymousReport.extension}</td>
-                    <td>${anonymousReport.telefono}</td>
-                    <td><c:out value="${anonymousReport.dir.calle}, ${anonymousReport.dir.colonia},
+                    <form action="${pageContext.request.contextPath}/editAnonymousReport" method="get">
+                        <td>${anonymousReport.folio}</td>
+                        <td>${anonymousReport.nombre}</td>
+                        <td>${anonymousReport.apellidop}</td>
+                        <td>${anonymousReport.apellidom}</td>
+                        <td>${anonymousReport.correo}</td>
+                        <td>${anonymousReport.extension}</td>
+                        <td>${anonymousReport.telefono}</td>
+                        <td><c:out value="${anonymousReport.dir.calle}, ${anonymousReport.dir.colonia},
                     ${anonymousReport.dir.codigoPostal}, ${anonymousReport.dir.municipio},
                     ${anonymousReport.dir.estado}"/></td>
                         <td>${anonymousReport.fkTipoResiduo}</td>
@@ -205,8 +210,13 @@ Para realizar la búsqueda por ID o estado asegúrese que el campo folio esté v
                         <td>
                             <button type="submit" name="btnFolio" value="${anonymousReport.folio}">Modificar</button>
                         </td>
-                    </tr>
-                </form>
+                    </form>
+                    <form action="${pageContext.request.contextPath}/deleteAnonymous" method="get">
+                        <td>
+                            <button type="submit" name="btnFolio" value="${anonymousReport.folio}">Eliminar</button>
+                        </td>
+                    </form>
+                </tr>
             </c:forEach>
         </table>
     </c:if>
@@ -214,7 +224,7 @@ Para realizar la búsqueda por ID o estado asegúrese que el campo folio esté v
 <div>
 
 </div>
-<%--<c:remove var="userReport" scope="session"/>--%>
-<%--<c:remove var="anonymousReport" scope="session"/>--%>
+<c:remove var="userReport" scope="session"/>
+<c:remove var="anonymousReport" scope="session"/>
 </body>
 </html>
