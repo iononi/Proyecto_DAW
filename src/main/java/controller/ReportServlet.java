@@ -191,11 +191,11 @@ public class ReportServlet extends HttpServlet {
                 } else { // search by folio
                     myClientReport.select(Integer.parseInt(folio));
                     LinkedList<ReporteClienteDao.User> report = myClientReport.getAuxUser();
-                    if ( report == null || report.isEmpty() ) {
+                    if ( report == null || report.isEmpty() ) { // fail
                         request.getSession().setAttribute("userReportList", null);
                         request.getSession().setAttribute("showPopupMessage", true);
                         request.getSession().setAttribute("searchType", "folio");
-                    } else {
+                    } else { // success
                         request.getSession().setAttribute("userReportList", report);
                     }
                     response.sendRedirect("views/user/profile.jsp");
@@ -204,18 +204,18 @@ public class ReportServlet extends HttpServlet {
 
             case "/anonymousQuery":
                 folio = request.getParameter("folio");
-                if ( !folio.equals("") ) {
+                if ( !folio.equals("") ) { // search by folio
                     myAnonimousReport.select( Integer.parseInt(folio) );
                     LinkedList<ReporteClienteDao.User> report = myAnonimousReport.getReportAux();
-                    if ( report == null || report.isEmpty() ) {
+                    if ( report == null || report.isEmpty() ) { // fail
                         request.getSession().setAttribute("anonymousReportList", null);
                         request.getSession().setAttribute("showPopupMessage", true);
                         request.getSession().setAttribute("popupMessage", "No se encontró ningún reporte con el folio " + folio);
-                    } else {
+                    } else { // success
                         request.getSession().setAttribute("anonymousReportList", report);
                     }
                     response.sendRedirect("views/report/queryAnonymousReport.jsp");
-                } else {
+                } else { // no folio was found
                     request.getSession().setAttribute("anonymousReportList", null);
                     request.getSession().setAttribute("showPopupMessage", true);
                     request.getSession().setAttribute("popupMessage", "Asegúrese de ingresar el número de folio e intente de nuevo.");
@@ -225,6 +225,13 @@ public class ReportServlet extends HttpServlet {
         }
     }
 
+    /*
+    * Helper method that collects data from TipoResiduo and
+    * MetodoPago database tables and puts the result set
+    * content in session attributes in order to use that
+    * data in select html tags on both client report and
+    * anonymous report views.
+    * */
     private void setReportAttributes(HttpServletRequest request) {
         TipoResiduoDao wasteType = new TipoResiduoDao();
         MetodoPagoDao paymentMethod = new MetodoPagoDao();

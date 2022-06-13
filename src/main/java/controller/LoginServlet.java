@@ -9,6 +9,9 @@ import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
 
+/**
+ * Servlet to handle login, logout and signup operations.
+ * */
 @WebServlet(name = "LoginServlet", value = {"/login", "/signup", "/logout"})
 public class LoginServlet extends HttpServlet {
     @Override
@@ -32,14 +35,14 @@ public class LoginServlet extends HttpServlet {
                     request.setAttribute("userNotFound", true);
                     request.getRequestDispatcher("/views/user/login.jsp").forward(request, response);
                 }
-                else {
+                else { // user exists in database
                     if ( user.isAdmin() )
                         request.getSession().setAttribute("userIsAdmin", true); // grant admin access
 
                     // If exists, redirect the user to index.jsp with new session created for user
                     request.getSession().setAttribute("currentUser", user);
-                    if ( request.getSession().getAttribute("calledFromAnonymousReport") != null ) // if servlet was called from anonymousReport.jsp view
-                        response.sendRedirect("views/report/clientReport.jsp");
+                    if ( request.getSession().getAttribute("calledFromAnonymousReport") != null ) // if url pattern was called from anonymousReport.jsp view
+                        response.sendRedirect("views/report/clientReport.jsp"); // it gets redirect to client report view with the new session for the user
                     else
                         response.sendRedirect("./index.jsp");
                 }
@@ -49,6 +52,7 @@ public class LoginServlet extends HttpServlet {
                 Usuario newUser;
                 UsuarioDao myUser = new UsuarioDao();
                 Direccion myDir;
+                // we get data from html form
                 String  curp = request.getParameter("curp"),
                         rfc = request.getParameter("rfc"),
                         nombre = request.getParameter("nombre"),
@@ -83,6 +87,7 @@ public class LoginServlet extends HttpServlet {
                     // if no user/admin is logged in, we create its session. Otherwise just insertion on db is made
                     if ( request.getSession().getAttribute("currentUser") == null )
                         request.getSession().setAttribute("currentUser", newUser);
+                    // if this url pattern was called from anonymous report view, it redirects the user to client report view
                     if ( request.getSession().getAttribute("calledFromAnonymousReport") != null && request.getSession().getAttribute("calledFromAnonymousReport").equals(true) )
                         response.sendRedirect("views/report/clientReport.jsp");
                     else
