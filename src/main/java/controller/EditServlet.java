@@ -32,43 +32,48 @@ public class EditServlet extends HttpServlet {
                 folio = Integer.parseInt( request.getParameter("folioBtn") );
                 // when this servlet is invoked, this list is never null due to modification button only get drawn
                 // if this list is different from null
-                LinkedList<ReporteCliente> myList = (LinkedList<ReporteCliente>) request.getSession().getAttribute("userReport");
-                ReporteCliente myReport = myList.get( folio - 1 ); // due to folios starting at 1 and index at 0
-                isPaid = Boolean.parseBoolean( request.getParameter("pagado") );
-                status = Short.parseShort( request.getParameter("reportStatus") );
-                // we update the changes
-                myReport.setPagado(isPaid);
-                myReport.setFkEstado(status);
+                // LinkedList<ReporteCliente> myList = (LinkedList<ReporteCliente>) request.getSession().getAttribute("userReport");
+                LinkedList<ReporteCliente> myList = myUserReport.select(folio);
+                if (myList != null) {
+                    ReporteCliente myReport = myList.get(0);
+                    isPaid = Boolean.parseBoolean( request.getParameter("pagado") );
+                    status = Short.parseShort( request.getParameter("reportStatus") );
+                    // we update the changes
+                    myReport.setPagado(isPaid);
+                    myReport.setFkEstado(status);
 
-                if ( !myUserReport.update(myReport) ) {
-                    // on failure set error message in admin view
-                    setUpdateErrorPopup(request);
-                } else {
-                    // on success set success message in admin view
-                    setUpdateSuccessPopup(request);
+                    if ( !myUserReport.update(myReport) ) {
+                        // on failure set error message in admin view
+                        setUpdateErrorPopup(request);
+                    } else {
+                        // on success set success message in admin view
+                        setUpdateSuccessPopup(request);
+                    }
+                    request.getSession().setAttribute("showPopupMessage", true);
+                    response.sendRedirect("views/admin/admin.jsp");
                 }
-                request.getSession().setAttribute("showPopupMessage", true);
-                response.sendRedirect("views/admin/admin.jsp");
                 break;
             case "/editAnonymousReport":
                 folio = Integer.parseInt( request.getParameter("btnFolio") );
-                LinkedList<ReporteAnonimo> anonymousReportList = (LinkedList<ReporteAnonimo>) request.getSession().getAttribute("anonymousReport");
-                ReporteAnonimo anonymousReport = anonymousReportList.get( folio - 1 );
-                isPaid = Boolean.parseBoolean( request.getParameter("paid") );
-                status = Short.parseShort( request.getParameter("estado") );
-                // update changes
-                anonymousReport.setPagado(isPaid);
-                anonymousReport.setFk_estado(status);
+                LinkedList<ReporteAnonimo> reportesAnonimos = myAnonymousReport.select (folio);
+                if (reportesAnonimos != null) {
+                    ReporteAnonimo reporteAnonimo = reportesAnonimos.get(0);
+                    isPaid = Boolean.parseBoolean( request.getParameter("paid") );
+                    status = Short.parseShort( request.getParameter("estado") );
+                    // update changes
+                    reporteAnonimo.setPagado(isPaid);
+                    reporteAnonimo.setFk_estado(status);
 
-                if ( !myAnonymousReport.update(anonymousReport) ) {
-                    // on failure
-                    setUpdateErrorPopup(request);
-                } else {
-                    // on success
-                    setUpdateSuccessPopup(request);
+                    if ( !myAnonymousReport.update(reporteAnonimo) ) {
+                        // on failure
+                        setUpdateErrorPopup(request);
+                    } else {
+                        // on success
+                        setUpdateSuccessPopup(request);
+                    }
+                    request.getSession().setAttribute("showPopupMessage", true);
+                    response.sendRedirect("views/admin/admin.jsp");
                 }
-                request.getSession().setAttribute("showPopupMessage", true);
-                response.sendRedirect("views/admin/admin.jsp");
                 break;
             case "/deleteAnonymous":
                 folio = Integer.parseInt( request.getParameter("btnFolio") );

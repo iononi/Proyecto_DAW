@@ -1,6 +1,7 @@
 package data.dao;
 
 import data.database.ConnectionDB;
+import model.ReporteAnonimo;
 import model.TipoResiduo;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -102,7 +103,7 @@ public class TipoResiduoDao implements CrudUtilities<TipoResiduo> {
     }
 
     @Override
-    public void select(int id) {
+    public LinkedList<TipoResiduo> select(int id) {
         DBC.setConnection(); // Establecemos conexión con la BD
         DBC.createStmt();   // Creamos el Statement
 
@@ -118,6 +119,7 @@ public class TipoResiduoDao implements CrudUtilities<TipoResiduo> {
             System.out.println("Error al recuperar las categorías de residuos.");
             Logger.getLogger(ConnectionDB.class.getName()).log(Level.SEVERE, "No se pudo recuperar los datos.", ex);
         }
+        return null;
     }
 
     @Override

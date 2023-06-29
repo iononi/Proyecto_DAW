@@ -3,7 +3,7 @@
   Date: 20/05/2022
   Time: 2:39 p. m.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" isELIgnored="false" %>
+<%@ page contentType="text/html;charset=UTF-8" isELIgnored="false" %> <%-- set isELIgnored=true to break routes --%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <c:set var="title" value=
         "La búsqueda por folio tiene preferencia sobre la búsqueda por ID o estado.
@@ -15,6 +15,7 @@ Para realizar la búsqueda por ID o estado asegúrese que el campo folio esté v
     <link rel="shortcut icon" href="${pageContext.request.contextPath}/images/veracruz.ico" type="image/x-icon">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/styles.css">
     <title>Mi Administrador</title>
+    <c:out value="Context path: ${pageContext.request.contextPath}" />
 </head>
 <body>
 <div style="background-color: #dddddd; padding: 10px 10px 10px 10px">
@@ -86,7 +87,7 @@ Para realizar la búsqueda por ID o estado asegúrese que el campo folio esté v
                 <th>Folio</th>
                 <th>ID Cliente</th>
                 <th>ID Residuo</th>
-                <th>ID Metodo de Pago</th>
+                <th>Metodo de Pago</th>
                 <th>Pagado</th>
                 <th>Estado</th>
             </tr>
@@ -95,8 +96,14 @@ Para realizar la búsqueda por ID o estado asegúrese que el campo folio esté v
                     <form action="${pageContext.request.contextPath}/editClientReport" method="get">
                         <td>${userReport.folio}</td>
                         <td>${userReport.fkCliente}</td>
-                        <td>${userReport.fkTipoResiduo}</td>
-                        <td>${userReport.fkMetodoPago}</td>
+                        <td>
+                            <c:if test="${userReport.fkTipoResiduo eq 1}" ><p>Construccion/Demolicion</p></c:if>
+                        </td>
+                        <td>
+                            <c:if test="${userReport.fkMetodoPago eq 1}" ><p>Tarjeta Credito</p></c:if>
+                            <c:if test="${userReport.fkMetodoPago eq 2}" ><p>Tarjeta Debito</p></c:if>
+                            <c:if test="${userReport.fkMetodoPago eq 3}" ><p>Efectivo</p></c:if>
+                        </td>
                         <td>
                             <label for="pagado" hidden></label>
                             <select name="pagado" id="pagado">
@@ -173,9 +180,9 @@ Para realizar la búsqueda por ID o estado asegúrese que el campo folio esté v
                 <th>Teléfono</th>
                 <th>Dirección</th>
                 <th>ID Residuo</th>
-                <th>ID Método Pago</th>
+                <th>Método Pago</th>
                 <th>Pagado</th>
-                <th>ID Estado</th>
+                <th>Estado</th>
             </tr>
             <c:forEach var="anonymousReport" items="${sessionScope.anonymousReport}">
                 <tr>
@@ -190,7 +197,9 @@ Para realizar la búsqueda por ID o estado asegúrese que el campo folio esté v
                         <td><c:out value="${anonymousReport.dir.calle}, ${anonymousReport.dir.colonia},
                     ${anonymousReport.dir.codigoPostal}, ${anonymousReport.dir.municipio},
                     ${anonymousReport.dir.estado}"/></td>
-                        <td>${anonymousReport.fkTipoResiduo}</td>
+                        <td>
+                            <c:if test="${anonymousReport.fkTipoResiduo eq 1}" ><p>Construccion/Demolicion</p></c:if>
+                        </td>
                         <td>${anonymousReport.fkMetodoPago}</td>
                         <td>
                             <label for="paid" hidden></label>
@@ -224,7 +233,7 @@ Para realizar la búsqueda por ID o estado asegúrese que el campo folio esté v
 <div>
 
 </div>
-<c:remove var="userReport" scope="session"/>
-<c:remove var="anonymousReport" scope="session"/>
+<%--<c:remove var="userReport" scope="session"/>--%> <%-- Ejemplo de error al eliminar variables --%>
+<%--<c:remove var="anonymousReport" scope="session"/>--%>
 </body>
 </html>

@@ -95,39 +95,33 @@ public class ReporteAnonimoDao implements CrudUtilities<ReporteAnonimo> {
 
     @Override
     public boolean update(ReporteAnonimo entity) {
-        String updateQuery = String.format("UPDATE ReporteAnonimo SET nombre = '%s', apellidop = '%s', apellidom = '%s', " +
-                "telefono = '%s', \"Extension\" = '%s', fk_tiporesiduo = %d, fk_metodopago = %d, pagado = %b, " +
-                "direccion = ROW('%s', '%s', '%s', '%s', %d, %d, '%s', '%s', '%s'), fk_estado = %d, correo = '%s' WHERE folio = %d;", entity.getNombre(),
-                entity.getApellidop(), entity.getApellidom(), entity.getTelefono(), entity.getExtension(), entity.getFkTipoResiduo(),
-                entity.getFkMetodoPago(), entity.isPagado(), entity.getDir().getCodigoPostal(), entity.getDir().getColonia(),
-                entity.getDir().getCalle(), entity.getDir().getReferencias(), entity.getDir().getNumeroExterior(),
-                entity.getDir().getNumeroInterior(), entity.getDir().getCiudad(), entity.getDir().getMunicipio(),
-                entity.getDir().getCiudad(), entity.getFk_estado(), entity.getCorreo(), entity.getFolio());
+        String updateQuery = String.format("UPDATE ReporteAnonimo SET pagado = %b, fk_estado = %d WHERE folio = %d;",
+                entity.isPagado (), entity.getFk_estado(), entity.getFolio());
 
         return ReporteClienteDao.executeUpdate(updateQuery, DBC, entity.getFolio());
     }
 
     @Override
-    public void select(int id) {
+    public LinkedList<ReporteAnonimo> select(int id) {
         DBC.setConnection(); // Establecemos conexión con la BD
         DBC.createStmt();   // Creamos el Statement
 
         System.out.printf("Consultando los datos del reporte con folio: %d...\n", id);
-        String select_query = String.format("select reporteanonimo.folio, reporteanonimo.nombre, reporteanonimo.apellidop as \"Apellido Paterno\", reporteanonimo.apellidom as \"Apellido Materno\",\n" +
-                "       reporteanonimo.telefono, reporteanonimo.\"Extension\", reporteanonimo.telefono, reporteanonimo.correo,\n" +
-                "       concat_ws(', ', (direccion).calle, (direccion).colonia, (direccion).codigoPostal, (direccion).municipio,\n" +
-                "           (direccion).estado) as \"Direccion\", tiporesiduo.tiporesiduo, metodopago.metodopago, reporteanonimo.pagado,\n" +
-                "       estado.estado from reporteanonimo\n" +
-                "inner join tiporesiduo on reporteanonimo.fk_tiporesiduo = tiporesiduo.residuoid\n" +
-                "inner join estado on reporteanonimo.fk_estado = estado.estadoid\n" +
-                "inner join metodopago on reporteanonimo.fk_metodopago = metodopago.metodoid\n" +
-                "where reporteanonimo.folio = %d;", id);
+        String select_query = String.format("select folio, nombre, apellidop, apellidom,\n" +
+                "       telefono, \"Extension\", telefono, correo,\n" +
+                "       direccion, fk_tiporesiduo, fk_metodopago, pagado,\n" +
+                "       fk_estado from reporteanonimo\n" +
+               /* "inner join tiporesiduo on fk_tiporesiduo = tiporesiduo.residuoid\n" +
+                "inner join estado on fk_estado = estado.estadoid\n" +
+                "inner join metodopago on fk_metodopago = metodopago.metodoid\n" +*/
+                "where folio = %d;", id);
 
         try {
             if (DBC.runQuery(select_query)) // Si el método executeQuery() regresa true, se encontró al alumno
-                reportAux = ReporteClienteDao.fetchDataUser(DBC.getResultSet()); // Obtiene los datos del ResultSet y lo guarda en reportList
-            if (reportAux == null || reportAux.isEmpty())
+                reportList = fetchData (DBC.getResultSet()); // Obtiene los datos del ResultSet y lo guarda en reportList
+            if (reportList == null || reportList.isEmpty())
                 System.out.println("No se encontró el reporte con folio: " + id);
+            else return reportList;
         } catch (SQLException ex) {
             System.out.println("Error al recuperar los datos del reporte especificado");
             Logger.getLogger(ConnectionDB.class.getName()).log(Level.SEVERE, "No se pudo recuperar los datos.", ex);
@@ -136,6 +130,7 @@ public class ReporteAnonimoDao implements CrudUtilities<ReporteAnonimo> {
             DBC.closeStmt();
             DBC.disconnect();
         }
+        return null;
     }
 
     @Override

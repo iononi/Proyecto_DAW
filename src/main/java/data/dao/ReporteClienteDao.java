@@ -1,14 +1,13 @@
 package data.dao;
 
 import data.database.ConnectionDB;
+import model.ReporteAnonimo;
 import model.ReporteCliente;
 
 import java.io.Serializable;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.LinkedList;
-import java.util.function.Consumer;
-import java.util.function.Predicate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -120,12 +119,12 @@ public class ReporteClienteDao implements CrudUtilities<ReporteCliente> {
     }
 
     @Override
-    public void select(int id) {
+    public LinkedList<ReporteCliente> select(int id) {
         DBC.setConnection(); // Establecemos conexión con la BD
         DBC.createStmt();   // Creamos el Statement
 
         System.out.printf("Consultando los datos del reporte con folio: %d...\n", id);
-        String select_query = String.format("select reportecliente.folio, usuario.nombre, usuario.apellidop as \"Apellido Paterno\",\n" +
+        String selectQuery = String.format("select reportecliente.folio, usuario.nombre, usuario.apellidop as \"Apellido Paterno\",\n" +
                 "       usuario.apellidom as \"Apellido Materno\", usuario.correo, usuario.\"Extension\",\n" +
                 "       usuario.telefono, concat_ws(', ', (direccion).calle,\n" +
                 "           (direccion).colonia, (direccion).codigoPostal,\n" +
@@ -140,7 +139,7 @@ public class ReporteClienteDao implements CrudUtilities<ReporteCliente> {
                 "where reportecliente.folio = %d;", id);
 
         try {
-            if (DBC.runQuery(select_query)) // Si el método executeQuery() regresa true, se encontró al alumno
+            if (DBC.runQuery(selectQuery)) // Si el método executeQuery() regresa true, se encontró al alumno
                 auxUser = fetchDataUser(DBC.getResultSet()); // Obtiene los datos del ResultSet y lo guarda en auxUser
             if (auxUser == null || auxUser.isEmpty())
                 System.out.println("No se encontró el reporte con folio: " + id);
@@ -152,6 +151,7 @@ public class ReporteClienteDao implements CrudUtilities<ReporteCliente> {
             DBC.closeResultSet();
             DBC.disconnect();
         }
+        return null;
     }
 
     @Override

@@ -2,6 +2,7 @@ package data.dao;
 
 import data.database.ConnectionDB;
 import model.Estado;
+import model.ReporteAnonimo;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -99,7 +100,7 @@ public class EstadoDao implements CrudUtilities<Estado> {
     }
 
     @Override
-    public void select(int id) {
+    public LinkedList<Estado> select(int id) {
         DBC.setConnection();
         DBC.createStmt();
 
@@ -118,6 +119,7 @@ public class EstadoDao implements CrudUtilities<Estado> {
             DBC.closeResultSet();
             DBC.disconnect();
         }
+        return null;
     }
 
     @Override

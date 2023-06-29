@@ -1,6 +1,7 @@
 package data.dao;
 
 import data.database.ConnectionDB;
+import model.ReporteAnonimo;
 import model.Usuario;
 import model.Direccion;
 import org.postgresql.util.PGobject;
@@ -126,7 +127,7 @@ public class UsuarioDao implements CrudUtilities<Usuario> {
     }
 
     @Override
-    public void select(int id) {
+    public LinkedList<Usuario> select(int id) {
         DBC.setConnection(); // Establecemos conexión con la BD
         DBC.createStmt();   // Creamos el Statement
 
@@ -146,6 +147,7 @@ public class UsuarioDao implements CrudUtilities<Usuario> {
             DBC.closeResultSet();
             DBC.closeStmt();
         }
+        return null;
     }
 
 

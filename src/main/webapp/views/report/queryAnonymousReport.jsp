@@ -76,17 +76,27 @@
                     <td>${anonymousReport.apellidop}</td>
                     <td>${anonymousReport.apellidom}</td>
                     <td>${anonymousReport.correo}</td>
-                    <td>(${anonymousReport.extension}) ${anonymousReport.telefono}</td>
-                    <td>${anonymousReport.direccion}</td>
-                    <td>${anonymousReport.tipoResiduo}</td>
-                    <td>${anonymousReport.metodoPago}</td>
-                    <c:if test="${anonymousReport.pagado eq 'true'}">
-                        <td>Sí</td>
-                    </c:if>
-                    <c:if test="${anonymousReport.pagado eq 'false'}">
-                        <td>No</td>
-                    </c:if>
-                    <td>${anonymousReport.estado}</td>
+                    <td>${anonymousReport.telefono}</td>
+                    <td><c:out value="${anonymousReport.dir.calle}, ${anonymousReport.dir.colonia},
+                ${anonymousReport.dir.codigoPostal}, ${anonymousReport.dir.municipio},
+                ${anonymousReport.dir.estado}"/></td>
+                    <td>
+                        <c:if test="${anonymousReport.fkTipoResiduo eq 1}" ><p>Construccion/Demolicion</p></c:if>
+                    </td>
+                    <td>
+                        <c:if test="${anonymousReport.fkMetodoPago eq 1}"><p>Tarjeta Credito</p></c:if>
+                        <c:if test="${anonymousReport.fkMetodoPago eq 2}"><p>Tarjeta Debito</p></c:if>
+                        <c:if test="${anonymousReport.fkMetodoPago eq 3}"><p>Efectivo</p></c:if>
+                    </td>
+                    <td>
+                        <c:if test="${anonymousReport.pagado eq 'false'}"><p>No</p></c:if>
+                        <c:if test="${anonymousReport.pagado eq 'true'}"><p>Si</p></c:if>
+                    </td>
+                    <td>
+                        <c:if test="${anonymousReport.fk_estado eq 1}"><p>Recibido</p></c:if>
+                        <c:if test="${anonymousReport.fk_estado eq 2}"><p>En proceso</p></c:if>
+                        <c:if test="${anonymousReport.fk_estado eq 3}"><p>Finalizado</p></c:if>
+                    </td>
                 </tr>
             </c:forEach>
         </table>

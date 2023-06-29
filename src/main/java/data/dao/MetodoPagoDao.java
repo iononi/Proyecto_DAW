@@ -3,6 +3,8 @@ package data.dao;
 
 import data.database.ConnectionDB;
 import model.MetodoPago;
+import model.ReporteAnonimo;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.LinkedList;
@@ -105,7 +107,7 @@ public class MetodoPagoDao implements CrudUtilities<MetodoPago> {
     }
 
     @Override
-    public void select(int id) {
+    public LinkedList<MetodoPago> select(int id) {
         DBC.setConnection(); // Establecemos conexión con la BD
         DBC.createStmt();   // Creamos el Statement
 
@@ -125,6 +127,7 @@ public class MetodoPagoDao implements CrudUtilities<MetodoPago> {
             DBC.closeResultSet(); // Cerramos el resultset
             DBC.disconnect(); // Cerramos conexión con la BD
         }
+        return null;
     }
 
     @Override

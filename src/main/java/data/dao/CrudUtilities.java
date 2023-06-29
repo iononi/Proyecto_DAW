@@ -1,5 +1,7 @@
 package data.dao;
 
+import model.ReporteAnonimo;
+
 import java.sql.ResultSet;
 import java.util.Collection;
 import java.util.LinkedList;
@@ -32,9 +34,11 @@ public interface CrudUtilities<T> {
     boolean update(T entity);
     /**
      * Retrieve the specified by id parameter.
+     *
      * @param id The ID of the row to retrieve.
-     * */
-    void select(int id);
+     * @return
+     */
+    LinkedList<T> select(int id);
     /**
      * Retrieve all data from a table.
      * */

@@ -1,6 +1,7 @@
 package data.dao;
 
 import data.database.ConnectionDB;
+import model.ReporteAnonimo;
 import model.Rol;
 
 import java.sql.ResultSet;
@@ -100,7 +101,7 @@ public class RolDao implements CrudUtilities<Rol> {
     }
 
     @Override
-    public void select(int id) {
+    public LinkedList<Rol> select(int id) {
         DBC.setConnection();
         DBC.createStmt();
 
@@ -119,6 +120,7 @@ public class RolDao implements CrudUtilities<Rol> {
             DBC.closeResultSet();
             DBC.disconnect();
         }
+        return null;
     }
 
     @Override
